@@ -14,19 +14,19 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.caoyong.core.bean.TestTb;
-import com.caoyong.core.dao.TestTbDao;
+import com.caoyong.core.service.TestTbService;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations={"classpath:application-context.xml"})
 public class TestTbTest {
 	
 	@Autowired
-	private TestTbDao testTbDao;
+	private TestTbService testTbService;
 	
 	@Test
 	public void testAdd(){
 		TestTb testTb = new TestTb();
-		testTb.setName("卡星球");
+		testTb.setName("范冰冰");
 		testTb.setBirthday(new Date());
-		testTbDao.insertTestTb(testTb);
+		testTbService.insertTestTb(testTb);
 	}
 }
