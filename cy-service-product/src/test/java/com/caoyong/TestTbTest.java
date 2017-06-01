@@ -25,7 +25,7 @@ public class TestTbTest {
 	@Test
 	public void testAdd(){
 		TestTb testTb = new TestTb();
-		testTb.setName("刘一手");
+		testTb.setName("卡星球");
 		testTb.setBirthday(new Date());
 		testTbDao.insertTestTb(testTb);
 	}
