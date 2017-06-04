@@ -30,4 +30,7 @@
 		<property name="prefix" value="/WEB-INF/console/"/>
 		<property name="suffix" value=".jsp"/>
 	</bean>
+	
+	<!-- 导入dubbo-consumer.xml -->
+	<import resource="dubbo-consumer.xml"/>
 </beans>

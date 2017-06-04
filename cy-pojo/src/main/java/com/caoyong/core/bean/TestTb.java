@@ -1,12 +1,14 @@
 package com.caoyong.core.bean;
 
+import java.io.Serializable;
 import java.util.Date;
 /**
  * 测试表
  * @author yong.cao
  * @time 2017年5月31日下午11:26:42
  */
-public class TestTb {
+public class TestTb implements Serializable{
+	private static final long serialVersionUID = -2976861673309134480L;
 	private Integer id;
 	private String name;
 	private Date birthday;

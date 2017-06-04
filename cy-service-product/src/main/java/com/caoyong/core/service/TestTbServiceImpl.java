@@ -12,7 +12,7 @@ import com.caoyong.core.dao.TestTbDao;
  * @author yong.cao
  * @time 2017年6月1日下午9:46:37
  */
-@Service
+@Service("testTbService")
 @Transactional
 public class TestTbServiceImpl implements TestTbService{
 	@Autowired

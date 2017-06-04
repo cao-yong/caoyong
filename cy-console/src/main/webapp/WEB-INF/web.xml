@@ -12,6 +12,8 @@
 			<param-name>contextConfigLocation</param-name>
 			<param-value>classpath:springmvc-console.xml</param-value>
 		</init-param>
+			<!-- 容器启动加载web.xml的时候就实现化它 -->
+			<load-on-startup>1</load-on-startup>
 	</servlet>
 	
 	<!-- 
