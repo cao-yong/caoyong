@@ -21,6 +21,5 @@ public class TestTbServiceImpl implements TestTbService{
 	@Override
 	public void insertTestTb(TestTb testTb){
 		testTbDao.insertTestTb(testTb);
-		throw new RuntimeException();
 	}
 }
