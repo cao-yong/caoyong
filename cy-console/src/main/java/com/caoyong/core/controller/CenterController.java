@@ -1,31 +1,44 @@
 package com.caoyong.core.controller;
 
-import java.util.Date;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-import com.caoyong.core.bean.TestTb;
-import com.caoyong.core.service.TestTbService;
 
 /**
  * 后台管理
  * @author yong.cao
  * @time 2017年6月1日下午10:59:02
  */
+@RequestMapping(value="/control")
 @Controller
 public class CenterController {
-	@Autowired
-	private TestTbService testTbService;
 	
-	@RequestMapping(value="/test/index.do")
+	@RequestMapping(value="/index.do")
 	public String index(Model model){
-		TestTb testTb = new TestTb();
-		testTb.setBirthday(new Date());
-		testTb.setName("李冰冰");
-		testTbService.insertTestTb(testTb);
 		return "index";
+	}
+	@RequestMapping(value="/top.do")
+	public String top(Model model){
+		return "top";
+	}
+	@RequestMapping(value="/main.do")
+	public String main(Model model){
+		return "main";
+	}
+	@RequestMapping(value="/left.do")
+	public String left(Model model){
+		return "left";
+	}
+	@RequestMapping(value="/right.do")
+	public String right(Model model){
+		return "right";
+	}
+	@RequestMapping(value="/frame/product_main.do")
+	public String product_main(Model model){
+		return "frame/product_main";
+	}
+	@RequestMapping(value="/frame/product_left.do")
+	public String product_left(Model model){
+		return "frame/product_left";
 	}
 }

@@ -23,8 +23,13 @@
     <!-- dubbo服务消费方 -->
     <!-- 1:名称 计算机区分 唯一 -->
     <dubbo:application name="cy-console"/>
+    
     <!-- 2:设置注册中心 地址 zookeeper -->
-    <dubbo:registry address="192.168.128.128:2181" protocol="zookeeper"/>
-    <!-- 3:调用接口对应的实现类-->
+    <dubbo:registry address="192.168.128.129:2181" protocol="zookeeper"/>
+    
+    <!-- 3:调用接口对应的实现类 -->
     <dubbo:reference interface="com.caoyong.core.service.TestTbService" id="testTbService"/>
+    
+    <!--  timeout默认单位是ms 为了调试方便设置为10min -->
+    <dubbo:consumer timeout="600000"/>
 </beans>

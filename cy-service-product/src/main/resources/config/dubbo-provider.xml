@@ -23,10 +23,13 @@
     <!-- dubbo服务提供方 -->
     <!-- 1:名称 计算机区分 唯一 -->
     <dubbo:application name="cy-service-product"/>
+    
     <!-- 2:设置注册中心 地址 zookeeper -->
-    <dubbo:registry address="192.168.128.128:2181" protocol="zookeeper"/>
+    <dubbo:registry address="192.168.128.129:2181" protocol="zookeeper"/>
+    
     <!-- 3:192.168.128.128:20880默认 设置提供服务的端口号 -->
     <dubbo:protocol port="20880" name="dubbo"/>
+    
     <!-- 4:暴露实现类 -->
     <dubbo:service interface="com.caoyong.core.service.TestTbService" ref="testTbService"/>
 </beans>
