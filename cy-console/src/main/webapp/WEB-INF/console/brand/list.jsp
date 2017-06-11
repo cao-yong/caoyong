@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-<title>babasport-list</title>
+<title>product-list</title>
 </head>
 <body>
 <div class="box-positon">
@@ -37,7 +37,7 @@
 		</tr>
 	</thead>
 	<tbody class="pn-ltbody">
-	<c:forEach items="${pagination.list }" var="brand">
+	<c:forEach items="${page.rows}" var="brand">
 		<tr bgcolor="#ffffff" onmouseout="this.bgColor='#ffffff'" onmouseover="this.bgColor='#eeeeee'">
 			<td><input type="checkbox" value="${brand.id }" name="ids"/></td>
 			<td align="center">${brand.id }</td>
@@ -61,7 +61,7 @@
 </table>
 <div class="page pb15">
 	<span class="r inb_a page_b">
-		<c:forEach items="${pagination.pageView }" var="page">
+		<c:forEach items="${page.pageView }" var="page">
 			${page }
 		</c:forEach>
 	</span>

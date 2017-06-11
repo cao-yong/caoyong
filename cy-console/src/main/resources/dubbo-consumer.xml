@@ -28,7 +28,10 @@
     <dubbo:registry address="192.168.128.129:2181" protocol="zookeeper"/>
     
     <!-- 3:调用接口对应的实现类 -->
+    <!-- test -->
     <dubbo:reference interface="com.caoyong.core.service.TestTbService" id="testTbService"/>
+    <!-- 产品服务 -->
+    <dubbo:reference interface="com.caoyong.core.service.product.BrandService" id="brandService"/>
     
     <!--  timeout默认单位是ms 为了调试方便设置为10min -->
     <dubbo:consumer timeout="600000"/>
