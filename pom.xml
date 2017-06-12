@@ -252,12 +252,6 @@
 			<version>20131018</version>
 		</dependency>
 	
-		<!--page -->
-		<dependency>
-			<groupId>com.caoyong</groupId>
-			<artifactId>page</artifactId>
-			<version>1.0</version>
-		</dependency>
 		<!-- solrJ -->
 		<dependency>
 			<groupId>org.apache.solr</groupId>
@@ -274,11 +268,10 @@
 		</dependency>
 	
 		<!-- FastDFS client -->
-	
 		<dependency>
-			<groupId>com.github.tobato</groupId>
-    		<artifactId>fastdfs-client</artifactId>
-    		<version>1.25.3-RELEASE</version>
+			<groupId>org.csource</groupId>
+    		<artifactId>fastdfs-client-java</artifactId>
+    		<version>1.27-RELEASE</version>
 		</dependency>
 	
 		<dependency>

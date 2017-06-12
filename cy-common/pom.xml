@@ -147,12 +147,6 @@
 			<artifactId>json</artifactId>
 		</dependency>
 
-		<!--page 
-		<dependency>
-			<groupId>com.caoyong</groupId>
-			<artifactId>page</artifactId>
-		</dependency>
-		-->
 		<!-- solrJ -->
 		<dependency>
 			<groupId>org.apache.solr</groupId>
@@ -166,10 +160,9 @@
 		</dependency>
 
 		<!-- FastDFS client -->
-
 		<dependency>
-			<groupId>com.github.tobato</groupId>
-    		<artifactId>fastdfs-client</artifactId>
+			<groupId>org.csource</groupId>
+    		<artifactId>fastdfs-client-java</artifactId>
 		</dependency>
 
 		<dependency>
