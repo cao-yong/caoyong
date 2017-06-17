@@ -39,7 +39,7 @@ public class BrandServiceImpl implements BrandService{
 		log.info("selectPageByQuery start, query = {}",
 				ToStringBuilder.reflectionToString(query, ToStringStyle.DEFAULT_STYLE));
 		//每页数
-		query.setLimit(3);
+		query.setLimit(10);
 		//当前页
 		query.setPageNo((null == query.getPageNo() || query.getPageNo()<1)? 
 				1 : query.getPageNo());

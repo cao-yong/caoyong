@@ -1,0 +1,89 @@
+#关闭防火墙
+systemctl stop firewalld.service
+
+#禁用
+防火墙
+systemctl disable firewalld.service
+
+#使配置立即生效
+setenforce 0 
+
+#解压到指定目录
+tar -zxvf zookeeper-3.4.6.tar.gz -C /usr/yong.cao/dev/zookeeper/
+
+#复制
+cp 文件名 新文件名
+
+#保存退出
+:wq
+
+#不保存退出
+:q!
+
+#运行.sh脚本
+./脚本名称 start
+
+#查看端口号监听
+netstat -unltp|grep fdfs
+
+#zip解压
+unzip fastdfs-nginx-module-master.zip
+
+#查询端口号
+firewall-cmd --zone=public --list-ports
+
+#开户端口号
+firewall-cmd --zone=public --add-port=23000/tcp --permanent
+
+#查看端口号是否打开
+firewall-cmd    --query-port=9200/tcp
+
+#nginx修改配置后重新加载生
+nginx -s reload  ：修改配置后重新加载生效
+
+#nginx重新打开日志文件
+nginx -s reopen
+
+#nginx测试nginx配置文件是否正确
+nginx -t -c /path/to/nginx.conf
+
+#关闭nginx：
+
+nginx -s stop
+
+#完整有序的停止nginx
+quit
+
+#其他的停止nginx方式
+ps -ef | grep nginx
+
+#强制停止Nginx
+killall -9 nginx
+
+#启动nginx:
+nginx -c /path/to/nginx.conf
+
+#启动tracker
+service fdfs_trackerd start
+/usr/bin/fdfs_trackerd /etc/fdfs/tracker.conf
+
+#重启tracker 
+/usr/bin/fdfs_trackerd /etc/fdfs/tracker.conf restart
+
+#启动storage
+/usr/bin/fdfs_storaged /etc/fdfs/storage.conf
+
+#重启storage
+/usr/bin/fdfs_storaged /etc/fdfs/storage.conf restart
+
+#列举所有的内容
+ls -a
+
+#查看端口监听
+netstat -unltp|grep fdfs
+
+#开户防火墙
+systemctl start firewalld
+
+#更新防火墙
+firewall-cmd --complete-reload

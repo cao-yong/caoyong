@@ -13,8 +13,12 @@ function uploadPic(){
 			dataType : "json",
 			type : "post",
 			success : function(data){
-				$("#allUrl").attr("src",data.url);
-				$("#imgUrl").val(data.url);
+				if(data.isSuccess){
+					$("#allUrl").attr("src",data.url);
+					$("#imgUrl").val(data.url);
+				}else{
+					alert(data.errorMsg);
+				}
 			}
 	}
 	$("#jvForm").ajaxSubmit(options);
@@ -30,6 +34,7 @@ function uploadPic(){
 	<div class="clear"></div>
 </div>
 <div class="body-box" style="float:right">
+	<input type="text" value="${brand.id}" name="id"/> 
 	<form id="jvForm" action="edit.do" method="post">
 		<table cellspacing="1" cellpadding="2" width="100%" border="0" class="pn-ftable">
 			<tbody>

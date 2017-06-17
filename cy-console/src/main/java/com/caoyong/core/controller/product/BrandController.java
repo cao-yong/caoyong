@@ -37,8 +37,7 @@ public class BrandController {
 				model.addAttribute("page", page);
 				model.addAttribute("name", query.getName());
 				model.addAttribute("isDisplay", query.getIsDisplay());
-				log.info("page = {}",ToStringBuilder.reflectionToString(page,
-						ToStringStyle.DEFAULT_STYLE));
+				log.info("page = {}",page);
 			}
 		} catch (BizException e) {
 			log.error("query list BizException:{}",e.getMessage(),e);

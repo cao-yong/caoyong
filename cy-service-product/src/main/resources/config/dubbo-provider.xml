@@ -25,7 +25,7 @@
     <dubbo:application name="cy-service-product"/>
     
     <!-- 2:设置注册中心 地址 zookeeper -->
-    <dubbo:registry address="192.168.128.129:2181" protocol="zookeeper"/>
+    <dubbo:registry address="192.168.128.131:2181" protocol="zookeeper"/>
     
     <!-- 3:192.168.128.128:20880默认 设置提供服务的端口号 -->
     <dubbo:protocol port="20880" name="dubbo"/>
@@ -35,4 +35,6 @@
     <dubbo:service interface="com.caoyong.core.service.TestTbService" ref="testTbService"/>
     <!-- 品牌服务 -->
     <dubbo:service interface="com.caoyong.core.service.product.BrandService" ref="brandService"/>
+    <!-- 上传文件 -->
+    <dubbo:service interface="com.caoyong.core.service.product.UploadService" ref="uploadService"/>
 </beans>
