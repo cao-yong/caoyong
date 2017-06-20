@@ -87,3 +87,13 @@ systemctl start firewalld
 
 #更新防火墙
 firewall-cmd --complete-reload
+
+#更新ip后，fastDFS要改的地方
+/etc/fdfs/storage.conf
+/etc/fdfs/client.conf
+/etc/fdfs/mod_fastdfs.conf
+
+#SELinux相关操作
+#查看状态
+sestatus
+/usr/sbin/sestatus -v 

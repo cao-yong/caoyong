@@ -25,7 +25,7 @@
     <dubbo:application name="cy-console"/>
     
     <!-- 2:设置注册中心 地址 zookeeper -->
-    <dubbo:registry address="192.168.128.131:2181" protocol="zookeeper"/>
+    <dubbo:registry address="192.168.128.128:2181" protocol="zookeeper"/>
     
     <!-- 3:调用接口对应的实现类 -->
     <!-- test -->
