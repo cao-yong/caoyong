@@ -10,9 +10,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.caoyong.core.bean.base.Page;
+import com.caoyong.core.bean.base.ResultBase;
 import com.caoyong.core.bean.product.Brand;
 import com.caoyong.core.bean.product.BrandQuery;
 import com.caoyong.core.dao.product.BrandDao;
+import com.caoyong.enums.ErrorCodeEnum;
 import com.caoyong.exception.BizException;
 
 import lombok.extern.slf4j.Slf4j;
@@ -94,20 +96,53 @@ public class BrandServiceImpl implements BrandService{
 	}
 
 	@Override
-	public Brand selectBrandById(Long id) throws BizException {
+	public ResultBase<Brand> selectBrandById(Long id) throws BizException {
+		ResultBase<Brand> result = new ResultBase<Brand>();
 		log.info("selectBrandById start. id={}",id);
-		Brand brand = null;
+		Brand brand;
 		try {
 			brand = brandDao.selectBrandById(id);
+			if(null!=brand){
+				result.setValue(brand);
+				result.setSuccess(true);
+			}
 			log.info("select brand:{}",ToStringBuilder.reflectionToString
 					(brand, ToStringStyle.DEFAULT_STYLE));
 		} catch (DataAccessException e) {
+			result.setErrorCode(ErrorCodeEnum.DATA_BASE_ACCESS_ERROR.getCode());
+			result.setErrorCode(ErrorCodeEnum.DATA_BASE_ACCESS_ERROR.getMsg());
 			log.error("selectBrandById DataAccessException:{}",e.getMessage(),e);
 		} catch (Exception e) {
+			result.setErrorCode(ErrorCodeEnum.UNKOWN_ERROR.getCode());
+			result.setErrorCode(ErrorCodeEnum.UNKOWN_ERROR.getMsg());
 			log.error("selectBrandById Exception:{}",e.getMessage(),e);
 		}
-		log.info("selectBrandById end");
-		return brand;
+		log.info("selectBrandById end, resut:{}",ToStringBuilder.
+				reflectionToString(result, ToStringStyle.DEFAULT_STYLE));
+		return result;
+	}
+
+	@Override
+	public ResultBase<Integer> updateBrandById(Brand brand) throws BizException{
+		ResultBase<Integer> result = new ResultBase<Integer>();
+		result.setValue(0);
+		log.info("updateBrandById start. brand:{}", ToStringBuilder.reflectionToString
+				(brand, ToStringStyle.DEFAULT_STYLE));
+		try {
+			brandDao.updateBrandById(brand);
+			result.setValue(1);
+		} catch (DataAccessException e) {
+			result.setErrorCode(ErrorCodeEnum.DATA_BASE_ACCESS_ERROR.getCode());
+			result.setErrorMsg(ErrorCodeEnum.DATA_BASE_ACCESS_ERROR.getMsg());
+			log.error("updateBrandById DataAccessException:{}",e.getMessage(),e);
+		} catch (Exception e) {
+			result.setErrorCode(ErrorCodeEnum.UNKOWN_ERROR.getCode());
+			result.setErrorMsg(ErrorCodeEnum.UNKOWN_ERROR.getMsg());
+			log.error("updateBrandById Exception:{}",e.getMessage(),e);
+		}
+		log.info("updateBrandById end, resut:{}",ToStringBuilder.
+				reflectionToString(result, ToStringStyle.DEFAULT_STYLE));
+		return result;
 	}
 	
 }

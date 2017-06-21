@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.caoyong.core.bean.base.Page;
+import com.caoyong.core.bean.base.ResultBase;
 import com.caoyong.core.bean.product.Brand;
 import com.caoyong.core.bean.product.BrandQuery;
 import com.caoyong.core.service.product.BrandService;
@@ -57,8 +58,11 @@ public class BrandController {
 	public String toEdit(Long id, Model model){
 		log.info("toEdit start. id={}", id);
 		try {
-			Brand brand = brandService.selectBrandById(id);
-			model.addAttribute("brand", brand);
+			ResultBase<Brand> result = brandService.selectBrandById(id);
+			if(result.isSuccess()){
+				Brand brand = result.getValue();
+				model.addAttribute("brand", brand);
+			}
 		} catch (BizException e) {
 			log.error("toEdit BizException:{}",e.getMessage(),e);
 		}catch (Exception e) {
@@ -66,5 +70,26 @@ public class BrandController {
 		}
 		log.info("toEdit end");
 		return "brand/edit";
+	}
+	/**
+	 * 修改
+	 * @param brand
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value=("/brand/edit.do"))
+	public String edit(Brand brand, Model model){
+		log.info("edit start. brand={}", ToStringBuilder.
+				reflectionToString(brand, ToStringStyle.DEFAULT_STYLE));
+		try {
+			ResultBase<Integer> result = brandService.updateBrandById(brand);
+			log.info("result:{}",result);
+		} catch (BizException e) {
+			log.error("toEdit BizException:{}",e.getMessage(),e);
+		}catch (Exception e) {
+			log.error("toEdit Exception:{}",e.getMessage(),e);
+		}
+		log.info("edit end");
+		return "redirect:/brand/list.do";
 	}
 }

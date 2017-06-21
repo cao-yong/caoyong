@@ -35,4 +35,10 @@ public interface BrandDao {
 	 */
 	Brand selectBrandById(Long id)throws DataAccessException;
 
+	/**
+	 * 根据id修改品牌
+	 * @param brand
+	 * @return
+	 */
+	void updateBrandById(Brand brand)throws DataAccessException;
 }

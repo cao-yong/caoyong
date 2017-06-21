@@ -97,3 +97,6 @@ firewall-cmd --complete-reload
 #查看状态
 sestatus
 /usr/sbin/sestatus -v 
+
+#启动nginx
+/usr/local/nginx/sbin/nginx

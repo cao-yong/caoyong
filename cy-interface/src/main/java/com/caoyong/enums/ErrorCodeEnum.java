@@ -2,7 +2,8 @@ package com.caoyong.enums;
 
 public enum ErrorCodeEnum {
 	
-	UNKOWN_ERROR("9999","未知错误");
+	UNKOWN_ERROR("9999","未知错误"),
+	DATA_BASE_ACCESS_ERROR("1001","访问数据库错误");
 	private String code;
 	private String msg;
 	private ErrorCodeEnum(String code, String msg) {

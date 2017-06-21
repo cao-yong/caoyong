@@ -42,4 +42,28 @@
 			id = #{id}
 		</where>
 	</select>
+	<!-- 根据id修改品牌 -->
+	<select id="updateBrandById" parameterType="brand">
+		update cy_brand
+		<set>
+			<if  test="name != null">
+				name = #{name},
+			</if>
+			<if  test="description != null">
+				description = #{description},
+			</if>
+			<if  test="imgUrl != null">
+				img_url = #{imgUrl},
+			</if>
+			<if  test="sort != null">
+				sort = #{sort},
+			</if>
+			<if  test="isDisplay != null">
+				is_display = #{isDisplay}
+			</if>
+		</set>
+		<where>
+			id = #{id}
+		</where>
+	</select>
 </mapper>

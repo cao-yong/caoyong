@@ -5,6 +5,11 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <title>product-list</title>
+<script type="text/javascript">
+	var checkBox = function(name, checked){
+		$('[input[name=' + name + ']').attr('checked', checked)
+	}
+</script>
 </head>
 <body>
 <div class="box-positon">
@@ -42,9 +47,9 @@
 			<td><input type="checkbox" value="${brand.id }" name="ids"/></td>
 			<td align="center">${brand.id }</td>
 			<td align="center">${brand.name }</td>
-			<td align="center"><img width="40" height="40" src="/images/pic/ppp.jpg"/></td>
-			<td align="center"></td>
-			<td align="center">99</td>
+			<td align="center"><img width="40" height="40" src="${brand.imgUrl }"/></td>
+			<td align="center">${brand.description }</td>
+			<td align="center">${brand.sort }</td>
 			<td align="center">
 				<c:if test="${brand.isDisplay == 1 }">是</c:if>
 				<c:if test="${brand.isDisplay == 0 }">否</c:if>
