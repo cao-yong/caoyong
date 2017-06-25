@@ -1,0 +1,441 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.caoyong.core.dao.order.OrderDao" >
+  <resultMap id="BaseResultMap" type="com.caoyong.core.bean.order.Order" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="deliver_fee" property="deliverFee" jdbcType="VARCHAR" />
+    <result column="total_price" property="totalPrice" jdbcType="VARCHAR" />
+    <result column="order_price" property="orderPrice" jdbcType="VARCHAR" />
+    <result column="payment_way" property="paymentWay" jdbcType="TINYINT" />
+    <result column="payment_cash" property="paymentCash" jdbcType="TINYINT" />
+    <result column="delivery" property="delivery" jdbcType="INTEGER" />
+    <result column="is_confirm" property="isConfirm" jdbcType="BIT" />
+    <result column="payment_state" property="paymentState" jdbcType="TINYINT" />
+    <result column="order_state" property="orderState" jdbcType="TINYINT" />
+    <result column="order_create_date" property="orderCreateDate" jdbcType="TIMESTAMP" />
+    <result column="note" property="note" jdbcType="VARCHAR" />
+    <result column="buyer_id" property="buyerId" jdbcType="BIGINT" />
+    <result column="creator" property="creator" jdbcType="VARCHAR" />
+    <result column="modifier" property="modifier" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="extra_info" property="extraInfo" jdbcType="VARCHAR" />
+    <result column="is_deleted" property="isDeleted" jdbcType="CHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    <if test="fields == null" >
+      id, deliver_fee, total_price, order_price, payment_way, payment_cash, delivery, is_confirm, 
+      payment_state, order_state, order_create_date, note, buyer_id, creator, modifier, 
+      create_time, update_time, extra_info, is_deleted
+    </if>
+    <if test="fields != null" >
+      ${fields}
+    </if>
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.caoyong.core.bean.order.OrderQuery" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from cy_order
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="startRow != null" >
+      limit #{startRow} , #{pageSize}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    id,deliver_fee,total_price,order_price,payment_way,payment_cash,delivery,is_confirm,payment_state,order_state,order_create_date,note,buyer_id,creator,modifier,create_time,update_time,extra_info,is_deleted
+    from cy_order
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from cy_order
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.caoyong.core.bean.order.OrderQuery" >
+    delete from cy_order
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.caoyong.core.bean.order.Order" >
+    insert into cy_order (id, deliver_fee, total_price, 
+      order_price, payment_way, payment_cash, 
+      delivery, is_confirm, payment_state, 
+      order_state, order_create_date, note, 
+      buyer_id, creator, modifier, 
+      create_time, update_time, extra_info, 
+      is_deleted)
+    values (#{id,jdbcType=BIGINT}, #{deliverFee,jdbcType=VARCHAR}, #{totalPrice,jdbcType=VARCHAR}, 
+      #{orderPrice,jdbcType=VARCHAR}, #{paymentWay,jdbcType=TINYINT}, #{paymentCash,jdbcType=TINYINT}, 
+      #{delivery,jdbcType=INTEGER}, #{isConfirm,jdbcType=BIT}, #{paymentState,jdbcType=TINYINT}, 
+      #{orderState,jdbcType=TINYINT}, #{orderCreateDate,jdbcType=TIMESTAMP}, #{note,jdbcType=VARCHAR}, 
+      #{buyerId,jdbcType=BIGINT}, #{creator,jdbcType=VARCHAR}, #{modifier,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{extraInfo,jdbcType=VARCHAR}, 
+      #{isDeleted,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.caoyong.core.bean.order.Order" >
+    insert into cy_order
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="deliverFee != null" >
+        deliver_fee,
+      </if>
+      <if test="totalPrice != null" >
+        total_price,
+      </if>
+      <if test="orderPrice != null" >
+        order_price,
+      </if>
+      <if test="paymentWay != null" >
+        payment_way,
+      </if>
+      <if test="paymentCash != null" >
+        payment_cash,
+      </if>
+      <if test="delivery != null" >
+        delivery,
+      </if>
+      <if test="isConfirm != null" >
+        is_confirm,
+      </if>
+      <if test="paymentState != null" >
+        payment_state,
+      </if>
+      <if test="orderState != null" >
+        order_state,
+      </if>
+      <if test="orderCreateDate != null" >
+        order_create_date,
+      </if>
+      <if test="note != null" >
+        note,
+      </if>
+      <if test="buyerId != null" >
+        buyer_id,
+      </if>
+      <if test="creator != null" >
+        creator,
+      </if>
+      <if test="modifier != null" >
+        modifier,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="extraInfo != null" >
+        extra_info,
+      </if>
+      <if test="isDeleted != null" >
+        is_deleted,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="deliverFee != null" >
+        #{deliverFee,jdbcType=VARCHAR},
+      </if>
+      <if test="totalPrice != null" >
+        #{totalPrice,jdbcType=VARCHAR},
+      </if>
+      <if test="orderPrice != null" >
+        #{orderPrice,jdbcType=VARCHAR},
+      </if>
+      <if test="paymentWay != null" >
+        #{paymentWay,jdbcType=TINYINT},
+      </if>
+      <if test="paymentCash != null" >
+        #{paymentCash,jdbcType=TINYINT},
+      </if>
+      <if test="delivery != null" >
+        #{delivery,jdbcType=INTEGER},
+      </if>
+      <if test="isConfirm != null" >
+        #{isConfirm,jdbcType=BIT},
+      </if>
+      <if test="paymentState != null" >
+        #{paymentState,jdbcType=TINYINT},
+      </if>
+      <if test="orderState != null" >
+        #{orderState,jdbcType=TINYINT},
+      </if>
+      <if test="orderCreateDate != null" >
+        #{orderCreateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="note != null" >
+        #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="buyerId != null" >
+        #{buyerId,jdbcType=BIGINT},
+      </if>
+      <if test="creator != null" >
+        #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="modifier != null" >
+        #{modifier,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="extraInfo != null" >
+        #{extraInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="isDeleted != null" >
+        #{isDeleted,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.caoyong.core.bean.order.OrderQuery" resultType="java.lang.Integer" >
+    select count(*) from cy_order
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update cy_order
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.deliverFee != null" >
+        deliver_fee = #{record.deliverFee,jdbcType=VARCHAR},
+      </if>
+      <if test="record.totalPrice != null" >
+        total_price = #{record.totalPrice,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orderPrice != null" >
+        order_price = #{record.orderPrice,jdbcType=VARCHAR},
+      </if>
+      <if test="record.paymentWay != null" >
+        payment_way = #{record.paymentWay,jdbcType=TINYINT},
+      </if>
+      <if test="record.paymentCash != null" >
+        payment_cash = #{record.paymentCash,jdbcType=TINYINT},
+      </if>
+      <if test="record.delivery != null" >
+        delivery = #{record.delivery,jdbcType=INTEGER},
+      </if>
+      <if test="record.isConfirm != null" >
+        is_confirm = #{record.isConfirm,jdbcType=BIT},
+      </if>
+      <if test="record.paymentState != null" >
+        payment_state = #{record.paymentState,jdbcType=TINYINT},
+      </if>
+      <if test="record.orderState != null" >
+        order_state = #{record.orderState,jdbcType=TINYINT},
+      </if>
+      <if test="record.orderCreateDate != null" >
+        order_create_date = #{record.orderCreateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.note != null" >
+        note = #{record.note,jdbcType=VARCHAR},
+      </if>
+      <if test="record.buyerId != null" >
+        buyer_id = #{record.buyerId,jdbcType=BIGINT},
+      </if>
+      <if test="record.creator != null" >
+        creator = #{record.creator,jdbcType=VARCHAR},
+      </if>
+      <if test="record.modifier != null" >
+        modifier = #{record.modifier,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null" >
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null" >
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.extraInfo != null" >
+        extra_info = #{record.extraInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isDeleted != null" >
+        is_deleted = #{record.isDeleted,jdbcType=CHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update cy_order
+    set id = #{record.id,jdbcType=BIGINT},
+      deliver_fee = #{record.deliverFee,jdbcType=VARCHAR},
+      total_price = #{record.totalPrice,jdbcType=VARCHAR},
+      order_price = #{record.orderPrice,jdbcType=VARCHAR},
+      payment_way = #{record.paymentWay,jdbcType=TINYINT},
+      payment_cash = #{record.paymentCash,jdbcType=TINYINT},
+      delivery = #{record.delivery,jdbcType=INTEGER},
+      is_confirm = #{record.isConfirm,jdbcType=BIT},
+      payment_state = #{record.paymentState,jdbcType=TINYINT},
+      order_state = #{record.orderState,jdbcType=TINYINT},
+      order_create_date = #{record.orderCreateDate,jdbcType=TIMESTAMP},
+      note = #{record.note,jdbcType=VARCHAR},
+      buyer_id = #{record.buyerId,jdbcType=BIGINT},
+      creator = #{record.creator,jdbcType=VARCHAR},
+      modifier = #{record.modifier,jdbcType=VARCHAR},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      extra_info = #{record.extraInfo,jdbcType=VARCHAR},
+      is_deleted = #{record.isDeleted,jdbcType=CHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.caoyong.core.bean.order.Order" >
+    update cy_order
+    <set >
+      <if test="deliverFee != null" >
+        deliver_fee = #{deliverFee,jdbcType=VARCHAR},
+      </if>
+      <if test="totalPrice != null" >
+        total_price = #{totalPrice,jdbcType=VARCHAR},
+      </if>
+      <if test="orderPrice != null" >
+        order_price = #{orderPrice,jdbcType=VARCHAR},
+      </if>
+      <if test="paymentWay != null" >
+        payment_way = #{paymentWay,jdbcType=TINYINT},
+      </if>
+      <if test="paymentCash != null" >
+        payment_cash = #{paymentCash,jdbcType=TINYINT},
+      </if>
+      <if test="delivery != null" >
+        delivery = #{delivery,jdbcType=INTEGER},
+      </if>
+      <if test="isConfirm != null" >
+        is_confirm = #{isConfirm,jdbcType=BIT},
+      </if>
+      <if test="paymentState != null" >
+        payment_state = #{paymentState,jdbcType=TINYINT},
+      </if>
+      <if test="orderState != null" >
+        order_state = #{orderState,jdbcType=TINYINT},
+      </if>
+      <if test="orderCreateDate != null" >
+        order_create_date = #{orderCreateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="note != null" >
+        note = #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="buyerId != null" >
+        buyer_id = #{buyerId,jdbcType=BIGINT},
+      </if>
+      <if test="creator != null" >
+        creator = #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="modifier != null" >
+        modifier = #{modifier,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="extraInfo != null" >
+        extra_info = #{extraInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="isDeleted != null" >
+        is_deleted = #{isDeleted,jdbcType=CHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.caoyong.core.bean.order.Order" >
+    update cy_order
+    set deliver_fee = #{deliverFee,jdbcType=VARCHAR},
+      total_price = #{totalPrice,jdbcType=VARCHAR},
+      order_price = #{orderPrice,jdbcType=VARCHAR},
+      payment_way = #{paymentWay,jdbcType=TINYINT},
+      payment_cash = #{paymentCash,jdbcType=TINYINT},
+      delivery = #{delivery,jdbcType=INTEGER},
+      is_confirm = #{isConfirm,jdbcType=BIT},
+      payment_state = #{paymentState,jdbcType=TINYINT},
+      order_state = #{orderState,jdbcType=TINYINT},
+      order_create_date = #{orderCreateDate,jdbcType=TIMESTAMP},
+      note = #{note,jdbcType=VARCHAR},
+      buyer_id = #{buyerId,jdbcType=BIGINT},
+      creator = #{creator,jdbcType=VARCHAR},
+      modifier = #{modifier,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      extra_info = #{extraInfo,jdbcType=VARCHAR},
+      is_deleted = #{isDeleted,jdbcType=CHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

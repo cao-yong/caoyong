@@ -27,6 +27,23 @@
     <!-- 2:设置注册中心 地址 zookeeper -->
     <dubbo:registry address="192.168.128.128:2181" protocol="zookeeper"/>
     
+    <!-- 不去注册的方法 -->
+    <!-- 
+    	<dubbo:registry address="N/A" check="false"/>
+    	示例：
+    	<dubbo:reference interface="cn.itcast.core.service.TestTbService" id="testTbService"
+		url="dubbo://127.0.0.1:20880" />
+		<dubbo:reference interface="cn.itcast.core.service.product.BrandService" id="brandService"
+			url="dubbo://127.0.0.1:20880" />
+		<dubbo:reference interface="cn.itcast.core.service.product.UploadService" id="uploadService"
+			url="dubbo://127.0.0.1:20880" />
+		<dubbo:reference interface="cn.itcast.core.service.product.ProductService" id="productService"
+			url="dubbo://127.0.0.1:20880" />
+			
+		全局设置 ：
+		<dubbo:consumer timeout="600000" check="false"/>
+     -->
+     
     <!-- 3:调用接口对应的实现类 -->
     <!-- test -->
     <dubbo:reference interface="com.caoyong.core.service.TestTbService" id="testTbService"/>
@@ -35,6 +52,6 @@
     <!-- 上传文件 -->
     <dubbo:reference interface="com.caoyong.core.service.product.UploadService" id="uploadService"/>
     
-    <!--  timeout默认单位是ms 为了调试方便设置为10min -->
+    <!--  全局设置 timeout默认单位是ms 为了调试方便设置为10min -->
     <dubbo:consumer timeout="600000"/>
 </beans>

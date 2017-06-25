@@ -27,6 +27,10 @@
     <!-- 2:设置注册中心 地址 zookeeper -->
     <dubbo:registry address="192.168.128.128:2181" protocol="zookeeper"/>
     
+    <!-- dubbo不去注册 
+    	<dubbo:registry address="N/A"/>
+    -->
+    
     <!-- 3:192.168.128.128:20880默认 设置提供服务的端口号 -->
     <dubbo:protocol port="20880" name="dubbo"/>
     
