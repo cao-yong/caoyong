@@ -18,5 +18,5 @@ public @Data class BrandQuery extends BaseQuery {
 	//排序  越大越靠前   
 	private Integer sort;
 	//是否可用   0 不可用 1 可用
-	private Integer isDisplay;//is_display
+	private Integer isDisplay;
 }

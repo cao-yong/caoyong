@@ -144,5 +144,29 @@ public class BrandServiceImpl implements BrandService{
 				reflectionToString(result, ToStringStyle.DEFAULT_STYLE));
 		return result;
 	}
+
+	@Override
+	public ResultBase<Integer> deletes(Long[] ids) throws BizException {
+		log.info("deletes start. ids:{}", ToStringBuilder.
+				reflectionToString(ids, ToStringStyle.DEFAULT_STYLE));
+		ResultBase<Integer> result = new ResultBase<Integer>();
+		result.setSuccess(false);
+		result.setValue(0);
+		try {
+			if(null != ids){
+				brandDao.deletes(ids);
+				result.setValue(ids.length);
+			}
+		} catch (DataAccessException e) {
+			log.error("deletes DataAccessException:{}", e.getMessage(),e);
+			result.setErrorCode(ErrorCodeEnum.DATA_BASE_ACCESS_ERROR.getCode());
+			result.setErrorMsg(ErrorCodeEnum.DATA_BASE_ACCESS_ERROR.getMsg());
+		} catch (Exception e) {
+			log.error("deletes Exception:{}",e.getMessage(),e);
+			result.setErrorCode(ErrorCodeEnum.UNKOWN_ERROR.getCode());
+			result.setErrorMsg(ErrorCodeEnum.UNKOWN_ERROR.getMsg());
+		}
+		return result;
+	}
 	
 }

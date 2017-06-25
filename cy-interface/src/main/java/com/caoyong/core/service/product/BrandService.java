@@ -11,6 +11,7 @@ public interface BrandService {
 	 * 查询分页对象
 	 * @param query
 	 * @return
+	 * @throws BizException
 	 */
 	Page<Brand> selectPageByQuery(BrandQuery query)throws BizException;
 	
@@ -26,6 +27,15 @@ public interface BrandService {
 	 * 根据id修改品牌
 	 * @param brand
 	 * @return
+	 * @throws BizException
 	 */
 	ResultBase<Integer> updateBrandById(Brand brand)throws BizException;
+	
+	/**
+	 * 批量删除
+	 * @param ids
+	 * @return
+	 * @throws BizException
+	 */
+	ResultBase<Integer> deletes(Long[] ids)throws BizException;
 }

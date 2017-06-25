@@ -82,8 +82,10 @@ public class BrandController {
 		log.info("edit start. brand={}", ToStringBuilder.
 				reflectionToString(brand, ToStringStyle.DEFAULT_STYLE));
 		try {
-			ResultBase<Integer> result = brandService.updateBrandById(brand);
-			log.info("result:{}",result);
+			if(null!=brand){
+				ResultBase<Integer> result = brandService.updateBrandById(brand);
+				log.info("result:{}",result);
+			}
 		} catch (BizException e) {
 			log.error("toEdit BizException:{}",e.getMessage(),e);
 		}catch (Exception e) {
@@ -91,5 +93,31 @@ public class BrandController {
 		}
 		log.info("edit end");
 		return "redirect:/brand/list.do";
+	}
+	/**
+	 * 批量删除
+	 * @param brand
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value=("/brand/deletes.do"))
+	public String deletes(Long[] ids){
+		log.info("deletes start. ids={}", ToStringBuilder.
+				reflectionToString(ids, ToStringStyle.DEFAULT_STYLE));
+		try {
+			if(null==ids){
+				//防止对数据库多次无效交互
+				log.error("ids can not be null");
+				return null;
+			}
+			ResultBase<Integer> result = brandService.deletes(ids);
+			log.info("result:{}",result);
+		} catch (BizException e) {
+			log.error("deletes BizException:{}",e.getMessage(),e);
+		}catch (Exception e) {
+			log.error("deletes Exception:{}",e.getMessage(),e);
+		}
+		log.info("deletes end");
+		return "forward:/brand/list.do";
 	}
 }

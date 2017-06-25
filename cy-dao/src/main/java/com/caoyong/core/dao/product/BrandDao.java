@@ -41,4 +41,11 @@ public interface BrandDao {
 	 * @return
 	 */
 	void updateBrandById(Brand brand)throws DataAccessException;
+	
+	/**
+	 * 批量删除
+	 * @param ids
+	 * @throws DataAccessException
+	 */
+	void deletes(Long[] ids)throws DataAccessException;
 }
