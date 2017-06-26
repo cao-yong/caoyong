@@ -32,7 +32,8 @@ public class BaseQuery implements Serializable{
 	}
 
 	public void setPageNo(Integer pageNo) {
-		this.pageNo = pageNo;
+		//当pageNo为空、0时，设置为第一页
+		this.pageNo = (null == pageNo || pageNo<1)? 1 : pageNo;
 	}
 
 	public Integer getLimit() {

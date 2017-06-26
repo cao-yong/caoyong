@@ -40,12 +40,6 @@ public class BrandServiceImpl implements BrandService{
 	public Page<Brand> selectPageByQuery(BrandQuery query)throws BizException{
 		log.info("selectPageByQuery start, query = {}",
 				ToStringBuilder.reflectionToString(query, ToStringStyle.DEFAULT_STYLE));
-		//每页数
-		query.setLimit(10);
-		//当前页
-		query.setPageNo((null == query.getPageNo() || query.getPageNo()<1)? 
-				1 : query.getPageNo());
-		//参数
 		StringBuilder params = new StringBuilder();
 		//默认是显示
 		if(null != query.getName()){
