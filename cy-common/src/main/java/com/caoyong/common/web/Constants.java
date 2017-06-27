@@ -7,4 +7,7 @@ package com.caoyong.common.web;
 public interface Constants {
 	//图片服务器
 	public static final String IMG_URL = "http://192.168.128.128/";
+	
+	public static final String CONSTANTS_N = "N";
+	public static final String CONSTANTS_Y = "Y";
 }

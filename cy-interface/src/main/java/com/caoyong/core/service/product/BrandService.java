@@ -1,5 +1,7 @@
 package com.caoyong.core.service.product;
 
+import java.util.List;
+
 import com.caoyong.core.bean.base.Page;
 import com.caoyong.core.bean.base.ResultBase;
 import com.caoyong.core.bean.product.Brand;
@@ -38,4 +40,12 @@ public interface BrandService {
 	 * @throws BizException
 	 */
 	ResultBase<Integer> deletes(Long[] ids)throws BizException;
+	
+	/**
+	 * 查询结果集
+	 * @param isDisplay
+	 * @return
+	 * @throws BizException
+	 */
+	List<Brand> selectListByQuery(Integer isDisplay)throws BizException;
 }

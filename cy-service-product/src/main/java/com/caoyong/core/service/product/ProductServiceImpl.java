@@ -25,7 +25,7 @@ import lombok.extern.slf4j.Slf4j;
  * @time 2017年6月26日下午9:57:34
  */
 @Slf4j
-@Service("produceService")
+@Service("productService")
 @Transactional
 public class ProductServiceImpl implements ProductService{
 	@Autowired

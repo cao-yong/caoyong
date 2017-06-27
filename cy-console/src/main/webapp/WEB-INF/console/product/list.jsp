@@ -39,7 +39,7 @@ function isShow(){
 名称: <input type="text" name="name" value="${name }"/>
 	<select name="brandId">
 		<option value="">请选择品牌</option>
-		<c:forEach items="brands" var="brand">
+		<c:forEach items="${brands }" var="brand">
 			<option value="${brand.id }" <c:if test="${brandId == brand.id }">selected="selected"</c:if> >${brand.name }</option>
 		</c:forEach>
 	</select>
@@ -54,7 +54,7 @@ function isShow(){
 	<thead class="pn-lthead">
 		<tr>
 			<th width="20"><input type="checkbox" onclick="Pn.checkbox('ids',this.checked)"/></th>
-			<th>商品编号</th>
+			<th width="60">商品编号</th>
 			<th>商品名称</th>
 			<th>图片</th>
 			<th width="4%">新品</th>
@@ -65,7 +65,7 @@ function isShow(){
 		</tr>
 	</thead>
 	<tbody class="pn-ltbody">
-		<c:forEach items="${pagination.list }" var="product">
+		<c:forEach items="${page.rows }" var="product">
 			<tr bgcolor="#ffffff" onmouseover="this.bgColor='#eeeeee'" onmouseout="this.bgColor='#ffffff'">
 				<td><input type="checkbox" name="ids" value="${product.id }"/></td>
 				<td>${product.id }</td>

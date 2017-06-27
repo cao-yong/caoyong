@@ -160,7 +160,29 @@ public class BrandServiceImpl implements BrandService{
 			result.setErrorCode(ErrorCodeEnum.UNKOWN_ERROR.getCode());
 			result.setErrorMsg(ErrorCodeEnum.UNKOWN_ERROR.getMsg());
 		}
+		log.info("deletes end result:{}", ToStringBuilder.
+				reflectionToString(result, ToStringStyle.DEFAULT_STYLE));
 		return result;
+	}
+
+	@Override
+	public List<Brand> selectListByQuery(Integer isDisplay) throws BizException {
+		log.info("selectPageByQuery start. isDisplya=", isDisplay);
+		BrandQuery query = new BrandQuery();
+		query.setIsDisplay(isDisplay);
+		try {
+			List<Brand> list = brandDao.selectBrandListByQuery(query);
+			//打印日志，最多打印10条
+			log.info("success, list:{}", ToStringBuilder.
+					reflectionToString(null==list ? "null" : 
+			list.subList(0, Math.min(list.size(), 10)), ToStringStyle.DEFAULT_STYLE));
+			return list;
+		} catch (DataAccessException e) {
+			log.error("selectPageByQuery DataAccessException:{}", e.getMessage(),e);
+		} catch (Exception e) {
+			log.error("selectPageByQuery Exception:{}",e.getMessage(),e);
+		}
+		return null;
 	}
 	
 }
