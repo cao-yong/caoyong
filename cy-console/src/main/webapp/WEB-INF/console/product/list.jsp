@@ -30,7 +30,7 @@ function isShow(){
 <div class="box-positon">
 	<div class="rpos">当前位置: 商品管理 - 列表</div>
 	<form class="ropt">
-		<input class="add" type="button" value="添加" onclick="window.location.href='add.jsp'"/>
+		<input class="add" type="button" value="添加" onclick="window.location.href='toAdd.do'"/>
 	</form>
 	<div class="clear"></div>
 </div>

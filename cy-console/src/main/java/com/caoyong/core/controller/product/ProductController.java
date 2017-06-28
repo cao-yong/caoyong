@@ -11,7 +11,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.caoyong.core.bean.base.Page;
+import com.caoyong.core.bean.base.ResultBase;
 import com.caoyong.core.bean.product.Brand;
+import com.caoyong.core.bean.product.Color;
 import com.caoyong.core.bean.product.Product;
 import com.caoyong.core.bean.product.ProductQueryDTO;
 import com.caoyong.core.service.product.BrandService;
@@ -63,5 +65,33 @@ public class ProductController {
 		}
 		log.info("query brand list end.");
 		return "product/list";
+	}
+	/**
+	 * 去商品添加页面
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value=("/product/toAdd.do"))
+	public String toAdd(Model model){
+		log.info("toAdd start.");
+		try {
+			//查询品牌结果集
+			List<Brand> brands = brandService.selectListByQuery(1);
+			model.addAttribute("brands", brands);
+			//查询颜色结果集
+			ResultBase<List<Color>> colorResult = productService.selectColorList();
+			log.info("colorResult:{}", ToStringBuilder.
+					reflectionToString(colorResult, ToStringStyle.DEFAULT_STYLE));
+			if(colorResult.isSuccess()){
+				List<Color> colors = colorResult.getValue();
+				model.addAttribute("colors", colors);
+			}
+		} catch (BizException e) {
+			log.error("toAdd list BizException:{}",e.getMessage(),e);
+		}catch (Exception e) {
+			log.error("toAdd list Exception:{}",e.getMessage(),e);
+		}
+		
+		return "product/add";
 	}
 }

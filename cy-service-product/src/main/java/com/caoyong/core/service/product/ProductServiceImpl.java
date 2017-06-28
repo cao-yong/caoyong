@@ -10,10 +10,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.caoyong.core.bean.base.Page;
+import com.caoyong.core.bean.base.ResultBase;
+import com.caoyong.core.bean.product.Color;
+import com.caoyong.core.bean.product.ColorQuery;
 import com.caoyong.core.bean.product.Product;
 import com.caoyong.core.bean.product.ProductQuery;
 import com.caoyong.core.bean.product.ProductQuery.Criteria;
 import com.caoyong.core.bean.product.ProductQueryDTO;
+import com.caoyong.core.dao.product.ColorDao;
 import com.caoyong.core.dao.product.ProductDao;
 import com.caoyong.exception.BizException;
 
@@ -30,6 +34,10 @@ import lombok.extern.slf4j.Slf4j;
 public class ProductServiceImpl implements ProductService{
 	@Autowired
 	private ProductDao productDao;
+	@Autowired
+	private ColorDao colorDao;
+	
+	@Override
 	public Page<Product> selectPageByQuery(ProductQueryDTO query)throws BizException{
 		log.info("selectPageByQuery start. query:{}",ToStringBuilder.
 				reflectionToString(query, ToStringStyle.DEFAULT_STYLE));
@@ -87,5 +95,27 @@ public class ProductServiceImpl implements ProductService{
 		String url = "/product/list.do";
 		page.pageView(url, params.toString());
 		return page;
+	}
+	@Override
+	public ResultBase<List<Color>> selectColorList()throws BizException{
+		log.info("selectColorList start.");
+		ResultBase<List<Color>> result = new ResultBase<List<Color>>();
+		result.setSuccess(false);
+		ColorQuery example = new ColorQuery();
+		example.createCriteria().andParentIdNotEqualTo(0);
+		try {
+			List<Color> colors = colorDao.selectByExample(example);
+			if(null != colors && !colors.isEmpty()){
+				result.setValue(colors);
+				result.setSuccess(true);
+			}
+		} catch (Exception e) {
+			result.setErrorCode(e.getMessage());
+			result.setErrorMsg("查询颜色结果集失败");
+			log.error("selectColorList error:{}", e.getMessage(), e);
+		}
+		log.info("selectColorList end result:{}", ToStringBuilder.
+				reflectionToString(result, ToStringStyle.DEFAULT_STYLE));
+		return result;
 	}
 }

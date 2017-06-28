@@ -1,6 +1,8 @@
 package com.caoyong.core.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -10,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.caoyong.common.fastdfs.UploadFileVo;
@@ -65,5 +68,41 @@ public class UploadController {
 			log.error("uploadPic error:{}",e.getMessage(),e);
 		}
 		log.info("uploadPic end.");
+	}
+	/**
+	 * 批量上传图片
+	 * @param pic
+	 */
+	@RequestMapping(value=("/upload/uploadPics.do"))
+	public @ResponseBody
+	List<String> uploadPics(@RequestParam(required=false) MultipartFile[] pics, 
+			HttpServletResponse response){
+		log.info("uploadPics start.");
+		try {
+			if(null!=pics){
+				List<String> urls = new ArrayList<>();
+				//循环保存url信息
+				for(MultipartFile pic : pics){
+					//上传图片
+					UploadFileVo vo = new UploadFileVo();
+					vo.setPic(pic.getBytes());
+					vo.setName(pic.getOriginalFilename());
+					vo.setSize(pic.getSize());
+					String path = uploadService.uploadPic(vo);
+					//图片url
+					String url = Constants.IMG_URL + path;
+					urls.add(url);
+				}
+				return urls;
+			}
+		} catch (IOException e) {
+			log.error("uploadPic io error:{}",e.getMessage(),e);
+		} catch (BizException e) {
+			log.error("uploadPic biz error:{}",e.getMessage(),e);
+		}catch (Exception e) {
+			log.error("uploadPic error:{}",e.getMessage(),e);
+		}
+		log.info("uploadPics end.");
+		return null;
 	}
 }
