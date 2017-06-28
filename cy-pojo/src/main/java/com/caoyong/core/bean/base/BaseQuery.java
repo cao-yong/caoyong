@@ -26,12 +26,12 @@ public class BaseQuery implements Serializable{
 	private Integer results;
 
 	public Integer getPageNo() {
-		//重新计算页数
-		start = (pageNo -1) * limit;
 		return pageNo;
 	}
 
 	public void setPageNo(Integer pageNo) {
+		//重新计算start
+		start = (pageNo -1) * limit;
 		//当pageNo为空、0时，设置为第一页
 		this.pageNo = (null == pageNo || pageNo<1)? 1 : pageNo;
 	}
@@ -41,7 +41,7 @@ public class BaseQuery implements Serializable{
 	}
 
 	public void setLimit(Integer limit) {
-		//重新计算页数
+		//重新计算start
 		start = (pageNo -1) * limit;
 		this.limit = limit;
 	}
