@@ -94,4 +94,23 @@ public class ProductController {
 		
 		return "product/add";
 	}
+	/**
+	 * 保存商品
+	 * @param product
+	 * @return
+	 */
+	@RequestMapping(value=("/product/add.do"))
+	public String add(Product product){
+		log.info("add start.product:{}", ToStringBuilder.
+				reflectionToString(product, ToStringStyle.DEFAULT_STYLE));
+		try {
+			ResultBase<Integer> result = productService.saveProduct(product);
+			log.info("resut:{}", ToStringBuilder.reflectionToString
+					(result, ToStringBuilder.getDefaultStyle()));
+		} catch (Exception e) {
+			log.error("add error:{}",e.getMessage(),e);
+		}
+		
+		return "redirect:/product/list.do";
+	}
 }

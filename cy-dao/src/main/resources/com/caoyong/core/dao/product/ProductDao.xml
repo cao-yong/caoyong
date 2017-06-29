@@ -139,7 +139,13 @@
       #{updateTime,jdbcType=TIMESTAMP}, #{extraInfo,jdbcType=VARCHAR}, #{isDeleted,jdbcType=CHAR}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.caoyong.core.bean.product.Product" >
+  <insert id="insertSelective" parameterType="com.caoyong.core.bean.product.Product" useGeneratedKeys="true" keyProperty="id">
+  	<!-- 配置返回id -->
+  	<!-- 仅限于MySQL支持
+  	<selectKey order="AFTER" keyProperty="id">
+  		select LAST_INSERT_ID()
+  	</selectKey>
+  	-->
     insert into cy_product
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >

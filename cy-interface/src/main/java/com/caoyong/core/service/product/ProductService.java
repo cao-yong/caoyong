@@ -22,4 +22,10 @@ public interface ProductService {
 	 * @return
 	 */
 	ResultBase<List<Color>> selectColorList()throws BizException;
+	/**
+	 * 保存商品信息
+	 * @param product
+	 * @return
+	 */
+	ResultBase<Integer> saveProduct(Product product);
 }

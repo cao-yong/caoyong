@@ -1,5 +1,6 @@
 package com.caoyong.core.service.product;
 
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.caoyong.common.web.Constants;
 import com.caoyong.core.bean.base.Page;
 import com.caoyong.core.bean.base.ResultBase;
 import com.caoyong.core.bean.product.Color;
@@ -17,8 +19,10 @@ import com.caoyong.core.bean.product.Product;
 import com.caoyong.core.bean.product.ProductQuery;
 import com.caoyong.core.bean.product.ProductQuery.Criteria;
 import com.caoyong.core.bean.product.ProductQueryDTO;
+import com.caoyong.core.bean.product.Sku;
 import com.caoyong.core.dao.product.ColorDao;
 import com.caoyong.core.dao.product.ProductDao;
+import com.caoyong.core.dao.product.SkuDao;
 import com.caoyong.exception.BizException;
 
 import lombok.extern.slf4j.Slf4j;
@@ -36,6 +40,8 @@ public class ProductServiceImpl implements ProductService{
 	private ProductDao productDao;
 	@Autowired
 	private ColorDao colorDao;
+	@Autowired
+	private SkuDao skuDao;
 	
 	@Override
 	public Page<Product> selectPageByQuery(ProductQueryDTO query)throws BizException{
@@ -116,6 +122,58 @@ public class ProductServiceImpl implements ProductService{
 		}
 		log.info("selectColorList end result:{}", ToStringBuilder.
 				reflectionToString(result, ToStringStyle.DEFAULT_STYLE));
+		return result;
+	}
+	@Override
+	public ResultBase<Integer> saveProduct(Product product){
+		log.info("saveProduct start. product:{}", ToStringBuilder.
+				reflectionToString(product, ToStringStyle.DEFAULT_STYLE));
+		ResultBase<Integer> result = new ResultBase<Integer>();
+		//返回影响的行数
+		Integer count = 0;
+		try {
+			
+			//保存商品
+			product.setIsDeleted(Constants.CONSTANTS_N);
+			product.setIsShow(false);
+			product.setCreateTime(new Date());
+			product.setUpdateTime(new Date());
+			product.setCreator(Constants.SYSTEM);
+			product.setModifier(Constants.SYSTEM);
+			count += productDao.insertSelective(product);
+			
+			String[] colors = product.getColors().split(",");
+			String[] sizes = product.getSizes().split(",");
+			for(String color : colors){
+				for(String size : sizes){
+					//保存sku
+					Sku sku = new Sku();
+					sku.setIsDeleted(Constants.CONSTANTS_N);
+					sku.setProductId(product.getId());
+					sku.setColorId(Long.parseLong(color));
+					sku.setSize(size);
+					sku.setMarketPrice(Constants.DEAFAULT_PRICE);
+					sku.setPrice(Constants.DEAFAULT_PRICE);
+					sku.setDeliveFee(Constants.DEAFAULT_DELIVE_FEE);
+					sku.setUpperLimit(Constants.DEAFAULT_UPPER_LIMIT);
+					sku.setCreateTime(new Date());
+					sku.setUpdateTime(new Date());
+					sku.setCreator(Constants.SYSTEM);
+					sku.setModifier(Constants.SYSTEM);
+					count += skuDao.insert(sku);
+				}
+			}
+			result.setSuccess(true);
+		} catch (NumberFormatException e) {
+			result.setErrorCode(e.getMessage());
+			result.setErrorMsg("保存商品信息失败");
+			log.error("saveProduct NumberFormat error:{}", e.getMessage(), e);
+		} catch (Exception e) {
+			result.setErrorCode(e.getMessage());
+			result.setErrorMsg("保存商品信息失败");
+			log.error("saveProduct error:{}", e.getMessage(), e);
+		}
+		result.setValue(count);
 		return result;
 	}
 }
