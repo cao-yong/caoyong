@@ -26,6 +26,7 @@ import com.caoyong.core.dao.product.SkuDao;
 import com.caoyong.exception.BizException;
 
 import lombok.extern.slf4j.Slf4j;
+import redis.clients.jedis.Jedis;
 
 /**
  * 产品service
@@ -42,6 +43,8 @@ public class ProductServiceImpl implements ProductService{
 	private ColorDao colorDao;
 	@Autowired
 	private SkuDao skuDao;
+	@Autowired
+	private Jedis jedis;
 	
 	@Override
 	public Page<Product> selectPageByQuery(ProductQueryDTO query)throws BizException{
@@ -132,7 +135,9 @@ public class ProductServiceImpl implements ProductService{
 		//返回影响的行数
 		Integer count = 0;
 		try {
-			
+			//redis生成商品id
+			Long proudctId = jedis.incr("pno");
+			product.setId(proudctId);
 			//保存商品
 			product.setIsDeleted(Constants.CONSTANTS_N);
 			product.setIsShow(false);

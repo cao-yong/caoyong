@@ -100,3 +100,41 @@ sestatus
 
 #启动nginx
 /usr/local/nginx/sbin/nginx
+
+#到/redis/6379目录下启动redis
+./bin/redis-server redis.conf
+
+#启动redis客户端
+（./bin/redis-cli -h 192.168.128.128 -p 6379 quit）
+./bin/redis-cli
+
+#redis设置值
+127.0.0.1:6379> set pno 1000
+
+#redis获取值
+127.0.0.1:6379> get pno
+"1000"
+
+#redis增加值
+127.0.0.1:6379> incr pno
+(integer) 1001
+
+#redis获取值
+127.0.0.1:6379> get pno
+"1001"
+
+#redis减值
+127.0.0.1:6379> decr pno
+(integer) 1000
+
+#redis指定增加值
+127.0.0.1:6379> incrby pno 5
+(integer) 1005
+
+#redis指定减少值
+127.0.0.1:6379> decrby pno 5
+
+#redis的配置文件有两个地方要改
+bind 127.0.0.1 注释掉
+protected-mode no
+

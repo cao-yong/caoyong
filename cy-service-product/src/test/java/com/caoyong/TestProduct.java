@@ -1,6 +1,6 @@
 package com.caoyong;
 /**
- * 
+ * 测试商品
  * @author yong.cao
  * @time 2017年5月31日下午11:39:55
  */
