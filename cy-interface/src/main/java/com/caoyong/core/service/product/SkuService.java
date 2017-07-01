@@ -12,6 +12,13 @@ public interface SkuService {
 	 * @param productId
 	 * @return
 	 */
-	ResultBase<List<Sku>> selectSkuByProductId(Long productId)throws BizException;
+	ResultBase<List<Sku>> selectSkuByProductId(Long productId) throws BizException;
+	/**
+	 * 保存库存
+	 * @param sku
+	 * @return
+	 * @throws BizException
+	 */
+	ResultBase<Integer> addSku(Sku sku) throws BizException;
 
 }

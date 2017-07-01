@@ -27,6 +27,6 @@ public interface ProductService {
 	 * @param product
 	 * @return
 	 */
-	ResultBase<Integer> saveProduct(Product product);
+	ResultBase<Integer> saveProduct(Product product)throws BizException;
 	
 }

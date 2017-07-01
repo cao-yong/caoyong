@@ -23,6 +23,7 @@ import com.caoyong.core.bean.product.Sku;
 import com.caoyong.core.dao.product.ColorDao;
 import com.caoyong.core.dao.product.ProductDao;
 import com.caoyong.core.dao.product.SkuDao;
+import com.caoyong.enums.ErrorCodeEnum;
 import com.caoyong.exception.BizException;
 
 import lombok.extern.slf4j.Slf4j;
@@ -125,13 +126,14 @@ public class ProductServiceImpl implements ProductService{
 			result.setErrorCode(e.getMessage());
 			result.setErrorMsg("查询颜色结果集失败");
 			log.error("selectColorList error:{}", e.getMessage(), e);
+			throw new BizException(ErrorCodeEnum.UNKOWN_ERROR,e.getMessage(),e);
 		}
 		log.info("selectColorList end result:{}", ToStringBuilder.
 				reflectionToString(result, ToStringStyle.DEFAULT_STYLE));
 		return result;
 	}
 	@Override
-	public ResultBase<Integer> saveProduct(Product product){
+	public ResultBase<Integer> saveProduct(Product product)throws BizException{
 		log.info("saveProduct start. product:{}", ToStringBuilder.
 				reflectionToString(product, ToStringStyle.DEFAULT_STYLE));
 		ResultBase<Integer> result = new ResultBase<Integer>();
@@ -177,10 +179,12 @@ public class ProductServiceImpl implements ProductService{
 			result.setErrorCode(e.getMessage());
 			result.setErrorMsg("保存商品信息失败");
 			log.error("saveProduct NumberFormat error:{}", e.getMessage(), e);
+			throw new BizException(ErrorCodeEnum.NUM_FORMATE_ERROR,e.getMessage(),e);
 		} catch (Exception e) {
 			result.setErrorCode(e.getMessage());
 			result.setErrorMsg("保存商品信息失败");
 			log.error("saveProduct error:{}", e.getMessage(), e);
+			throw new BizException(ErrorCodeEnum.UNKOWN_ERROR,e.getMessage(),e);
 		}
 		result.setValue(count);
 		return result;

@@ -106,10 +106,12 @@ public class BrandServiceImpl implements BrandService{
 			result.setErrorCode(ErrorCodeEnum.DATA_BASE_ACCESS_ERROR.getCode());
 			result.setErrorCode(ErrorCodeEnum.DATA_BASE_ACCESS_ERROR.getMsg());
 			log.error("selectBrandById DataAccessException:{}",e.getMessage(),e);
+			throw new BizException(ErrorCodeEnum.DATA_BASE_ACCESS_ERROR,e.getMessage(),e);
 		} catch (Exception e) {
 			result.setErrorCode(ErrorCodeEnum.UNKOWN_ERROR.getCode());
 			result.setErrorCode(ErrorCodeEnum.UNKOWN_ERROR.getMsg());
 			log.error("selectBrandById Exception:{}",e.getMessage(),e);
+			throw new BizException(ErrorCodeEnum.UNKOWN_ERROR, e.getMessage(),e);
 		}
 		log.info("selectBrandById end, resut:{}",ToStringBuilder.
 				reflectionToString(result, ToStringStyle.DEFAULT_STYLE));
@@ -129,10 +131,12 @@ public class BrandServiceImpl implements BrandService{
 			result.setErrorCode(ErrorCodeEnum.DATA_BASE_ACCESS_ERROR.getCode());
 			result.setErrorMsg(ErrorCodeEnum.DATA_BASE_ACCESS_ERROR.getMsg());
 			log.error("updateBrandById DataAccessException:{}",e.getMessage(),e);
+			throw new BizException(ErrorCodeEnum.DATA_BASE_ACCESS_ERROR,e.getMessage(),e);
 		} catch (Exception e) {
 			result.setErrorCode(ErrorCodeEnum.UNKOWN_ERROR.getCode());
 			result.setErrorMsg(ErrorCodeEnum.UNKOWN_ERROR.getMsg());
 			log.error("updateBrandById Exception:{}",e.getMessage(),e);
+			throw new BizException(ErrorCodeEnum.UNKOWN_ERROR,e.getMessage(),e);
 		}
 		log.info("updateBrandById end, resut:{}",ToStringBuilder.
 				reflectionToString(result, ToStringStyle.DEFAULT_STYLE));
@@ -155,10 +159,12 @@ public class BrandServiceImpl implements BrandService{
 			log.error("deletes DataAccessException:{}", e.getMessage(),e);
 			result.setErrorCode(ErrorCodeEnum.DATA_BASE_ACCESS_ERROR.getCode());
 			result.setErrorMsg(ErrorCodeEnum.DATA_BASE_ACCESS_ERROR.getMsg());
+			throw new BizException(ErrorCodeEnum.DATA_BASE_ACCESS_ERROR,e.getMessage(),e);
 		} catch (Exception e) {
 			log.error("deletes Exception:{}",e.getMessage(),e);
 			result.setErrorCode(ErrorCodeEnum.UNKOWN_ERROR.getCode());
 			result.setErrorMsg(ErrorCodeEnum.UNKOWN_ERROR.getMsg());
+			throw new BizException(ErrorCodeEnum.UNKOWN_ERROR,e.getMessage(),e);
 		}
 		log.info("deletes end result:{}", ToStringBuilder.
 				reflectionToString(result, ToStringStyle.DEFAULT_STYLE));

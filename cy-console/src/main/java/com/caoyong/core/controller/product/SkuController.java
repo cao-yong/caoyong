@@ -7,13 +7,17 @@ package com.caoyong.core.controller.product;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.caoyong.common.web.Constants;
 import com.caoyong.core.bean.base.ResultBase;
 import com.caoyong.core.bean.product.Sku;
 import com.caoyong.core.service.product.SkuService;
@@ -44,5 +48,33 @@ public class SkuController {
 		}
 		log.info("query list end.");
 		return "sku/list";
+	}
+	/**
+	 * 保存sku
+	 * @param sku
+	 * @param response
+	 */
+	@RequestMapping(value=("/sku/addSku.do"))
+	public void addSku(Sku sku, HttpServletResponse response){
+		log.info("addSku start sku:{}", ToStringBuilder.
+				reflectionToString(sku, ToStringStyle.DEFAULT_STYLE));
+		try {
+			ResultBase<Integer> result = skuService.addSku(sku);
+			//返回数据
+			JSONObject jsonObj = new JSONObject();
+			if(result.isSuccess()){
+				jsonObj.put("success", true);
+				jsonObj.put("msg", Constants.SUCCESS);
+			}else{
+				jsonObj.put("success", false);
+				jsonObj.put("errorMsg", result.getErrorMsg());
+			}
+			response.setContentType("application/json;charset=UTF-8");
+			response.getWriter().write(jsonObj.toString());
+		} catch (BizException e) {
+			log.error("addSku BizException:{}",e.getMessage(),e);
+		}catch (Exception e) {
+			log.error("addSku Exception:{}",e.getMessage(),e);
+		}
 	}
 }

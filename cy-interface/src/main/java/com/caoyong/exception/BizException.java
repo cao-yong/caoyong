@@ -8,11 +8,14 @@ import com.caoyong.enums.ErrorCodeEnum;
  * @time 2017年6月11日下午6:41:56
  */
 public class BizException extends Exception {
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 5067417386461048288L;
+	private String            errorCode;
+	
+    public BizException() {
+		super();
+	}
 
-    private String            errorCode;
-
-    public BizException(String errorCode, String msg, Throwable cause) {
+	public BizException(String errorCode, String msg, Throwable cause) {
         super(msg, cause);
         this.errorCode = errorCode;
 
@@ -34,6 +37,10 @@ public class BizException extends Exception {
         this.errorCode = error.getCode();
     }
 
+    public BizException(ErrorCodeEnum error, String msg, Throwable cause) {
+        super(error.getMsg(), cause);
+        this.errorCode = error.getCode();
+    }
     public String getErrorCode() {
         return errorCode;
     }

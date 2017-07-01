@@ -21,4 +21,6 @@ public interface Constants {
 	public static final Integer DEAFAULT_UPPER_LIMIT = 200;
 	//默认库存
 	public static final Integer DEAFAULT_STOCK = 0;
+	//执行成功
+	public static final String SUCCESS = "执行成功";
 }
