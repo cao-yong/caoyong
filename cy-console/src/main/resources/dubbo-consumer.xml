@@ -53,6 +53,9 @@
     <dubbo:reference interface="com.caoyong.core.service.product.UploadService" id="uploadService"/>
     <!-- 商品服务 -->
     <dubbo:reference interface="com.caoyong.core.service.product.ProductService" id="productService"/>
+    <!-- sku服务 -->
+    <dubbo:reference interface="com.caoyong.core.service.product.SkuService" id="skuService"/>
+    
     <!--  全局设置 timeout默认单位是ms 为了调试方便设置为10min -->
     <dubbo:consumer timeout="600000"/>
 </beans>

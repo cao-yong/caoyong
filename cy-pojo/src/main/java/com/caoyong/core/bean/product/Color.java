@@ -40,6 +40,11 @@ public class Color implements Serializable {
     private String creator;
 
     /**
+     * 修改者
+     */
+    private String modifier;
+
+    /**
      * 扩展字段
      */
     private String extraInfo;
@@ -48,11 +53,6 @@ public class Color implements Serializable {
      * 是否删除（Y：是，N：否）
      */
     private String isDeleted;
-
-    /**
-     * 修改者
-     */
-    private byte[] modifier;
 
     private static final long serialVersionUID = 1L;
 
@@ -112,6 +112,14 @@ public class Color implements Serializable {
         this.creator = creator == null ? null : creator.trim();
     }
 
+    public String getModifier() {
+        return modifier;
+    }
+
+    public void setModifier(String modifier) {
+        this.modifier = modifier == null ? null : modifier.trim();
+    }
+
     public String getExtraInfo() {
         return extraInfo;
     }
@@ -128,14 +136,6 @@ public class Color implements Serializable {
         this.isDeleted = isDeleted == null ? null : isDeleted.trim();
     }
 
-    public byte[] getModifier() {
-        return modifier;
-    }
-
-    public void setModifier(byte[] modifier) {
-        this.modifier = modifier;
-    }
-
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -149,9 +149,9 @@ public class Color implements Serializable {
         sb.append(", createTime=").append(createTime);
         sb.append(", updateTime=").append(updateTime);
         sb.append(", creator=").append(creator);
+        sb.append(", modifier=").append(modifier);
         sb.append(", extraInfo=").append(extraInfo);
         sb.append(", isDeleted=").append(isDeleted);
-        sb.append(", modifier=").append(modifier);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

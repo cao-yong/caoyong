@@ -19,4 +19,6 @@ public interface Constants {
 	public static final String DEAFAULT_DELIVE_FEE = "10.00";
 	//默认购买上限
 	public static final Integer DEAFAULT_UPPER_LIMIT = 200;
+	//默认库存
+	public static final Integer DEAFAULT_STOCK = 0;
 }

@@ -99,6 +99,13 @@ public class Product implements Serializable {
      */
     private String isDeleted;
 
+    /**
+     * 获取图片数组
+     * @return
+     */
+    public String[] getImages(){
+    	return null != imgUrl ? imgUrl.split(",") : null;
+    }
     private static final long serialVersionUID = 1L;
 
     public Long getId() {

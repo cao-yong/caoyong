@@ -59,6 +59,8 @@ public class ProductServiceImpl implements ProductService{
 		example.setStartRow(query.getStart());
 		//查询条件
 		Criteria createCriteria = example.createCriteria();
+		//删除的不查询
+		createCriteria.andIsDeletedEqualTo(Constants.CONSTANTS_N);
 		//设置查询条件及分页栏参数
 		if(StringUtils.isNotBlank(query.getName())){
 			createCriteria.andNameLike("%"+query.getName()+"%");
@@ -111,7 +113,8 @@ public class ProductServiceImpl implements ProductService{
 		ResultBase<List<Color>> result = new ResultBase<List<Color>>();
 		result.setSuccess(false);
 		ColorQuery example = new ColorQuery();
-		example.createCriteria().andParentIdNotEqualTo(0);
+		example.createCriteria().andParentIdNotEqualTo(0).
+		andIsDeletedEqualTo(Constants.CONSTANTS_N);
 		try {
 			List<Color> colors = colorDao.selectByExample(example);
 			if(null != colors && !colors.isEmpty()){
@@ -165,6 +168,7 @@ public class ProductServiceImpl implements ProductService{
 					sku.setUpdateTime(new Date());
 					sku.setCreator(Constants.SYSTEM);
 					sku.setModifier(Constants.SYSTEM);
+					sku.setStock(Constants.DEAFAULT_STOCK);
 					count += skuDao.insert(sku);
 				}
 			}

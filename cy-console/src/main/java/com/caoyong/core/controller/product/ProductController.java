@@ -60,7 +60,7 @@ public class ProductController {
 			}
 		} catch (BizException e) {
 			log.error("query list BizException:{}",e.getMessage(),e);
-		}catch (Exception e) {
+		} catch (Exception e) {
 			log.error("query list Exception:{}",e.getMessage(),e);
 		}
 		log.info("query brand list end.");
@@ -88,7 +88,7 @@ public class ProductController {
 			}
 		} catch (BizException e) {
 			log.error("toAdd list BizException:{}",e.getMessage(),e);
-		}catch (Exception e) {
+		} catch (Exception e) {
 			log.error("toAdd list Exception:{}",e.getMessage(),e);
 		}
 		

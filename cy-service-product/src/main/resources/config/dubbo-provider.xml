@@ -43,4 +43,6 @@
     <dubbo:service interface="com.caoyong.core.service.product.UploadService" ref="uploadService"/>
     <!-- 商品服务 -->
     <dubbo:service interface="com.caoyong.core.service.product.ProductService" ref="productService"/>
+    <!-- sku服务 -->
+    <dubbo:service interface="com.caoyong.core.service.product.SkuService" ref="skuService"/>
 </beans>

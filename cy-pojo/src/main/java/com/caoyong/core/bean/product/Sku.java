@@ -79,6 +79,10 @@ public class Sku implements Serializable {
      */
     private String isDeleted;
 
+    /**
+     * 颜色对象
+     */
+    private Color color;
     private static final long serialVersionUID = 1L;
 
     public Long getId() {
@@ -201,8 +205,16 @@ public class Sku implements Serializable {
         this.isDeleted = isDeleted == null ? null : isDeleted.trim();
     }
 
-    @Override
-    public String toString() {
+    public Color getColor() {
+		return color;
+	}
+
+	public void setColor(Color color) {
+		this.color = color;
+	}
+
+	@Override
+	 public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append(getClass().getSimpleName());
         sb.append(" [");

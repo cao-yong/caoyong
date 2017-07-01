@@ -28,4 +28,5 @@ public interface ProductService {
 	 * @return
 	 */
 	ResultBase<Integer> saveProduct(Product product);
+	
 }
