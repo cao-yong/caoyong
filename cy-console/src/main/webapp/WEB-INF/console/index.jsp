@@ -5,6 +5,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <title>康福特博商城-后台首页</title>
+<link rel="icon" href="/images/icon/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="/images/icon/favicon.ico" type="image/x-icon"/>
 </head>
 <frameset rows="72,*" frameborder="0" border="0" framespacing="0">
 	<frame src="top.do" name="topFrame" noresize="noresize" id="leftFrame" />

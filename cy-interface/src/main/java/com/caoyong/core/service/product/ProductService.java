@@ -28,5 +28,10 @@ public interface ProductService {
 	 * @return
 	 */
 	ResultBase<Integer> saveProduct(Product product)throws BizException;
-	
+	/**
+	 * 上架
+	 * @param ids
+	 * @return
+	 */
+	ResultBase<Integer> isShow(Long[] ids)throws BizException;
 }

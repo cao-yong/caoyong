@@ -113,4 +113,24 @@ public class ProductController {
 		
 		return "redirect:/product/list.do";
 	}
+	/**
+	 * 上架
+	 * @param ids
+	 * @return
+	 */
+	@RequestMapping(value=("/product/isShow"))
+	public String isShow(Long[] ids){
+		log.info("isShow start. ids:{}", ToStringBuilder.
+				reflectionToString(ids, ToStringStyle.DEFAULT_STYLE));
+		try {
+			ResultBase<Integer> result = productService.isShow(ids);
+			log.info("result:{}", ToStringBuilder.
+				reflectionToString(result, ToStringStyle.DEFAULT_STYLE));
+		} catch (BizException e) {
+			log.error("isShow biz error:{}",e.getMessage(),e);
+		} catch (Exception e) {
+			log.error("isShow error:{}",e.getMessage(),e);
+		}
+		return "forward:/product/list.do";
+	}
 }

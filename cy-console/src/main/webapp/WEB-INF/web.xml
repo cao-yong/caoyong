@@ -25,13 +25,13 @@
 			<param-name>contextConfigLocation</param-name>
 			<param-value>classpath:springmvc-console.xml</param-value>
 		</init-param>
-			<!-- 容器启动加载web.xml的时候就实现化它 -->
+			<!-- 容器启动加载web.xml的时候就实例化它 -->
 			<load-on-startup>1</load-on-startup>
 	</servlet>
 	
 	<!-- 
 		/  拦截所有的，除了 *.jsp  .css,.png,.js -> 配置对静态资源放行
-		*/ 会拦截所有的  基本上不用
+		/* 会拦截所有的  基本上不用
 		*.do 表示用.do结尾的
 	 -->
 	<servlet-mapping>

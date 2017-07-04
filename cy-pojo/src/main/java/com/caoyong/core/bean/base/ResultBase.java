@@ -57,7 +57,6 @@ public class ResultBase<T> implements Serializable {
     }
 
     @SuppressWarnings("unchecked")
-    //
     public <P> P getAdditionalInfo(String key) {
         return (P) additionalInfo.get(key);
     }

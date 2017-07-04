@@ -15,11 +15,11 @@ function isShow(){
 		return;
 	}
 	//你确定删除吗
-	if(!confirm("你确定删除吗")){
+	if(!confirm("你确定上架吗")){
 		return;
 	}
 	//提交 Form表单
-	$("#jvForm").attr("action","/brand/isShow.do");
+	$("#jvForm").attr("action","/product/isShow.do");
 	$("#jvForm").attr("method","post");
 	$("#jvForm").submit();
 	

@@ -6,6 +6,8 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+import org.apache.solr.client.solrj.SolrServer;
+import org.apache.solr.common.SolrInputDocument;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +22,7 @@ import com.caoyong.core.bean.product.ProductQuery;
 import com.caoyong.core.bean.product.ProductQuery.Criteria;
 import com.caoyong.core.bean.product.ProductQueryDTO;
 import com.caoyong.core.bean.product.Sku;
+import com.caoyong.core.bean.product.SkuQuery;
 import com.caoyong.core.dao.product.ColorDao;
 import com.caoyong.core.dao.product.ProductDao;
 import com.caoyong.core.dao.product.SkuDao;
@@ -46,6 +49,8 @@ public class ProductServiceImpl implements ProductService{
 	private SkuDao skuDao;
 	@Autowired
 	private Jedis jedis;
+	@Autowired
+	private SolrServer solrServer;
 	
 	@Override
 	public Page<Product> selectPageByQuery(ProductQueryDTO query)throws BizException{
@@ -187,6 +192,58 @@ public class ProductServiceImpl implements ProductService{
 			throw new BizException(ErrorCodeEnum.UNKOWN_ERROR,e.getMessage(),e);
 		}
 		result.setValue(count);
+		return result;
+	}
+	@Override
+	public ResultBase<Integer> isShow(Long[] ids)throws BizException{
+		log.info("isShow start:{}", ToStringBuilder.
+				reflectionToString(ids, ToStringStyle.DEFAULT_STYLE));
+		ResultBase<Integer> result = new ResultBase<Integer>();
+		int count = 0;
+		try {
+			Product product = new Product();
+			product.setIsShow(true);
+			//循环
+			for(Long id : ids){
+				//上架，更改商品状态
+				product.setId(id);
+				count += productDao.updateByPrimaryKeySelective(product);
+				//保存到solr服务器
+				SolrInputDocument doc = new SolrInputDocument();
+				//商品id
+				doc.setField("id", id);
+				Product p = productDao.selectByPrimaryKey(id);
+				//商品名称
+				doc.setField("name_ik", p.getName());
+				//图片
+				doc.setField("url", p.getImages()[0]);
+				//查询最低价格
+				SkuQuery example = new SkuQuery();
+				example.createCriteria().andProductIdEqualTo(id)
+				.andIsDeletedEqualTo(Constants.CONSTANTS_N);
+				example.setOrderByClause("price * 1 asc");
+				example.setPageNo(1);
+				example.setPageSize(1);
+				example.setFields("price");
+				List<Sku> sks = skuDao.selectByExample(example);
+				//价格
+				doc.setField("price", sks.get(0).getPrice());
+				//品牌id
+				doc.setField("brandId", p.getBrandId());
+				solrServer.add(doc);
+				solrServer.commit();
+				//TODO:静态化
+			}
+			result.setValue(count);
+			result.setSuccess(true);
+			log.info("isShow success, result:{}", ToStringBuilder.
+					reflectionToString(result, ToStringStyle.DEFAULT_STYLE));
+		} catch (Exception e) {
+			result.setErrorCode(e.getMessage());
+			result.setErrorMsg("商品上架失败");
+			log.error("isShow error:{}", e.getMessage(), e);
+			throw new BizException(ErrorCodeEnum.UNKOWN_ERROR,e.getMessage(),e);
+		}
 		return result;
 	}
 }

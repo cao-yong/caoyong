@@ -138,3 +138,14 @@ sestatus
 bind 127.0.0.1 注释掉
 protected-mode no
 
+#启动solr
+sh /usr/yong.cao/dev/solr/apache-tomcat-8.5.16/bin/startup.sh
+
+#查看日志
+tail -999f /usr/yong.cao/dev/solr/apache-tomcat-8.5.16/logs/catalina.out
+
+<!-- 自定义的数据类型 支持IKAnalyzer-->
+ <fieldType name="text_ik" class="solr.TextField">
+	<analyzer type="index" isMaxWordLength="false" class="org.wltea.analyzer.lucene.IKAnalyzer"/>
+	<analyzer type="query" isMaxWordLength="true" class="org.wltea.analyzer.lucene.IKAnalyzer"/>
+ </fieldType>
