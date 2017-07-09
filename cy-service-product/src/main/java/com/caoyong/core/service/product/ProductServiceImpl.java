@@ -225,9 +225,11 @@ public class ProductServiceImpl implements ProductService{
 				example.setPageNo(1);
 				example.setPageSize(1);
 				example.setFields("price");
-				List<Sku> sks = skuDao.selectByExample(example);
+				List<Sku> skus = skuDao.selectByExample(example);
 				//价格
-				doc.setField("price", sks.get(0).getPrice());
+				Float price = Float.parseFloat((null ==skus || skus.isEmpty())
+						? "0.00" : skus.get(0).getPrice());
+				doc.setField("price", price);
 				//品牌id
 				doc.setField("brandId", p.getBrandId());
 				solrServer.add(doc);

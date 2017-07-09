@@ -22,5 +22,13 @@
 		<artifactId>tomcat-jsp-api</artifactId>
 		<scope>provided</scope>
 	</dependency>
+	
+	<!-- 使用lombok自动生成getter、setter方法等 -->
+	<dependency>
+		<groupId>org.projectlombok</groupId>
+		<artifactId>lombok</artifactId>
+		<version>1.16.16</version>
+		<scope>provided</scope>
+	</dependency>
   </dependencies>
 </project>

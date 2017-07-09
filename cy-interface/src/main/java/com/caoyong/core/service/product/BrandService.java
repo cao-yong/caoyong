@@ -48,4 +48,11 @@ public interface BrandService {
 	 * @throws BizException
 	 */
 	List<Brand> selectListByQuery(Integer isDisplay)throws BizException;
+	
+	/**
+	 * 从redis查询品牌结果集
+	 * @return
+	 * @throws BizException 
+	 */
+	List<Brand> selectBrandListFromRedis() throws BizException;
 }

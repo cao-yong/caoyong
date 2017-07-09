@@ -6,11 +6,53 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>商品搜索 - 新巴巴运动商城</title>
+<title>商品搜索 - 康福特博商城</title>
 <link rel="stylesheet" type="text/css" href="/css/base.css" media="all" />
 <link type="text/css" rel="stylesheet" href="/css/search.css">
 <script type="text/javascript" src="/js/jquery-1.6.4.js"></script>
-
+<script type="text/javascript">
+	//全局变量
+	var keyword = "${param.keyword}";
+	var brandId = "${brandId}";
+	var price = "${price}";
+	//品牌过滤
+	var fqBrand = function(id){
+		if(price){
+			//刷新页面
+			window.location.href = "/search?keyword=" + keyword + "&brandId=" + id + "&price=" + price;
+		}else{
+			//刷新页面
+			window.location.href = "/search?keyword=" + keyword + "&brandId=" + id;
+		}
+	}
+	//价格过滤
+	var fqPrice = function(id){
+		if(brandId){
+			//刷新页面
+			window.location.href = "/search?keyword=" + keyword + "&price=" + id + "&brandId=" + brandId;
+		}else{
+			//刷新页面
+			window.location.href = "/search?keyword=" + keyword + "&price=" + id;
+		}
+	}
+	//取消选择
+	var cancelSelectedTerms = function(selected){
+		if(selected == '品牌'){
+			if(price){
+				window.location.href = "/search?keyword=" + keyword + "&price=" + price;
+			}else{
+				window.location.href = "/search?keyword=" + keyword;
+			}
+		}
+		if(selected == '价格'){
+			if(brandId){
+				window.location.href = "/search?keyword=" + keyword + "&brandId=" + brandId;
+			}else{
+				window.location.href = "/search?keyword=" + keyword;
+			}
+		}
+	}
+</script>
 </head>
 <body>
 <!-- header start -->
@@ -22,7 +64,7 @@
 		<div class="cb-gift-trigger">
 			<i class="ico-gift"></i>
 			<span class="txt">
-				<a href="javascript:;" >新巴巴帮您选礼物</a>
+				<a href="javascript:;" >康福特博帮您选礼物</a>
 			</span>
 		</div>
 		<div class="cb-gift-main">
@@ -42,11 +84,11 @@
 			<div class="crumbs-nav-item">
 				<strong class="search-key">"瑜伽服"</strong>
 			</div>
-			<c:if test="${fn:length(map) != 0 }">
+			<c:if test="${fn:length(selectedTermsMap) != 0 }">
 			<div class="sl-b-selected J_brandSelected">
 				<span class="crumbs-arrow">已选条件：</span>
-					<c:forEach items="${map }" var="m">
-						<a title="依琦莲（yiqilian）"  href="javascript:;" class="crumb-select-item">
+					<c:forEach items="${selectedTermsMap }" var="m">
+						<a title="品牌：依琦莲（yiqilian）" onclick="cancelSelectedTerms('${m.key}')" href="javascript:;" class="crumb-select-item">
 							<b>${m.key }：</b><em>${m.value }</em><i></i>
 						</a>
 					</c:forEach>
@@ -61,7 +103,9 @@
 <c:if test="${empty brandId }">
 <div class="J_selectorLine s-brand">
 	<div class="sl-wrap">
-		<div class="sl-key"><strong>品牌：</strong></div>
+		<div class="sl-key">
+			<strong>品牌：</strong>
+		</div>
 		<div class="sl-value">
 			<div class="sl-v-list">
 				<ul class="J_valueList v-fixed">
@@ -235,12 +279,12 @@
 			</div>
 <div id="J_goodsList" class="goods-list-v1 gl-type-1 J-goods-list">
 	<ul class="gl-warp clearfix" data-tpl="1">
-		<c:forEach items="${pagination.list }" var="product">
+		<c:forEach items="${page.rows }" var="product">
 		<li data-sku="1711416562" class="gl-item">
 			<div class="gl-i-wrap">
 				<div class="p-img">
 					<a href="javascript:;" onclick="window.open('/product/detail?id=${product.id}')" style="position: relative;">
-						<img width="220" height="220" class="err-product"  src="${product.images[0]}">
+						<img width="220" height="220" class="err-product"  src="${product.imgUrl}">
 						<div id="gwd_float_curve_trigger" class="gwd_float_curve_trigger gwd_float_curve_up" style="left: 70px; top: 180px;">
 							<div class="gwd_float_curve_wrapper">
 							<span class="gwd_float_curve_trigger_icon" style="background-image:url(chrome-extension://dobbgecnokkloebjbcnjpgcopegjabpa/images/background_new.png)"></span>
@@ -282,7 +326,7 @@
 </div>
 <div class="page pb15">
 	<div class="r inb_a page_b" style="float: right;">
-		<c:forEach items="${pagination.pageView }" var="page">
+		<c:forEach items="${page.pageView }" var="page">
 			${page }
 		</c:forEach>
 	</div>

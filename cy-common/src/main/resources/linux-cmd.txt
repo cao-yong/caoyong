@@ -32,7 +32,7 @@ unzip fastdfs-nginx-module-master.zip
 #查询端口号
 firewall-cmd --zone=public --list-ports
 
-#开户端口号
+#开放端口号
 firewall-cmd --zone=public --add-port=23000/tcp --permanent
 
 #查看端口号是否打开
@@ -149,3 +149,55 @@ tail -999f /usr/yong.cao/dev/solr/apache-tomcat-8.5.16/logs/catalina.out
 	<analyzer type="index" isMaxWordLength="false" class="org.wltea.analyzer.lucene.IKAnalyzer"/>
 	<analyzer type="query" isMaxWordLength="true" class="org.wltea.analyzer.lucene.IKAnalyzer"/>
  </fieldType>
+ 
+#mq开机启动配置
+cd /etc/init.d/
+vi activemq
+#!/bin/sh
+#
+# /etc/init.d/activemq
+# chkconfig: 345 63 37
+# description: activemq servlet container.
+# processname: activemq 5.14.1
+ 
+# Source function library.
+#. /etc/init.d/functions
+# source networking configuration.
+#. /etc/sysconfig/network
+ 
+#export JAVA_HOME=/
+export CATALINA_HOME=/usr/local/activemq/apache-activemq-5.14.1
+
+case $1 in
+    start)
+        sh $CATALINA_HOME/bin/activemq start
+    ;;
+    stop)
+        sh $CATALINA_HOME/bin/activemq stop
+    ;;
+    restart)
+        sh $CATALINA_HOME/bin/activemq stop
+        sleep 1
+        sh $CATALINA_HOME/bin/activemq start
+    ;;
+ 
+esac
+exit 0
+
+#设置可执行权限
+chmod 777 activemq
+
+#设置开机启动并启动activemq
+chkconfig activemq on
+service activemq start
+
+#查看activemq状态
+service activemq status
+
+#其他和关闭activemq服务
+service activemq start
+service activemq stop
+
+#设置开机启动或不启动activemq服务
+chkconfig activemq on
+chkconfig activemq off
