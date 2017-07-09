@@ -106,6 +106,11 @@ public class Product implements Serializable {
     public String[] getImages(){
     	return null != imgUrl ? imgUrl.split(",") : null;
     }
+    /**
+     * 最低价
+     */
+    private String price;
+    
     private static final long serialVersionUID = 1L;
 
     public Long getId() {
@@ -260,7 +265,15 @@ public class Product implements Serializable {
         this.isDeleted = isDeleted == null ? null : isDeleted.trim();
     }
 
-    @Override
+    public String getPrice() {
+		return price;
+	}
+
+	public void setPrice(String price) {
+		this.price = price;
+	}
+
+	@Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append(getClass().getSimpleName());

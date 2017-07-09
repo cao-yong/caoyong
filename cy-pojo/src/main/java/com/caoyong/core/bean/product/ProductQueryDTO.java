@@ -52,5 +52,14 @@ public class ProductQueryDTO extends BaseQuery {
      * 商品描述
      */
     private String description;
+    
+    /**
+     * 搜索关键词
+     */
+    private String keyword;
+    /**
+     * 价格
+     */
+    private String price;
 
 }

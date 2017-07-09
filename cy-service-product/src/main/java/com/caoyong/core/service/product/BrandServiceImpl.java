@@ -1,6 +1,10 @@
 package com.caoyong.core.service.product;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -18,6 +22,7 @@ import com.caoyong.enums.ErrorCodeEnum;
 import com.caoyong.exception.BizException;
 
 import lombok.extern.slf4j.Slf4j;
+import redis.clients.jedis.Jedis;
 
 /**
  * 品牌管理
@@ -30,7 +35,9 @@ import lombok.extern.slf4j.Slf4j;
 public class BrandServiceImpl implements BrandService{
 	@Autowired
 	private BrandDao brandDao;
-
+	@Autowired
+	private Jedis jedis;
+	
 	/**
 	 * 查询分页对象
 	 * @param query
@@ -125,6 +132,8 @@ public class BrandServiceImpl implements BrandService{
 		log.info("updateBrandById start. brand:{}", ToStringBuilder.reflectionToString
 				(brand, ToStringStyle.DEFAULT_STYLE));
 		try {
+			//保存品牌到redis
+			jedis.hset("brand", String.valueOf(brand.getId()), brand.getName());
 			brandDao.updateBrandById(brand);
 			result.setValue(1);
 		} catch (DataAccessException e) {
@@ -189,6 +198,29 @@ public class BrandServiceImpl implements BrandService{
 			log.error("selectPageByQuery Exception:{}",e.getMessage(),e);
 		}
 		return null;
+	}
+	
+	@Override
+	public List<Brand> selectBrandListFromRedis() throws BizException{
+		log.info("selectBrandListFromRedis start.");
+		List<Brand> brands = new ArrayList<>();
+		try {
+			Map<String, String> hgetAll = jedis.hgetAll("brand");
+			Set<Entry<String, String>> entrySet = hgetAll.entrySet();
+			//遍历取值
+			for (Entry<String, String> entry : entrySet) {
+				Brand brand = new Brand();
+				brand.setId(Long.parseLong(entry.getKey()));;
+				brand.setName(entry.getValue());
+				brands.add(brand);
+			}
+		} catch (NumberFormatException e) {
+			log.error("selectBrandListFromRedis parsLong error:", e.getMessage() ,e);
+		}catch (Exception e) {
+			log.error("selectBrandListFromRedis error:", e.getMessage(), e);
+		}
+		log.info("selectBrandListFromRedis end.");
+		return brands;
 	}
 	
 }
