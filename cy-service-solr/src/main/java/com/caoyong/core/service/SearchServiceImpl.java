@@ -1,5 +1,6 @@
 package com.caoyong.core.service;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -14,13 +15,19 @@ import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
+import org.apache.solr.common.SolrInputDocument;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.caoyong.common.utlis.MoneyFormatUtil;
+import com.caoyong.common.web.Constants;
 import com.caoyong.core.bean.base.Page;
 import com.caoyong.core.bean.product.Product;
 import com.caoyong.core.bean.product.ProductQueryDTO;
+import com.caoyong.core.bean.product.Sku;
+import com.caoyong.core.bean.product.SkuQuery;
+import com.caoyong.core.dao.product.ProductDao;
+import com.caoyong.core.dao.product.SkuDao;
 import com.caoyong.enums.ErrorCodeEnum;
 import com.caoyong.exception.BizException;
 
@@ -36,6 +43,10 @@ public class SearchServiceImpl implements SearchService{
 
 	@Autowired
 	private SolrServer solrServer;
+	@Autowired
+	private ProductDao productDao;
+	@Autowired
+	private SkuDao skuDao;
 	/**
 	 * 全文检索
 	 * @param keywords
@@ -137,5 +148,50 @@ public class SearchServiceImpl implements SearchService{
 		}
 		log.info("selectProductByQuery end.");
 		return page;
+	}
+	@Override
+	public void insertProductToSolr(Long id) throws BizException{
+		log.info("insertProductToSolr id:{}", id);
+		try {
+			//保存到solr服务器
+			SolrInputDocument doc = new SolrInputDocument();
+			//商品id
+			doc.setField("id", id);
+			Product p = productDao.selectByPrimaryKey(id);
+			//商品名称
+			doc.setField("name_ik", p.getName());
+			//图片
+			doc.setField("url", p.getImages()[0]);
+			//查询最低价格
+			SkuQuery example = new SkuQuery();
+			example.createCriteria().andProductIdEqualTo(id)
+			.andIsDeletedEqualTo(Constants.CONSTANTS_N);
+			example.setOrderByClause("price * 1 asc");
+			example.setPageNo(1);
+			example.setPageSize(1);
+			example.setFields("price");
+			List<Sku> skus = skuDao.selectByExample(example);
+			//价格
+			Float price = Float.parseFloat((null ==skus || skus.isEmpty())
+					? "0.00" : skus.get(0).getPrice());
+			doc.setField("price", price);
+			//品牌id
+			doc.setField("brandId", p.getBrandId());
+			solrServer.add(doc);
+			solrServer.commit();
+			log.info("insertProductToSolr end.");
+		} catch (NumberFormatException e) {
+			log.error("insertProductToSolr number format error:{}", e.getMessage(), e);
+			throw new BizException(ErrorCodeEnum.NUM_FORMATE_ERROR,e.getMessage(),e);
+		} catch (SolrServerException e) {
+			log.error("insertProductToSolr solr error:{}", e.getMessage(), e);
+			throw new BizException(ErrorCodeEnum.SOLR_SERVER_ERROR,e.getMessage(),e);
+		} catch (IOException e) {
+			log.error("insertProductToSolr io error:{}", e.getMessage(), e);
+			throw new BizException(ErrorCodeEnum.IO_ERROR,e.getMessage(),e);
+		} catch (Exception e) {
+			log.error("insertProductToSolr error:{}", e.getMessage(), e);
+			throw new BizException(ErrorCodeEnum.UNKOWN_ERROR,e.getMessage(),e);
+		}
 	}
 }
