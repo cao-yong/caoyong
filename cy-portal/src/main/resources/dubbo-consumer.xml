@@ -58,6 +58,10 @@
     
     <!-- 全文检索 -->
     <dubbo:reference interface="com.caoyong.core.service.SearchService" id="searchService"/>
+    
+    <!-- cms服务 -->
+    <dubbo:reference interface="com.caoyong.core.service.CmsService" id="cmsService"/>
+    
     <!--  全局设置 timeout默认单位是ms 为了调试方便设置为10min -->
     <dubbo:consumer timeout="600000"/>
 </beans>

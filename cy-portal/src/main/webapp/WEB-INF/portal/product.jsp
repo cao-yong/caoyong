@@ -70,7 +70,7 @@ window.pageConfig = {
 			<div class="clearfix">
 				<ul id="summary">
 					<li id="summary-price">
-						<div class="dt">巴&nbsp;巴&nbsp;价：</div>
+						<div class="dt">康福特博价：</div>
 						<div class="dd">
 							<strong class="p-price" id="bbs-price">￥888.00</strong> <a
 								id="notice-downp" href="javascript:;" target="_blank">(降价通知)</a>
@@ -250,7 +250,7 @@ window.pageConfig = {
 						<li clstag="shangpin|keycount|product|psaleservice"
 							data-widget="tab-item"><a href="javascript:;">售后保障</a></li>
 						<li clstag="shangpin|keycount|product|zhinan"
-							data-widget='tab-item'><a href='javascript:;'>京博士</a></li>
+							data-widget='tab-item'><a href='javascript:;'>康福特博博士</a></li>
 					</ul>
 				</div>
 				<div class="mc" data-widget="tab-content" id="product-detail-1">

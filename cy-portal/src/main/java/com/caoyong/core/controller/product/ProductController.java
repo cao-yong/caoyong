@@ -13,9 +13,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.caoyong.core.bean.base.Page;
+import com.caoyong.core.bean.base.ResultBase;
 import com.caoyong.core.bean.product.Brand;
 import com.caoyong.core.bean.product.Product;
 import com.caoyong.core.bean.product.ProductQueryDTO;
+import com.caoyong.core.bean.product.Sku;
+import com.caoyong.core.service.CmsService;
 import com.caoyong.core.service.SearchService;
 import com.caoyong.core.service.product.BrandService;
 import com.caoyong.exception.BizException;
@@ -34,6 +37,9 @@ public class ProductController {
 	private SearchService searchService;
 	@Autowired
 	private BrandService brandService;
+	@Autowired
+	private CmsService cmsService;
+	
 	/**
 	 * 首页
 	 * @return
@@ -85,5 +91,33 @@ public class ProductController {
 		}
 		log.info("search end.");
 		return "search";
+	}
+	/**
+	 * 去商品详情页
+	 * @param id
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value=("/product/detail"))
+	public String detail(Long id, Model model){
+		log.info("detail start id:{}", id);
+		try {
+			//商品信息
+			ResultBase<Product> productResult = cmsService.selectProductById(id);
+			if(productResult.isSuccess() && null != productResult.getValue()){
+				model.addAttribute("product", productResult.getValue());
+			}
+			//sku信息
+			ResultBase<List<Sku>> skusResult = cmsService.selectSkuListByProductId(id);
+			if(skusResult.isSuccess() && null != skusResult.getValue()){
+				model.addAttribute("skus", skusResult.getValue());
+			}
+		} catch (BizException e) {
+			log.error("detail biz error:{}", e.getMessage(), e );
+		} catch (Exception e) {
+			log.error("detail error:{}", e.getMessage(), e);
+		}
+		log.info("detail end.");
+		return "product";
 	}
 }
