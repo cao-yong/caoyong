@@ -36,6 +36,40 @@ window.pageConfig = {
 		HM : '0'
 	}
 };
+//skuID
+var skuId;
+//点击颜色
+var colorToRed = function(target, id){
+	//点击之前清空之前的选择
+	//$('#colors div').attr('class', 'item');
+	$('#colors div').removeClass('selected');
+	//$(target).attr('class', 'item selected');
+	$(target).addClass('selected');
+	
+	//点击颜色，显示对应的尺码
+	var html = '';
+	var flag = 0;
+	<c:forEach items="${skus }" var="sku">
+		if(id == '${sku.colorId}'){
+			if(flag == 0){
+				html += '<div class="item selected" id="${sku.size}" onclick="sizeToRed(this,\'${sku.size}\')">'
+					       +'<b></b><a href="javascript:;" title="${sku.size}" >${sku.size}</a>'+
+					    '</div>'
+				flag = 1;
+				//设置价格	    
+				$('#cftb-price').html('${sku.price }')
+				skuId = '${sku.id }';
+			}else{
+				html += '<div class="item" id="${sku.size}" onclick="sizeToRed(this,\'${sku.size}\')">'
+				       +'<b></b><a href="javascript:;" title="${sku.size}" >${sku.size}</a>'+
+				    '</div>'
+			}
+		}
+	</c:forEach>
+	//替换
+	$('#sizes').html(html);
+}
+
 </script>
 </head>
 <body>
@@ -72,7 +106,7 @@ window.pageConfig = {
 					<li id="summary-price">
 						<div class="dt">康福特博价：</div>
 						<div class="dd">
-							<strong class="p-price" id="bbs-price">￥888.00</strong> <a
+							<strong class="p-price" id="cftb-price">￥888.00</strong> <a
 								id="notice-downp" href="javascript:;" target="_blank">(降价通知)</a>
 						</div>
 					</li>
@@ -143,9 +177,7 @@ window.pageConfig = {
 			<div id="choose-version" class="li p-choose">
 				<div class="dt">选择尺码：</div>
 				<div class="dd" id="sizes">
-					<div class="item" id="S" onclick="sizeToRed(this,'S')">
-						<b></b><a href="javascript:;" title="S" >S</a>
-					</div>
+					
 				</div>
 			</div>
 				<!--brand-bar-->

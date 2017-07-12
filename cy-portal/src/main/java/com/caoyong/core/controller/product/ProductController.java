@@ -3,6 +3,7 @@ package com.caoyong.core.controller.product;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.caoyong.core.bean.base.Page;
 import com.caoyong.core.bean.base.ResultBase;
 import com.caoyong.core.bean.product.Brand;
+import com.caoyong.core.bean.product.Color;
 import com.caoyong.core.bean.product.Product;
 import com.caoyong.core.bean.product.ProductQueryDTO;
 import com.caoyong.core.bean.product.Sku;
@@ -111,6 +113,15 @@ public class ProductController {
 			ResultBase<List<Sku>> skusResult = cmsService.selectSkuListByProductId(id);
 			if(skusResult.isSuccess() && null != skusResult.getValue()){
 				model.addAttribute("skus", skusResult.getValue());
+				//获取颜色,并去重 ,java8函数式编程实现
+//				Set<Color> colors = new HashSet<Color>();
+//				for(Sku sku : skusResult.getValue()){
+//					colors.add(sku.getColor());
+//				}
+				List<Color> colors = skusResult.getValue().stream()
+						.map(Sku::getColor).distinct()
+						.collect(Collectors.toList());
+				model.addAttribute("colors", colors);
 			}
 		} catch (BizException e) {
 			log.error("detail biz error:{}", e.getMessage(), e );
