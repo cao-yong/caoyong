@@ -68,5 +68,8 @@
 		
 		<!-- 消息Listener -->
 		<property name="messageListener" ref="customMessageListener"/>
+		
+		<!-- 默认点对点模式 false/ 发布、订阅模式 true -->
+		<property name="pubSubDomain" value="true"/>
 	</bean>
 </beans>

@@ -1,4 +1,28 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<script type="text/javascript" src="/js/jquery-1.6.4.js"></script>
+<script type="text/javascript">
+//判断用户是否登录 1登录 0未登录
+$(function(){
+	$.ajax({
+		url:'//localhost:8081/isLogin.aspx',
+		type:'post',
+		dataType:'jsonp',
+		success:function(result){
+			if(result){
+				$('#login').hide();
+				$('#regist').hide();
+			}else{
+				$('#logout').hide();
+				$('#myOrder').hide();
+			}
+		}
+	});
+});
+//去登录页面
+var login = function(){
+	window.location.href = "//localhost:8081/login.aspx?returnUrl=" + encodeURIComponent(window.location.href);
+}
+</script>
 <div id="shortcut-2013">
 	<div class="w">
 		<ul class="fl lh">
@@ -9,10 +33,10 @@
 		<ul class="fr lh">
 			<li class="fore1" id="loginbar" clstag="homepage|keycount|home2013|01b">
 				您好！欢迎来到康福特博网上商城！
-				<a href="javascript:;" onclick="login()">[登录]</a>&nbsp;
-				<a href="javascript:;" onclick="regist()">[免费注册]</a>
-				<a href="javascript:;" onclick="logout()">[退出]</a>
-				<a href="javascript:;" onclick="myOrder()" >我的订单</a>
+				<a href="javascript:;" onclick="login()" id="login">[登录]</a>&nbsp;
+				<a href="javascript:;" onclick="regist()" id="regist">[免费注册]</a>
+				<a href="javascript:;" onclick="logout()" id="logout">[退出]</a>
+				<a href="javascript:;" onclick="myOrder()" id="myOrder">我的订单</a>
 			</li>
 			<li class="fore2-1 ld" id="jd-vip">
 				<s></s>

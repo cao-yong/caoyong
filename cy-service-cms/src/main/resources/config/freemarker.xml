@@ -21,7 +21,7 @@
 		http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
 		
 	<!-- 手动实体化StaticPage类 -->
-	<bean id="statucPageService" class="com.caoyong.core.service.staticpage.StaticServiceImpl">
+	<bean id="staticPageService" class="com.caoyong.core.service.staticpage.StaticPageServiceImpl">
 		<property name="freeMarkerConfigurer">
 			<bean class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
 				<!-- 模块所在位置 -->

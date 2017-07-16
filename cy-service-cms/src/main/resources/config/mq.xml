@@ -54,4 +54,22 @@
 		<!-- 默认目标 -->
 		<property name="defaultDestinationName" value="pruductId"/>
 	</bean>
+	
+	<!-- 消息Listener -->
+	<bean id="customMessageListener" class="com.caoyong.core.message.CustomMessageListener"/>
+	
+	<!-- spirng监听器 监听MQ消息 -->
+	<bean class="org.springframework.jms.listener.DefaultMessageListenerContainer">
+		<!-- 连接ActiveMQ -->
+		<property name="connectionFactory" ref="connectionFactory"/>
+		
+		<!-- 监听目标 -->
+		<property name="destinationName" value="pruductId"/>
+		
+		<!-- 消息Listener -->
+		<property name="messageListener" ref="customMessageListener"/>
+		
+		<!-- 默认点对点模式 false/ 发布、订阅模式 true -->
+		<property name="pubSubDomain" value="true"/>
+	</bean>
 </beans>

@@ -23,4 +23,10 @@ public interface Constants {
 	public static final Integer DEAFAULT_STOCK = 0;
 	//执行成功
 	public static final String SUCCESS = "执行成功";
+	//MD5
+	public static final String MD5 = "MD5";
+	//用户名
+	public static final String USER_NAME = "USER_NAME";
+	//CSESSIONID
+	public static final String CSESSIONID = "CSESSIONID";
 }

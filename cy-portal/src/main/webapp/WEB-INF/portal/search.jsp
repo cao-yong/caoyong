@@ -306,7 +306,7 @@
 					</div>
 				</div>
 				<div class="p-name p-name-type-2">
-					<a target="_blank" title="满129立减10,199减20优惠券,支持货到付款" href="javascript:;" onclick="">
+					<a title="满129立减10,199减20优惠券,支持货到付款" href="javascript:;" onclick="window.open('//localhost:8083/html/product/${product.id}.html')">
 						<em>${product.name }</em>
 					</a>
 				</div>
