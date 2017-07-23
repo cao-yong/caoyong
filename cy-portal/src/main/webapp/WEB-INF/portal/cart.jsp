@@ -16,7 +16,7 @@
 <link type="text/css" rel="stylesheet" href="/css/a_002.css">
 <link type="text/css" rel="stylesheet" href="/css/a_003.css">
 <link href="/css/purchase.2012.css?v=201410141639" rel="stylesheet" type="text/css">
-<title>我的购物车 - 新巴巴商城</title>
+<title>我的购物车 - 康福特博商城</title>
 <script type="text/javascript" src="/js/jquery-1.6.4.js"></script>
 
 <script type="text/javascript">
@@ -36,7 +36,7 @@ function trueBuy(){
 	<div class="w w1 header clearfix">
 		<div id="logo">
 			<a href="/"><img
-				src="/images/XBB2.png" title="返回新巴巴商城首页" alt="返回新巴巴商城首页"></a>
+				src="/images/XBB2.png" title="返回康福特博商城首页" alt="返回康福特博商城首页"></a>
 		</div>
 		<div class="language">
 			<a href="javascript:void(0);" onclick="toEnCart()"></a>
@@ -67,7 +67,7 @@ function trueBuy(){
 							for="toggle-checkboxes_up">全选</label>
 					</div>
 					<div class="column t-goods">商品</div>
-					<div class="column t-price">新巴巴价</div>
+					<div class="column t-price">康福特博价</div>
 					<div class="column t-promotion">优惠</div>
 					<div class="column t-inventory">库存</div>
 					<div class="column t-quantity">数量</div>
@@ -84,8 +84,8 @@ function trueBuy(){
 								</div>
 								<div class="cell p-goods">
 									<div class="p-img">
-										<a href="javascript:;" target="_blank"> <img
-											src="${item.sku.product.images[0]}"
+										<a href="javascript:;" target="_blank"> 
+										<img src="${item.sku.product.images[0]}"
 											alt="${item.sku.product.name}" width="52" height="52"></a>
 									</div>
 									<div class="p-name">
@@ -97,12 +97,15 @@ function trueBuy(){
 									<span class="price"> ¥${item.sku.price} </span>
 								</div>
 								<div class="cell p-promotion"></div>
-								<div class="cell p-inventory stock-11345721">有货</div>
+								<div class="cell p-inventory stock-11345721">
+									<c:if test="${item.isHave }">有货</c:if>
+									<c:if test="${!item.isHave }">无货</c:if>
+								</div>
 								<div class="cell p-quantity" for-stock="for-stock-11345721">
 									<div class="quantity-form">
-										<a href="javascript:void(0);" class="decrement">-</a> <input
-											value="${item.amount }" type="text" class="quantity-text">
-											<a href="javascript:void(0);" class="increment">+</a>
+										<a href="javascript:void(0);" class="decrement">-</a> 
+										<input value="${item.amount }" type="text" class="quantity-text">
+										<a href="javascript:void(0);" class="increment">+</a>
 									</div>
 								</div>
 								<div class="cell p-remove">

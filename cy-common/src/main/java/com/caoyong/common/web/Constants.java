@@ -29,4 +29,8 @@ public interface Constants {
 	public static final String USER_NAME = "USER_NAME";
 	//CSESSIONID
 	public static final String CSESSIONID = "CSESSIONID";
+	//保存在cookie中购物车的名字
+	public static final String BUYER_CART = "BUYER_CART";
+	//保存在redis中购物车的名字
+	public static final String BUYER_CART_REDIS = "buyerCart:";
 }

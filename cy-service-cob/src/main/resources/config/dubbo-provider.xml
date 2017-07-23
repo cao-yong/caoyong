@@ -38,6 +38,9 @@
     <!-- 用户服务 -->
     <dubbo:service interface="com.caoyong.core.service.user.BuyerService" ref="buyerService"/>
     
+    <!-- 订单服务 -->
+    <dubbo:service interface="com.caoyong.core.service.order.OrderService" ref="orderService"/>
+    
     <!-- session共享服务 -->
     <dubbo:service interface="com.caoyong.core.service.user.SessionProvider" ref="sessionProvider"/>
 </beans>

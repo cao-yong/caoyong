@@ -99,6 +99,11 @@ public class Order implements Serializable {
      */
     private String isDeleted;
 
+    /**
+     * 用户名
+     */
+    private String username;
+    
     private static final long serialVersionUID = 1L;
 
     public Long getId() {
@@ -253,7 +258,15 @@ public class Order implements Serializable {
         this.isDeleted = isDeleted == null ? null : isDeleted.trim();
     }
 
-    @Override
+    public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	@Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append(getClass().getSimpleName());

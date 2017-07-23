@@ -415,7 +415,7 @@
 							<!-- 优惠券开始 -->
 							<div class="item" id="orderCouponItem">
 								<div class="toggle-title">
-									<a class="toggler" href="#none" onclick="query_coupons()"><b></b>使用优惠券（京券/东券/免运费券）</a>
+									<a class="toggler" href="#none" onclick="query_coupons()"><b></b>使用优惠券（康券/福券/免运费券）</a>
 								</div>
 								<div class="toggle-wrap hide" id="orderCouponId">
 									<div class="cbox" data-widget="tabs" id="coupons"></div>
@@ -442,14 +442,14 @@
 								</div>
 							</div>
 							<!-- 康福特博E卡结束 -->
-							<!-- 京豆支付开始 -->
+							<!-- 康豆支付开始 -->
 							<div class="item" id="orderBeanItem">
 								<div class="toggle-title">
-									<a class="toggler" href="#none" onclick="showOrHideJdBean()"><b></b>使用京豆</a>
+									<a class="toggler" href="#none" onclick="showOrHideJdBean()"><b></b>使用康豆</a>
 								</div>
 								<div class="toggle-wrap" id="jdBeans-new" style="display: none;"></div>
 							</div>
-							<!-- 京豆支付结束 -->
+							<!-- 康豆支付结束 -->
 							<!-- 余额支付 -->
 							<div class="item" id="balance-div">
 								<div class="toggle-title">

@@ -87,6 +87,10 @@ var sizeToRed = function(target, size){
 		}
 	</c:forEach>
 }
+//加入购物车
+var addCart = function(){
+	window.location.href = '/addCart?skuId=' + skuId + '&amount=' + $('#buy-num').val();
+}
 </script>
 </head>
 <body>

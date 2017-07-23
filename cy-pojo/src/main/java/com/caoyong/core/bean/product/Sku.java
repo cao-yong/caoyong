@@ -83,6 +83,12 @@ public class Sku implements Serializable {
      * 颜色对象
      */
     private Color color;
+    
+    /**
+     * 商品对象
+     */
+    private Product product;
+    
     private static final long serialVersionUID = 1L;
 
     public Long getId() {
@@ -211,6 +217,14 @@ public class Sku implements Serializable {
 
 	public void setColor(Color color) {
 		this.color = color;
+	}
+	
+	public Product getProduct() {
+		return product;
+	}
+
+	public void setProduct(Product product) {
+		this.product = product;
 	}
 
 	@Override

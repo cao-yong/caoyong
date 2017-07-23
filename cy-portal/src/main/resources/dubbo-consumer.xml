@@ -47,12 +47,16 @@
     <!-- 3:调用接口对应的实现类 -->
     <!-- test -->
     <dubbo:reference interface="com.caoyong.core.service.TestTbService" id="testTbService"/>
+    
     <!-- 产品服务 -->
     <dubbo:reference interface="com.caoyong.core.service.product.BrandService" id="brandService"/>
+    
     <!-- 上传文件 -->
     <dubbo:reference interface="com.caoyong.core.service.product.UploadService" id="uploadService"/>
+    
     <!-- 商品服务 -->
     <dubbo:reference interface="com.caoyong.core.service.product.ProductService" id="productService"/>
+    
     <!-- sku服务 -->
     <dubbo:reference interface="com.caoyong.core.service.product.SkuService" id="skuService"/>
     
@@ -61,6 +65,12 @@
     
     <!-- cms服务 -->
     <dubbo:reference interface="com.caoyong.core.service.CmsService" id="cmsService"/>
+    
+    <!-- session共享服务 -->
+    <dubbo:reference interface="com.caoyong.core.service.user.SessionProvider" id="sessionProvider"/>
+    
+    <!-- 订单服务 -->
+    <dubbo:reference interface="com.caoyong.core.service.order.OrderService" id="orderService"/>
     
     <!--  全局设置 timeout默认单位是ms 为了调试方便设置为10min -->
     <dubbo:consumer timeout="600000"/>

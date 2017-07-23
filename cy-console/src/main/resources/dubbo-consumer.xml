@@ -47,12 +47,16 @@
     <!-- 3:调用接口对应的实现类 -->
     <!-- test -->
     <dubbo:reference interface="com.caoyong.core.service.TestTbService" id="testTbService"/>
+    
     <!-- 产品服务 -->
     <dubbo:reference interface="com.caoyong.core.service.product.BrandService" id="brandService"/>
+    
     <!-- 上传文件 -->
     <dubbo:reference interface="com.caoyong.core.service.product.UploadService" id="uploadService"/>
+    
     <!-- 商品服务 -->
     <dubbo:reference interface="com.caoyong.core.service.product.ProductService" id="productService"/>
+    
     <!-- sku服务 -->
     <dubbo:reference interface="com.caoyong.core.service.product.SkuService" id="skuService"/>
     
