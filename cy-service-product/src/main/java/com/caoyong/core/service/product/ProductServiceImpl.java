@@ -205,10 +205,8 @@ public class ProductServiceImpl implements ProductService{
 				//上架，更改商品状态
 				product.setId(id);
 				count += productDao.updateByPrimaryKeySelective(product);
-				//发送消息到ActiveMQ java8 lambda 表达式实现函数式接口
+				//发送消息到ActiveMQ java8 lambda 表达式实现函数式接口，两个订阅者：1，solr上传，2静态化
 				jmsTemplate.send(session -> session.createTextMessage(String.valueOf(id)));
-				
-				//TODO:静态化
 			}
 			result.setValue(count);
 			result.setSuccess(true);
