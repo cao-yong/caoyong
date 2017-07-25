@@ -201,3 +201,38 @@ service activemq stop
 #设置开机启动或不启动activemq服务
 chkconfig activemq on
 chkconfig activemq off
+
+#创建多级目录
+mkdir -p
+
+#linux默认目录
+  nginx path prefix: "/usr/local/nginx"
+  nginx binary file: "/usr/local/nginx/sbin/nginx"
+  nginx modules path: "/usr/local/nginx/modules"
+  nginx configuration prefix: "/usr/local/nginx/conf"
+  nginx configuration file: "/usr/local/nginx/conf/nginx.conf"
+  nginx pid file: "/usr/local/nginx/logs/nginx.pid"
+  nginx error log file: "/usr/local/nginx/logs/error.log"
+  nginx http access log file: "/usr/local/nginx/logs/access.log"
+  nginx http client request body temporary files: "client_body_temp"
+  nginx http proxy temporary files: "proxy_temp"
+  nginx http fastcgi temporary files: "fastcgi_temp"
+  nginx http uwsgi temporary files: "uwsgi_temp"
+  nginx http scgi temporary files: "scgi_temp"
+  
+ #nginx关闭方法
+ #1.强制关闭
+ cd /usr/local/nginx
+ ./nginx -s stop
+ 
+ #2.完整停止
+ cd /usr/local/nginx
+ ./nginx -s quit
+
+ #nginx重启
+ cd /usr/local/nginx
+ ./nginx -s reload
+ 
+ #跨系统复制
+ scp nginx-1.12.0.tar.gz 192.168.128.129:/usr/yong.cao/dev/nginx/
+ 
