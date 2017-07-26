@@ -236,3 +236,10 @@ mkdir -p
  #跨系统复制
  scp nginx-1.12.0.tar.gz 192.168.128.129:/usr/yong.cao/dev/nginx/
  
+ #查看已安装的软件版本
+ rpm -qa |grep openssl
+ 
+ #启动keepalived
+ cd /usr/local/sbin
+ ./keepalived
+ 
