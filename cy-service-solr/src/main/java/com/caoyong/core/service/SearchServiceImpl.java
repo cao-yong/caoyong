@@ -111,9 +111,21 @@ public class SearchServiceImpl implements SearchService{
 				String name = highlightingNames.get(0);
 				product.setName(name);
 				//图片
-				@SuppressWarnings("unchecked")
-				List<String> urls = (ArrayList<String>) doc.get("url");
-				product.setImgUrl(urls.get(0));
+				//此字段，由于solr服务器的差异，导致在solr中储存格式不一样
+				String url = null;
+				//list时的处理
+				if(null != doc.get("url") && doc.get("url") instanceof ArrayList){
+					@SuppressWarnings("unchecked")
+					List<String> urls = (ArrayList<String>) doc.get("url");
+					if(null !=urls && !urls.get(0).isEmpty()){
+						url = urls.get(0);
+					}
+				}
+				//string时处理
+				if(null != doc.get("url") && doc.get("url") instanceof String){
+					url = (String) doc.get("url");
+				}
+				product.setImgUrl(url);
 				//最低价
 				Float price = (Float) doc.get("price");
 				product.setPrice(MoneyFormatUtil.format(String.valueOf(price)));

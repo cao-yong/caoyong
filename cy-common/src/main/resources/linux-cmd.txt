@@ -35,6 +35,12 @@ firewall-cmd --zone=public --list-ports
 #开放端口号
 firewall-cmd --zone=public --add-port=23000/tcp --permanent
 
+#开户防火墙
+systemctl start firewalld
+
+#更新防火墙
+firewall-cmd --complete-reload
+
 #查看端口号是否打开
 firewall-cmd    --query-port=9200/tcp
 
@@ -81,12 +87,6 @@ ls -a
 
 #查看端口监听
 netstat -unltp|grep fdfs
-
-#开户防火墙
-systemctl start firewalld
-
-#更新防火墙
-firewall-cmd --complete-reload
 
 #更新ip后，fastDFS要改的地方
 /etc/fdfs/storage.conf
@@ -243,3 +243,6 @@ mkdir -p
  cd /usr/local/sbin
  ./keepalived
  
+ #查看centos版本信息
+ cat /etc/redhat-release 
+ uname -a
