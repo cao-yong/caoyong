@@ -246,3 +246,33 @@ mkdir -p
  #查看centos版本信息
  cat /etc/redhat-release 
  uname -a
+ 
+ #mysql下载
+ ftp://ftp.mirrorservice.org/sites/ftp.mysql.com/Downloads/MySQL-5.7
+ 
+ #安装mysql需要的包：
+ mysql-community-client-5.7.18-1.el7.x86_64.rpm
+ mysql-community-common-5.7.18-1.el7.x86_64.rpm
+ mysql-community-devel-5.7.18-1.el7.x86_64.rpm
+ mysql-community-libs-5.7.18-1.el7.x86_64.rpm
+ mysql-community-libs-compat-5.7.18-1.el7.x86_64.rpm
+ mysql-community-server-5.7.18-1.el7.x86_64.rpm
+ 
+ #安装 
+ rpm -ivh mysql*
+ 
+ #启动mysql
+ systemctl start mysqld.service
+ 
+ #查看mysql的密码
+ grep 'temporary password' /var/log/mysqld.log
+ 
+ #改密码
+ ALTER USER 'root'@'localhost' IDENTIFIED BY '123456';
+ 
+ #修改简单密码
+ set global validate_password_policy=0;
+ set global validate_password_length=1;
+ 
+ #mysql登录
+ mysql -uroot -p
