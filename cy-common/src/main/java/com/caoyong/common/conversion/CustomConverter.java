@@ -7,26 +7,27 @@ import lombok.extern.slf4j.Slf4j;
 
 /**
  * 自定义转换器
+ * 
  * @author yong.cao
- * @time 2017年7月16日上午10:12:08
+ * @time 2017年7月29日 下午2:53:53
  */
 @Slf4j
-public class CustomConverter implements Converter<String, String>{
+public class CustomConverter implements Converter<String, String> {
 
-	@Override
-	public String convert(String source) {
-		log.info("convert start,source:{}", source);
-		try {
-			if(StringUtils.isNotBlank(source)){
-				source = source.trim();
-				if(StringUtils.isNotBlank(source)){
-					return source;
-				}
-			}
-		} catch (Exception e) {
-			log.info("convert end.");
-		}
-		return null;
-	}
+    @Override
+    public String convert(String source) {
+        log.info("convert start,source:{}", source);
+        try {
+            if (StringUtils.isNotBlank(source)) {
+                source = source.trim();
+                if (StringUtils.isNotBlank(source)) {
+                    return source;
+                }
+            }
+        } catch (Exception e) {
+            log.info("convert end.");
+        }
+        return null;
+    }
 
 }

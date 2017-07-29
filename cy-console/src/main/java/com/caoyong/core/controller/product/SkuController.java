@@ -24,57 +24,59 @@ import com.caoyong.core.service.product.SkuService;
 import com.caoyong.exception.BizException;
 
 import lombok.extern.slf4j.Slf4j;
+
 @Slf4j
 @Controller
 public class SkuController {
-	@Autowired
-	private SkuService skuService;
-	
-	@RequestMapping(value=("/sku/list.do"))
-	public String list(Long productId,Model model){
-		log.info("query list start");
-		try {
-			ResultBase<List<Sku>> result = skuService.selectSkuByProductId(productId);
-			if(result.isSuccess()){
-				List<Sku> skus = result.getValue();
-				log.info("skus:{}", ToStringBuilder.
-						reflectionToString(skus, ToStringStyle.DEFAULT_STYLE));
-				model.addAttribute("skus",skus);
-			}
-		} catch (BizException e) {
-			log.error("query list BizException:{}",e.getMessage(),e);
-		} catch (Exception e) {
-			log.error("query list Exception:{}",e.getMessage(),e);
-		}
-		log.info("query list end.");
-		return "sku/list";
-	}
-	/**
-	 * 保存sku
-	 * @param sku
-	 * @param response
-	 */
-	@RequestMapping(value=("/sku/addSku.do"))
-	public void addSku(Sku sku, HttpServletResponse response){
-		log.info("addSku start sku:{}", ToStringBuilder.
-				reflectionToString(sku, ToStringStyle.DEFAULT_STYLE));
-		try {
-			ResultBase<Integer> result = skuService.addSku(sku);
-			//返回数据
-			JSONObject jsonObj = new JSONObject();
-			if(result.isSuccess()){
-				jsonObj.put("success", true);
-				jsonObj.put("msg", Constants.SUCCESS);
-			}else{
-				jsonObj.put("success", false);
-				jsonObj.put("errorMsg", result.getErrorMsg());
-			}
-			response.setContentType("application/json;charset=UTF-8");
-			response.getWriter().write(jsonObj.toString());
-		} catch (BizException e) {
-			log.error("addSku BizException:{}",e.getMessage(),e);
-		}catch (Exception e) {
-			log.error("addSku Exception:{}",e.getMessage(),e);
-		}
-	}
+
+    @Autowired
+    private SkuService skuService;
+
+    @RequestMapping(value = ("/sku/list.do"))
+    public String list(Long productId, Model model) {
+        log.info("query list start");
+        try {
+            ResultBase<List<Sku>> result = skuService.selectSkuByProductId(productId);
+            if (result.isSuccess()) {
+                List<Sku> skus = result.getValue();
+                log.info("skus:{}", ToStringBuilder.reflectionToString(skus, ToStringStyle.DEFAULT_STYLE));
+                model.addAttribute("skus", skus);
+            }
+        } catch (BizException e) {
+            log.error("query list BizException:{}", e.getMessage(), e);
+        } catch (Exception e) {
+            log.error("query list Exception:{}", e.getMessage(), e);
+        }
+        log.info("query list end.");
+        return "sku/list";
+    }
+
+    /**
+     * 保存sku
+     * 
+     * @param sku
+     * @param response
+     */
+    @RequestMapping(value = ("/sku/addSku.do"))
+    public void addSku(Sku sku, HttpServletResponse response) {
+        log.info("addSku start sku:{}", ToStringBuilder.reflectionToString(sku, ToStringStyle.DEFAULT_STYLE));
+        try {
+            ResultBase<Integer> result = skuService.addSku(sku);
+            //返回数据
+            JSONObject jsonObj = new JSONObject();
+            if (result.isSuccess()) {
+                jsonObj.put("success", true);
+                jsonObj.put("msg", Constants.SUCCESS);
+            } else {
+                jsonObj.put("success", false);
+                jsonObj.put("errorMsg", result.getErrorMsg());
+            }
+            response.setContentType("application/json;charset=UTF-8");
+            response.getWriter().write(jsonObj.toString());
+        } catch (BizException e) {
+            log.error("addSku BizException:{}", e.getMessage(), e);
+        } catch (Exception e) {
+            log.error("addSku Exception:{}", e.getMessage(), e);
+        }
+    }
 }
