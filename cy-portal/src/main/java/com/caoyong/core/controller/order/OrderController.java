@@ -21,43 +21,44 @@ import lombok.extern.slf4j.Slf4j;
 
 /**
  * 订单controller
+ * 
  * @author yong.cao
  * @time 2017年7月23日下午4:55:53
  */
+
 @Slf4j
 @Controller
 public class OrderController {
-	@Autowired
-	private OrderService orderService;
-	@Autowired
-	private SessionProvider sessionProvider;
-	/**
-	 * 提交订单
-	 * @param model
-	 * @param request
-	 * @param response
-	 * @return
-	 */
-	@RequestMapping(value=("/buyer/submitOrder"))
-	public String submitOrder(Model model, Order order,
-			HttpServletRequest request, HttpServletResponse response){
-		log.info("submitOrder start.");
-		try {
-			//设置request字符集
-			//request.setCharacterEncoding("UTF-8");
-			String username = sessionProvider.getAttributeForUser
-					(RequestUtil.getCSESSIONID(request, response));
-			//设置用户名
-			order.setUsername(username);
-			ResultBase<Integer> result = orderService.insertOrder(order);
-			log.info("result:{}", ToStringBuilder.
-					reflectionToString(result, ToStringStyle.DEFAULT_STYLE));
-		} catch (BizException e) {
-			log.info("submitOrder biz error:{}", e.getMessage(), e);
-		} catch (Exception e) {
-			log.info("submitOrder error:{}", e.getMessage(), e);
-		}
-		log.info("submitOrder end.");
-		return "success";
-	}
+    @Autowired
+    private OrderService    orderService;
+    @Autowired
+    private SessionProvider sessionProvider;
+
+    /**
+     * 提交订单
+     * 
+     * @param model
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping(value = ("/buyer/submitOrder"))
+    public String submitOrder(Model model, Order order, HttpServletRequest request, HttpServletResponse response) {
+        log.info("submitOrder start.");
+        try {
+            //设置request字符集
+            //request.setCharacterEncoding("UTF-8");
+            String username = sessionProvider.getAttributeForUser(RequestUtil.getCSESSIONID(request, response));
+            //设置用户名
+            order.setUsername(username);
+            ResultBase<Integer> result = orderService.insertOrder(order);
+            log.info("result:{}", ToStringBuilder.reflectionToString(result, ToStringStyle.DEFAULT_STYLE));
+        } catch (BizException e) {
+            log.info("submitOrder biz error:{}", e.getMessage(), e);
+        } catch (Exception e) {
+            log.info("submitOrder error:{}", e.getMessage(), e);
+        }
+        log.info("submitOrder end.");
+        return "success";
+    }
 }

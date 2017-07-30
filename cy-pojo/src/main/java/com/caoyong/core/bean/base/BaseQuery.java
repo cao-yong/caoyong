@@ -2,72 +2,78 @@ package com.caoyong.core.bean.base;
 
 import java.io.Serializable;
 
-public class BaseQuery implements Serializable{
-	private static final long serialVersionUID = 265900375595315903L;
-	/**
-	 * 页码数
-	 */
-	private Integer pageNo = 1;
-	/**
-	 * 每页条数（pageSize）
-	 */
-	private Integer limit = 10;
-	/**
-	 * 开始行
-	 */
-	private Integer start = 0;
-	/**
-	 */
-	private Boolean page = false;
-	
-	/**
-	 * 总记录数
-	 */
-	private Integer results;
+/**
+ * 查询基类
+ * 
+ * @author yong.cao
+ * @time 2017年7月30日 下午9:27:30
+ */
+public class BaseQuery implements Serializable {
+    private static final long serialVersionUID = 265900375595315903L;
+    /**
+     * 页码数
+     */
+    private Integer           pageNo           = 1;
+    /**
+     * 每页条数（pageSize）
+     */
+    private Integer           limit            = 10;
+    /**
+     * 开始行
+     */
+    private Integer           start            = 0;
+    /**
+     */
+    private Boolean           page             = false;
 
-	public Integer getPageNo() {
-		return pageNo;
-	}
+    /**
+     * 总记录数
+     */
+    private Integer           results;
 
-	public void setPageNo(Integer pageNo) {
-		//重新计算start
-		start = (pageNo -1) * limit;
-		//当pageNo为空、0时，设置为第一页
-		this.pageNo = (null == pageNo || pageNo<1)? 1 : pageNo;
-	}
+    public Integer getPageNo() {
+        return pageNo;
+    }
 
-	public Integer getLimit() {
-		return limit;
-	}
+    public void setPageNo(Integer pageNo) {
+        //重新计算start
+        start = (pageNo - 1) * limit;
+        //当pageNo为空、0时，设置为第一页
+        this.pageNo = (null == pageNo || pageNo < 1) ? 1 : pageNo;
+    }
 
-	public void setLimit(Integer limit) {
-		//重新计算start
-		start = (pageNo -1) * limit;
-		this.limit = limit;
-	}
+    public Integer getLimit() {
+        return limit;
+    }
 
-	public Integer getStart() {
-		return start;
-	}
+    public void setLimit(Integer limit) {
+        //重新计算start
+        start = (pageNo - 1) * limit;
+        this.limit = limit;
+    }
 
-	public void setStart(Integer start) {
-		this.start = start;
-	}
+    public Integer getStart() {
+        return start;
+    }
 
-	public Boolean getPage() {
-		return page;
-	}
+    public void setStart(Integer start) {
+        this.start = start;
+    }
 
-	public void setPage(Boolean page) {
-		this.page = page;
-	}
+    public Boolean getPage() {
+        return page;
+    }
 
-	public Integer getResults() {
-		return results;
-	}
+    public void setPage(Boolean page) {
+        this.page = page;
+    }
 
-	public void setResults(Integer results) {
-		this.results = results;
-	}
-	
+    public Integer getResults() {
+        return results;
+    }
+
+    public void setResults(Integer results) {
+        this.results = results;
+    }
+
 }

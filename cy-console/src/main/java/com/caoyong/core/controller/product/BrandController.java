@@ -22,6 +22,7 @@ import lombok.extern.slf4j.Slf4j;
  * @author yong.cao
  * @time 2017年6月11日下午7:40:06
  */
+
 @Slf4j
 @Controller
 public class BrandController {

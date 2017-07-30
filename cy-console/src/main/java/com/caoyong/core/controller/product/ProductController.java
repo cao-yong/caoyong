@@ -28,6 +28,7 @@ import lombok.extern.slf4j.Slf4j;
  * @author yong.cao
  * @time 2017年6月27日上午12:05:57
  */
+
 @Slf4j
 @Controller
 public class ProductController {

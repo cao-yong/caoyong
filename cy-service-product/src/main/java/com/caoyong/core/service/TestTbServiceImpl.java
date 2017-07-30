@@ -8,18 +8,18 @@ import com.caoyong.core.bean.TestTb;
 import com.caoyong.core.dao.TestTbDao;
 
 /**
- * 
  * @author yong.cao
  * @time 2017年6月1日下午9:46:37
  */
+
 @Service("testTbService")
 @Transactional
-public class TestTbServiceImpl implements TestTbService{
-	@Autowired
-	private TestTbDao testTbDao;
+public class TestTbServiceImpl implements TestTbService {
+    @Autowired
+    private TestTbDao testTbDao;
 
-	@Override
-	public void insertTestTb(TestTb testTb){
-		testTbDao.insertTestTb(testTb);
-	}
+    @Override
+    public void insertTestTb(TestTb testTb) {
+        testTbDao.insertTestTb(testTb);
+    }
 }

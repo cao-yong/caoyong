@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @author yong.cao
  * @time 2017年6月1日下午10:59:02
  */
+
 @RequestMapping(value = "/control")
 @Controller
 public class CenterController {

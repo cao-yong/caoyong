@@ -5,19 +5,20 @@ import java.util.Date;
 import java.util.List;
 
 public class BuyerQuery {
-    protected String orderByClause;
 
-    protected boolean distinct;
+    protected String         orderByClause;
+
+    protected boolean        distinct;
 
     protected List<Criteria> oredCriteria;
 
-    protected Integer pageNo = 1;
+    protected Integer        pageNo   = 1;
 
-    protected Integer startRow;
+    protected Integer        startRow;
 
-    protected Integer pageSize = 10;
+    protected Integer        pageSize = 10;
 
-    protected String fields;
+    protected String         fields;
 
     public BuyerQuery() {
         oredCriteria = new ArrayList<Criteria>();
@@ -73,8 +74,8 @@ public class BuyerQuery {
     }
 
     public void setPageNo(Integer pageNo) {
-        this.pageNo=pageNo;
-        this.startRow = (pageNo-1)*this.pageSize;
+        this.pageNo = pageNo;
+        this.startRow = (pageNo - 1) * this.pageSize;
     }
 
     public Integer getPageNo() {
@@ -82,7 +83,7 @@ public class BuyerQuery {
     }
 
     public void setStartRow(Integer startRow) {
-        this.startRow=startRow;
+        this.startRow = startRow;
     }
 
     public Integer getStartRow() {
@@ -90,8 +91,8 @@ public class BuyerQuery {
     }
 
     public void setPageSize(Integer pageSize) {
-        this.pageSize=pageSize;
-        this.startRow = (pageNo-1)*this.pageSize;
+        this.pageSize = pageSize;
+        this.startRow = (pageNo - 1) * this.pageSize;
     }
 
     public Integer getPageSize() {
@@ -99,7 +100,7 @@ public class BuyerQuery {
     }
 
     public void setFields(String fields) {
-        this.fields=fields;
+        this.fields = fields;
     }
 
     public String getFields() {
@@ -1296,11 +1297,11 @@ public class BuyerQuery {
     }
 
     public static class Criterion {
-        private String condition;
+        private String  condition;
 
-        private Object value;
+        private Object  value;
 
-        private Object secondValue;
+        private Object  secondValue;
 
         private boolean noValue;
 
@@ -1310,7 +1311,7 @@ public class BuyerQuery {
 
         private boolean listValue;
 
-        private String typeHandler;
+        private String  typeHandler;
 
         public String getCondition() {
             return condition;

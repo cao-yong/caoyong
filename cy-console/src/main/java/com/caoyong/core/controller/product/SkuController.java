@@ -1,9 +1,4 @@
 package com.caoyong.core.controller.product;
-/**
- * 库存管理
- * @author yong.cao
- * @time 2017年7月1日下午12:28:24
- */
 
 import java.util.List;
 
@@ -27,6 +22,12 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Controller
+/**
+ * 库存管理
+ * 
+ * @author yong.cao
+ * @time 2017年7月30日 下午9:38:51
+ */
 public class SkuController {
 
     @Autowired

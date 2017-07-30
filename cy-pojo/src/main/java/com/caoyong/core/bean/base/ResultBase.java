@@ -5,16 +5,19 @@ import java.util.HashMap;
 import java.util.Map;
 
 import lombok.ToString;
+
 /**
  * 返回结果对象
+ * 
  * @author yong.cao
  * @time 2017年6月21日下午9:31:48
  */
+
 @ToString
 public class ResultBase<T> implements Serializable {
 
-	private static final long serialVersionUID = 5060957039291207838L;
-	private boolean             isSuccess        = false;
+    private static final long   serialVersionUID = 5060957039291207838L;
+    private boolean             isSuccess        = false;
     private String              errorMsg         = "";
     private String              errorCode        = "";
     private T                   value;
@@ -84,5 +87,5 @@ public class ResultBase<T> implements Serializable {
     public void setErrorCode(String errorCode) {
         this.errorCode = errorCode;
     }
-    
+
 }
