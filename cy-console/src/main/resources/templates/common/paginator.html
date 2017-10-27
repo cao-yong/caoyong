@@ -14,29 +14,29 @@
 								style="table-layout: auto;" class="ui-pg-table">
 								<tbody>
 									<tr>
-										<td id="first_grid-pager" onclick="showPage(1,this)"
-											class="ui-pg-button ui-corner-all <#if page.isFirstPage>ui-state-disabled</#if>"
+										<td id="first_grid-pager" <#if page??>onclick="showPage(1,this)"</#if>
+											class="ui-pg-button ui-corner-all <#if page?? && page.isFirstPage>ui-state-disabled</#if>"
 											style="cursor: pointer;"><span
 											class="ui-icon ace-icon fa fa-angle-double-left bigger-140"></span></td>
-										<td id="prev_grid-pager" onclick="showPage(${page.prePage!},this)"
-											class="ui-pg-button ui-corner-all <#if page.isFirstPage>ui-state-disabled</#if>"
+										<td id="prev_grid-pager" <#if page??>onclick="showPage(${page.prePage!},this)"</#if>
+											class="ui-pg-button ui-corner-all <#if page?? && page.isFirstPage>ui-state-disabled</#if>"
 											style="cursor: pointer;"><span
 											class="ui-icon ace-icon fa fa-angle-left bigger-140"></span></td>
 										<td dir="ltr">Page <input class="ui-pg-input" type="text"
-											size="2" maxlength="7" value="${page.pageNum!}" role="textbox"> of <span
-											id="sp_1_grid-pager">${page.pages!}</span></td>
-										<td id="next_grid-pager" onclick="showPage(${page.nextPage!},this)" class="ui-pg-button ui-corner-all <#if page.isLastPage>ui-state-disabled</#if>"
+											size="2" maxlength="7" <#if page??>value="${page.pageNum!}"</#if> role="textbox"> of <span
+											id="sp_1_grid-pager"><#if page??>${page.pages!}</#if></span></td>
+										<td id="next_grid-pager" <#if page??>onclick="showPage(${page.nextPage!},this)"</#if> class="ui-pg-button ui-corner-all <#if page?? && page.isLastPage>ui-state-disabled</#if>"
 											style="cursor: pointer;"><span
 											class="ui-icon ace-icon fa fa-angle-right bigger-140"></span></td>
-										<td id="last_grid-pager" onclick="showPage(${page.pages!},this)" class="ui-pg-button ui-corner-all <#if page.isLastPage>ui-state-disabled</#if>"
+										<td id="last_grid-pager" <#if page??>onclick="showPage(${page.pages!},this)"</#if> class="ui-pg-button ui-corner-all <#if page?? && page.isLastPage>ui-state-disabled</#if>"
 											style="cursor: pointer;"><span
 											class="ui-icon ace-icon fa fa-angle-double-right bigger-140"></span></td>
 									</tr>
 								</tbody>
 							</table></td>
 						<td id="grid-pager_right" align="right"><div dir="ltr"
-								style="text-align: right" class="ui-paging-info">View ${page.startRow!} -
-								${page.endRow!} of ${page.total!}</div></td>
+								style="text-align: right" class="ui-paging-info">View <#if page??>${page.startRow!}</#if> -
+								<#if page??>${page.endRow!}</#if> of <#if page??>${page.total!}</#if></div></td>
 					</tr>
 				</tbody>
 			</table>

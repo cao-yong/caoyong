@@ -12,6 +12,7 @@ import com.caoyong.common.vo.SystemInfo;
 import com.caoyong.core.bean.base.ResultBase;
 import com.caoyong.core.bean.menu.Menu;
 import com.caoyong.core.service.menu.MenuService;
+import com.caoyong.exception.BizException;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -40,40 +41,12 @@ public class CenterController {
             //查询系统基本信息
             SystemInfo systemInfo = SystemInfoUtil.getSystemInfo();
             model.addAttribute("systemInfo", systemInfo);
+        } catch (BizException e) {
+            log.error("index BizException:{}", e.getMessage(), e);
         } catch (Exception e) {
             log.error("index Exception:{}", e.getMessage(), e);
         }
         log.info("index end.");
         return "index";
-    }
-
-    @RequestMapping(value = "/top.do")
-    public String top(Model model) {
-        return "top";
-    }
-
-    @RequestMapping(value = "/main.do")
-    public String main(Model model) {
-        return "main";
-    }
-
-    @RequestMapping(value = "/left.do")
-    public String left(Model model) {
-        return "left";
-    }
-
-    @RequestMapping(value = "/right.do")
-    public String right(Model model) {
-        return "right";
-    }
-
-    @RequestMapping(value = "/frame/product_main.do")
-    public String product_main(Model model) {
-        return "frame/product_main";
-    }
-
-    @RequestMapping(value = "/frame/product_left.do")
-    public String product_left(Model model) {
-        return "frame/product_left";
     }
 }

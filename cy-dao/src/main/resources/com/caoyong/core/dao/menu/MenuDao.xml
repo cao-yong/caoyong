@@ -394,5 +394,8 @@
 	WHERE a.is_deleted = 'N'
 	    AND a.is_show = 1
 	ORDER BY a.sort
+	<if test="page == true" >
+      limit #{start} , #{limit}
+    </if>
   </select>
 </mapper>
