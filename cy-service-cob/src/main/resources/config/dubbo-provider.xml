@@ -36,11 +36,11 @@
     
     <!-- 4:暴露实现类 -->
     <!-- 用户服务 -->
-    <dubbo:service interface="com.caoyong.core.service.user.BuyerService" ref="buyerService"/>
+    <dubbo:service interface="com.caoyong.core.service.user.BuyerService" ref="buyerService" version="1.0.0"/>
     
     <!-- 订单服务 -->
-    <dubbo:service interface="com.caoyong.core.service.order.OrderService" ref="orderService"/>
+    <dubbo:service interface="com.caoyong.core.service.order.OrderService" ref="orderService" version="1.0.0"/>
     
     <!-- session共享服务 -->
-    <dubbo:service interface="com.caoyong.core.service.user.SessionProvider" ref="sessionProvider"/>
+    <dubbo:service interface="com.caoyong.core.service.user.SessionProvider" ref="sessionProvider" version="1.0.0"/>
 </beans>

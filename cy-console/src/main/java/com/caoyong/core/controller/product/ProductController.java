@@ -5,11 +5,11 @@ import java.util.Optional;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.alibaba.dubbo.config.annotation.Reference;
 import com.caoyong.core.bean.base.Page;
 import com.caoyong.core.bean.base.ResultBase;
 import com.caoyong.core.bean.product.Brand;
@@ -33,9 +33,9 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 public class ProductController {
 
-    @Autowired
+	@Reference(version = "1.0.0")
     private ProductService productService;
-    @Autowired
+	@Reference(version = "1.0.0")
     private BrandService   brandService;
 
     /**

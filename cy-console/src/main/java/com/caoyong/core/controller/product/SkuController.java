@@ -7,11 +7,11 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.json.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.alibaba.dubbo.config.annotation.Reference;
 import com.caoyong.common.web.Constants;
 import com.caoyong.core.bean.base.ResultBase;
 import com.caoyong.core.bean.product.Sku;
@@ -30,7 +30,7 @@ import lombok.extern.slf4j.Slf4j;
  */
 public class SkuController {
 
-    @Autowired
+    @Reference(version = "1.0.0")
     private SkuService skuService;
 
     @RequestMapping(value = ("/sku/list.do"))

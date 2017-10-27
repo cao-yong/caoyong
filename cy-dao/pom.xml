@@ -14,12 +14,5 @@
   		<artifactId>cy-pojo</artifactId>
   		<version>0.0.1-SNAPSHOT</version>
   	</dependency>
-  	
-  	<!-- Tomcat7 servlet-api -->
-	<dependency>
-		<groupId>org.apache.tomcat</groupId>
-		<artifactId>tomcat-jsp-api</artifactId>
-		<scope>provided</scope>
-	</dependency>
   </dependencies>
 </project>

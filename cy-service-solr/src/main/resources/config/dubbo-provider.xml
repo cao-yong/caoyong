@@ -36,5 +36,5 @@
     
     <!-- 4:暴露实现类 -->
     <!-- 检索 -->
-    <dubbo:service interface="com.caoyong.core.service.SearchService" ref="searchService"/>
+    <dubbo:service interface="com.caoyong.core.service.SearchService" ref="searchService" version="1.0.0"/>
 </beans>

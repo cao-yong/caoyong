@@ -14,6 +14,10 @@
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 		</dependency>
+		<dependency>
+		    <groupId>org.fusesource</groupId>
+		    <artifactId>sigar</artifactId>
+		</dependency>
 		<!-- Spring -->
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -117,16 +121,18 @@
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-log4j12</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-api</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
 		</dependency>
 
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-api</artifactId>
-		</dependency>
 		<dependency>
 			<groupId>javax.activation</groupId>
 			<artifactId>activation</artifactId>
@@ -140,6 +146,12 @@
 		<dependency>
 			<groupId>net.fckeditor</groupId>
 			<artifactId>java-core</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-api</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 		<dependency>
@@ -151,6 +163,12 @@
 		<dependency>
 			<groupId>org.apache.solr</groupId>
 			<artifactId>solr-solrj</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-api</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 		<!-- jedis Java接口 -->
@@ -197,17 +215,39 @@
 			<artifactId>zkclient</artifactId>
 		</dependency>
 		<!-- Zookeeper 用于分布式服务管理 end -->
-		<!-- Active MQ 开始 -->
+		
+		<!-- Active MQ start -->
 		<dependency>
 			<groupId>org.apache.activemq</groupId>
-			<artifactId>activemq-all</artifactId>
+			<artifactId>activemq-broker</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.activemq</groupId>
+			<artifactId>activemq-client</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.activemq</groupId>
+			<artifactId>activemq-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.geronimo.specs</groupId>
+			<artifactId>geronimo-j2ee-management_1.1_spec</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.geronimo.specs</groupId>
+			<artifactId>geronimo-jms_1.1_spec</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.activemq</groupId>
 			<artifactId>activemq-pool</artifactId>
 		</dependency>
-		<!-- Active MQ 结束 -->
-		<!-- tomcat8.5 servlet-api -->
+        <dependency> 
+            <groupId>org.apache.activemq</groupId> 
+            <artifactId>activemq-camel</artifactId> 
+        </dependency> 
+		<!-- Active MQ end -->
+		
+		<!-- servlet-api -->
 		<dependency>
 			<groupId>org.apache.tomcat</groupId>
 			<artifactId>tomcat-jsp-api</artifactId>
@@ -218,7 +258,6 @@
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
-			<version>1.16.16</version>
 			<scope>provided</scope>
 		</dependency>
 	</dependencies>

@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<meta charset="utf-8" />
+		<title>康福特博商城-后台管理系统</title>
+		<meta name="description" content="overview &amp; stats" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+		<link rel="icon" href="${request.contextPath}/static/images/favicon.ico" type="image/x-icon" />
+		<link rel="shortcut icon" href="${request.contextPath}/static/images/favicon.ico" type="image/x-icon" />
+		<link rel="bookmark" href="${request.contextPath}/static/images/favicon.ico" type="image/x-icon" />
+		<!-- bootstrap & fontawesome -->
+		<link rel="stylesheet" href="${request.contextPath}/static/assets/css/bootstrap.min.css" />
+		<link rel="stylesheet" href="${request.contextPath}/static/assets/font-awesome/4.5.0/css/font-awesome.min.css" />
+		<!-- page specific plugin styles -->
+		<link rel="stylesheet" href="${request.contextPath}/static/assets/css/jquery-ui.custom.min.css" />
+		<link rel="stylesheet" href="${request.contextPath}/static/assets/css/fullcalendar.min.css" />
+		<!-- text fonts -->
+		<link rel="stylesheet" href="${request.contextPath}/static/assets/css/fonts.googleapis.com.css" />
+		<!-- ace styles -->
+		<link rel="stylesheet" href="${request.contextPath}/static/assets/css/ace.min.css" class="ace-main-stylesheet" id="main-ace-style" />
+		<link rel="stylesheet" href="${request.contextPath}/static/assets/css/ace-skins.min.css" />
+		<link rel="stylesheet" href="${request.contextPath}/static/assets/css/ace-rtl.min.css" />
+		<!-- ace settings handler -->
+		<script src="${request.contextPath}/static/assets/js/ace-extra.min.js"></script>
+		<script src="${request.contextPath}/static/assets/js/user/index.js"></script>
+		<link rel="stylesheet" href="${request.contextPath}/stylesheets/console.css" />
+		<style type="text/css">
+		.title{
+			margin:0 auto;
+			background-size: 100% 100%; 
+			background-repeat: no-repeat;
+			width: 205px; 
+			height: 50px; 
+			display: flex; 
+			align-items: center; 
+			justify-content: center; 
+			color: black; 
+			font-weight: bold;
+			font-family: 'Microsoft Yahei'; 
+			font-size: 20px; 
+			text-overflow: ellipsis; 
+			white-space: nowrap; 
+			overflow: hidden;
+		}
+		</style>
+	</head>
+
+	<body class="no-skin">
+		<div id="navbar" class="navbar navbar-default ace-save-state">
+			<div class="navbar-container ace-save-state" id="navbar-container">
+
+				<div class="navbar-header pull-left">
+					<a href="#" class="navbar-brand">
+						<div style="margin-left:5%;width:100%;">
+							<i><img src="${request.contextPath}/static/images/head.png" style="width:32%;"/></i>&nbsp;&nbsp;&nbsp;&nbsp;
+							后台管理系统
+						</div>
+					</a>
+				</div>
+				
+					<div class="navbar-buttons navbar-header pull-right" role="navigation">
+					<ul class="nav ace-nav">
+						<li class="dropdown-modal">
+							<a data-toggle="dropdown" href="#" class="dropdown-toggle">
+								<!-- <img class="nav-user-photo" src="../assets/avatars/user.jpg" alt="Jason's Photo" /> -->
+								<span class="user-info">
+									<small>Welcome,</small>
+									
+								</span>
+
+								<i class="ace-icon fa fa-caret-down"></i>
+							</a>
+
+							<ul class="user-menu dropdown-menu-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
+								<li>
+									<a id="a_logout">
+										<i class="ace-icon fa fa-power-off"></i>
+										退出
+									</a>
+								</li>
+							</ul>
+						</li>
+					</ul>
+				</div>
+
+			</div>
+		</div>
+		<form id="logoutForm" action="${request.contextPath}/logout" method="post">
+        </form>
+		<div class="main-container ace-save-state" id="main-container">
+			<script type="text/javascript">
+				try{ace.settings.loadState('main-container')}catch(e){}
+			</script>
+
+			<div id="sidebar" class="sidebar responsive ace-save-state compact">
+				<script type="text/javascript">
+					try{ace.settings.loadState('sidebar')}catch(e){}
+				</script>
+
+			<ul class="nav nav-list">
+			<#list menus as menu>
+					<#if menu.parent.id=='1' && menu.isShow==1>
+						<li class="hover" menu1Id="${menu.id!}" title="${menu.name!}" url="${menu.href!}">
+							
+							<a href="#" class="dropdown-toggle" <#if !(menu.href?? && menu.href=="") > onclick="activeMenu(this, '${menu.href!}')"</#if>>
+								<i class="menu-icon fa ${menu.icon}"></i>
+								<span class="menu-text">${menu.name!} </span>
+
+								<b class="arrow fa fa-angle-down"></b>
+							</a>
+							<b class="arrow"></b>
+
+	 						<#if !(menu.href?? && menu.href!="")>
+							<ul class="submenu">
+								<#list menus as menu2>
+									<#if menu2.parent.id==menu.id && menu2.isShow==1>
+									<li class="hover" menu2Id="${menu2.id!}" title="${menu2.name!}" url="${menu2.href!}">
+										<a href="javascript:void(0);" onclick="activeMenu(this, '${menu2.href!}')">
+											<input type="hidden" name="menu2" value="${menu2.href!}">
+											<i class="menu-icon fa fa-caret-right"></i>
+											${menu2.name!}
+										</a>
+										<b class="arrow"></b>
+										<#if menu2.href=="">
+										<!--<ul class="submenu can-scroll ace-scroll scroll-disabled">-->
+											<ul class="submenu">
+											<#list menus as menu3>
+												<#if menu3.parent.id==menu2.id && menu3.isShow==1> 
+													<li class="hover" menu3Id="${menu3.id!}" title="${menu3.name!}" url="${menu3.href!}">
+													<a href="javascript:void(0);" onclick="activeMenu(this, '${menu3.href!}')">
+														<input type="hidden" name="menu3" value="${menu3.href!}">
+														<i class="menu-icon fa fa-caret-right"></i>
+														${menu3.name!}
+													</a>
+														<b class="arrow"></b>
+													</li>
+												</#if>
+											</#list>
+										</ul>
+										</#if>
+									</li>
+									</#if>
+								</#list>
+							</ul>
+							</#if>
+						</li>
+					</#if>
+				</#list>
+				</ul><!-- /.nav-list -->
+				<div class="sidebar-toggle sidebar-collapse" id="sidebar-collapse">
+					<i class="ace-icon fa fa-angle-double-left" data-icon1="ace-icon fa fa-angle-double-left" data-icon2="ace-icon fa fa-angle-double-right"></i>
+				</div>
+			</div>
+			<div class="main-content">
+				<div class="page-content">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <ul class="nav nav-tabs" role="tablist">
+                            	 <li class="active"><a href="#index" role="tab" data-toggle="tab">首页</a></li>
+                            </ul>
+                            <div class="tab-content" style="border:0px;padding-left: 0px!important;padding-top: 5px!important;padding-right:0px;">
+                            	<div role="tabpanel" class="tab-pane active" id="index">
+                            		<div class="breadcrumbs ace-save-state" id="breadcrumbs"  style="margin:0px 0px 0px!important">
+										<ul class="breadcrumb">
+											<li>
+												<i class="ace-icon fa fa-home home-icon"></i>
+												<a href="#">首页</a>
+											</li>
+										</ul><!-- /.breadcrumb -->
+									</div>
+                            		<div class="page-content" style="padding: 0px 0px 0px!important;">
+										<div class="body-box">
+											<!-- 欢迎页面内容开始 -->
+										    <div class="welcom-con">
+										        <div class="we-txt">
+										            <p>
+										                欢迎使用康福特博商城的管理系统！<br/>
+										                康福特博商城的程序版本： comfortabo-mall V1.0 <!--【<a href="http://localhost:8080" target="_blank">查看最新版本</a>】--><br/>
+										                您上次登录的时间是：2014-10-15 <br/>
+										                已用内存：<span style="color:#0078ff;">${systemInfo.usedMemory!0}MB</span>&nbsp;&nbsp;&nbsp;&nbsp;剩余内存：<span style="color:#ff8400;">${systemInfo.freeMemory!0}MB </span>&nbsp;&nbsp;&nbsp;&nbsp;最大内存：<span
+										                    style="color:#00ac41;">${systemInfo.totalMemory!0}MB</span>
+										            </p>
+										        </div>
+										        <ul class="ms">
+										            <li class="wxx">访问量</li>
+										            <li class="attribute">　　　系统属性</li>
+										        </ul>
+										        <div class="ms-xx">
+										            <div class="xx-xx">
+										                <table width="100%" border="0" cellspacing="0" cellpadding="0">
+										                    <tr>
+										                        <td width="20%" height="30" align="right"></td>
+										                        <td width="25%"><b>PV</b></td>
+										                        <td width="25%"><b>IP</b></td>
+										                        <td width="30%"><b>独立访客</b></td>
+										                    </tr>
+										                    <tr>
+										                        <td height="30" align="right">今日：</td>
+										                        <td>0</td>
+										                        <td>0</td>
+										                        <td>0</td>
+										                    </tr>
+										                    <tr>
+										                        <td height="30" align="right">昨日：</td>
+										                        <td>0</td>
+										                        <td>0</td>
+										                        <td>0</td>
+										                    </tr>
+										                    <tr>
+										                        <td height="30" align="right">本周：</td>
+										                        <td>0</td>
+										                        <td>0</td>
+										                        <td>0</td>
+										                    </tr>
+										                    <tr>
+										                        <td height="30" align="right">本月：</td>
+										                        <td>0</td>
+										                        <td>0</td>
+										                        <td>0</td>
+										                    </tr>
+										                    <tr>
+										                        <td height="30" align="right">累计：</td>
+										                        <td>0</td>
+										                        <td>0</td>
+										                        <td>0</td>
+										                    </tr>
+										                </table>
+										            </div>
+										            <div class="attribute-xx" style="float:left">
+										                <table width="100%" border="0" cellspacing="0" cellpadding="0">
+										                    <tr>
+										                        <td width="30%" height="30" align="right">操作系统版本：</td>
+										                        <td height="30" style="text-align: left;"><span class="black">${systemInfo.os!""}</span></td>
+										                    </tr>
+										                    <tr>
+										                        <td width="30%" height="30" align="right">操作系统类型：</td>
+										                        <td height="30" style="text-align: left;"><span class="black">${systemInfo.osBit!""}</span></td>
+										                    </tr>
+										                    <tr>
+										                        <td width="30%" height="30" align="right">用户、目录：</td>
+										                        <td height="30" style="text-align: left;"><span class="black">${systemInfo.userHome!""}</span></td>
+										                    </tr>
+										                    <tr>
+										                        <td width="30%" height="30" align="right">JAVA运行环境：</td>
+										                        <td height="30" style="text-align: left;"><span>${systemInfo.javaEnv!""}</span></td>
+										                    </tr>
+										                    <tr>
+										                        <td width="30%" height="30" align="right">JAVA虚拟机：</td>
+										                        <td height="30" style="text-align: left;"><span>${systemInfo.javaVm!""}</span></td>
+										                    </tr>
+										                </table>
+										            </div>
+										        </div>
+										    </div>
+										    <!-- 欢迎页面内容结束 -->
+										</div>
+									</div><!-- /.page-content -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+			</div>
+
+			<div class="footer">
+				<div class="footer-inner">
+					<div class="footer-content">
+						<span class="bigger-120">
+							<i><img src="${request.contextPath}/static/images/logo.png" /></i>
+							康福特博商城 &copy; 2016-2017
+						</span>
+					</div>
+				</div>
+			</div>
+			<a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse">
+				<i class="ace-icon fa fa-angle-double-up icon-only bigger-110"></i>
+			</a>
+		</div><!-- /.main-container -->
+		<input type="hidden" id="showlistcontext" value="${request.contextPath}">
+		<script src="${request.contextPath}/static/assets/js/jquery-2.1.4.min.js"></script>
+		<script type="text/javascript">
+			if('ontouchstart' in document.documentElement) document.write("<script src='${request.contextPath}/assets/js/jquery.mobile.custom.min.js'>"+"<"+"/script>");
+		</script>
+		<script src="${request.contextPath}/static/assets/js/bootstrap.min.js"></script>
+		<!-- basic scripts -->
+		<script src="${request.contextPath}/static/assets/js/jquery-ui.custom.min.js"></script>
+		<script src="${request.contextPath}/static/assets/js/jquery.ui.touch-punch.min.js"></script>
+		<script src="${request.contextPath}/static/assets/js/jquery.easypiechart.min.js"></script>
+		<script src="${request.contextPath}/static/assets/js/jquery.sparkline.index.min.js"></script>
+		<script src="${request.contextPath}/static/assets/js/jquery.flot.min.js"></script>
+		<script src="${request.contextPath}/static/assets/js/jquery.flot.pie.min.js"></script>
+		<script src="${request.contextPath}/static/assets/js/jquery.flot.resize.min.js"></script>
+		<script src="${request.contextPath}/static/assets/js/bootstrap-tab.js"></script>
+		<script src="${request.contextPath}/static/assets/js/moment.min.js"></script>
+		<script src="${request.contextPath}/static/assets/js/fullcalendar.min.js"></script>
+		<script src="${request.contextPath}/static/assets/js/bootbox.js"></script>
+
+		<!-- ace scripts -->
+		<script src="${request.contextPath}/static/assets/js/ace-elements.min.js"></script>
+		<script src="${request.contextPath}/static/assets/js/ace.min.js"></script>
+		<!-- user scripts -->
+		<script src="${request.contextPath}/static/assets/js/user/base.js"></script>
+		<!-- inline scripts related to this page -->
+		<script src="https://a.alipayobjects.com/g/datavis/g-cloud/1.0.2/index.js"></script>  
+		
+		<script type="text/javascript">
+		
+		</script>
+	</body>
+</html>

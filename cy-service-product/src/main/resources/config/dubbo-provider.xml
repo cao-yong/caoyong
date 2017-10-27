@@ -36,13 +36,13 @@
     
     <!-- 4:暴露实现类 -->
     <!-- test -->
-    <dubbo:service interface="com.caoyong.core.service.TestTbService" ref="testTbService"/>
+    <dubbo:service interface="com.caoyong.core.service.TestTbService" ref="testTbService" version="1.0.0"/>
     <!-- 品牌服务 -->
-    <dubbo:service interface="com.caoyong.core.service.product.BrandService" ref="brandService"/>
+    <dubbo:service interface="com.caoyong.core.service.product.BrandService" ref="brandService" version="1.0.0"/>
     <!-- 上传文件 -->
-    <dubbo:service interface="com.caoyong.core.service.product.UploadService" ref="uploadService"/>
+    <dubbo:service interface="com.caoyong.core.service.product.UploadService" ref="uploadService" version="1.0.0"/>
     <!-- 商品服务 -->
-    <dubbo:service interface="com.caoyong.core.service.product.ProductService" ref="productService"/>
+    <dubbo:service interface="com.caoyong.core.service.product.ProductService" ref="productService" version="1.0.0"/>
     <!-- sku服务 -->
-    <dubbo:service interface="com.caoyong.core.service.product.SkuService" ref="skuService"/>
+    <dubbo:service interface="com.caoyong.core.service.product.SkuService" ref="skuService" version="1.0.0"/>
 </beans>

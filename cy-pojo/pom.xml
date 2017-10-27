@@ -16,18 +16,10 @@
   		<version>0.0.1-SNAPSHOT</version>
   	</dependency>
   	
-  	<!-- Tomcat7 servlet-api -->
-	<dependency>
-		<groupId>org.apache.tomcat</groupId>
-		<artifactId>tomcat-jsp-api</artifactId>
-		<scope>provided</scope>
-	</dependency>
-	
 	<!-- 使用lombok自动生成getter、setter方法等 -->
 	<dependency>
 		<groupId>org.projectlombok</groupId>
 		<artifactId>lombok</artifactId>
-		<version>1.16.16</version>
 		<scope>provided</scope>
 	</dependency>
   </dependencies>

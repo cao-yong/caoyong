@@ -13,7 +13,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartRequest;
 
+import com.alibaba.dubbo.config.annotation.Reference;
 import com.caoyong.common.fastdfs.UploadFileVo;
 import com.caoyong.common.web.Constants;
 import com.caoyong.core.service.product.UploadService;
@@ -39,7 +39,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class UploadController {
 
-    @Autowired
+    @Reference(version = "1.0.0")
     private UploadService uploadService;
 
     /**
