@@ -398,4 +398,13 @@
       limit #{start} , #{limit}
     </if>
   </select>
+  <select id="countMenuList" resultType="Integer">
+    SELECT
+	  COUNT(1)
+	FROM cy_menu a
+	  LEFT JOIN cy_menu p
+	    ON p.id = a.parent_id
+	WHERE a.is_deleted = 'N'
+	    AND a.is_show = 1
+  </select>
 </mapper>

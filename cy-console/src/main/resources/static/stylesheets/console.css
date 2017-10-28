@@ -1,3 +1,4 @@
+*{ margin:0 auto;padding:0;}
 ul{list-style:none;}
 
 .welcom-con{ margin:0 auto; width:98%;}
@@ -12,3 +13,63 @@ ul{list-style:none;}
 .ms-xx{height:200px;border-bottom:1px solid #c0d5e6;padding-left:0px;margin-left:25px;}
 .xx-xx{float:left; width:25%;}
 .attribute-xx{width:75%;}
+
+/*page*/
+.page{width:98%;margin:10px auto 0;overflow:hidden;clear:both}
+.page var{margin:0 4px}
+.page input{vertical-align:middle}
+.page .l{padding-left:6px}
+.page .l input,.page .l select{margin-right:6px}
+.page .r{padding:0 6px}
+.page .r .txts{width:40px;margin-right:6px}
+.page .l a.inb,.page .r a,.page .r span{margin-right:6px;padding:0 5px;text-align:center;vertical-align:middle}
+
+.page_a{}
+.page_a input{border:1px solid #cfdced}
+.page_a .hand{height:20px;line-height:18px;padding:0 4px;font-weight:bold;color:#06c;background-color:#e9f0f3}
+.page_a a,.page_a span{height:18px;line-height:18px}
+.page_a a{color:#06c;border:1px solid #cfdced;background-color:#e9f0f3}
+.page_a span{color:#666;cursor:default;border:1px solid #ccc;background-color:#eee}
+.page_a a:hover{color:#f24503;text-decoration:none;border:1px solid #0097f9;background-color:#b0d5ed}
+
+.page_b{}
+.page_b .txts{margin-left:6px}
+.page_b a,.page_b span{min-width:16px;_width:16px;height:24px;line-height:24px}
+.page_b a{color:#333;border:1px solid #dfdfdf;background-color:#fff}
+.page_b span{color:#666;cursor:default;border:1px solid #ccc;background-color:#fff}
+.page_b a:hover,.page_b .current{color:#fff;text-decoration:none;border:1px solid #3c6bc2;background-color:#39c}
+.page_b .current{font-weight:bold}
+.page_b .break{font-weight:bold;border:0;background:none}
+
+.page_c{}
+.page_c .txts{margin-left:6px}
+.page_c a,.page_c span{height:24px;line-height:24px}
+.page_c a{color:#06c;border:1px solid #fff;background-color:#fff}
+.page_c a:hover{color:#055d90;text-decoration:none;border:1px solid #055d90;background-color:#fff}
+.page_c .current{font-weight:bold}
+.page_c .break{font-weight:bold}
+.page_c .dev{font-size:14px;margin:0 2px}
+
+.btn60x20:hover{color:#f24503}
+input.btn60x20{border:0}
+input.btn60x20 {
+    border: 0;
+}
+.btn60x20{width:60px;height:20px;line-height:20px;background:url("../images/btn60x20.gif") no-repeat}
+.hand{cursor:pointer;border:0}
+div,h1,h2,h3,h4,h5,h6,p,dl,dt,dd,blockquote,form,input,select,textarea,.ul,.uls{margin:0;padding:0}
+input[type=text],input[type=password]{height:17px;}
+input[type=text],input[type=password],textarea{border-top:1px solid #404040;border-left:1px solid #404040;border-right:1px solid #D4D0C8;border-bottom:1px solid #D4D0C8;}
+/*链接总的css定义*/
+a{text-decoration:none;}
+a:link{color:#364f56;}
+a:visited{color:#333333;}
+a:hover{color: #ae0927;}
+a:active {color: #0000ff;}
+/*a*/
+a{color:#333;text-decoration:none}
+a:hover{color:#f50;text-decoration:underline}
+a:active{color:#800080}
+a:focus{outline:none}
+a.u{text-decoration:underline}
+a.u:hover{text-decoration:none}

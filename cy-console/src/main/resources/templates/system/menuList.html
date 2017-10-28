@@ -24,6 +24,7 @@
 
     <script src="${request.contextPath}/static/assets/js/user/base.js"></script>
     <link rel="stylesheet" href="${request.contextPath}/static/assets/css/bsie-paginator.css"/>
+    <link rel="stylesheet" href="${request.contextPath}/stylesheets/console.css" />
 </head>
 
 <body class="skin-2" style="background-color: #FFF;">
@@ -46,70 +47,56 @@
                                aria-describedby="dynamic-table_info">
                             <thead>
                             <tr>
-                                <th>父级编号</th>
-                                <th>名称</th>
-                                <th>排序</th>
-                                <th>链接</th>
-                                <th>图标</th>
-                                <th>是否显示</th>
-                                <th>权限标识</th>
-                                <th>备注信息</th>
-                                <th>是否启用</th>
-                                <th>操作</th>
+                                <th>No.</th>
+								<th>父级编号</th>
+								<th>名称</th>
+								<th>排序</th>
+								<th>链接</th>
+								<th>图标</th>
+								<th>是否显示</th>
+								<th>权限标识</th>
+								<th>备注信息</th>
+								<th>是否启用</th>
+								<th>操作</th>
                             </tr>
                             </thead>
                             <tbody>
-                            <#if page?? && page.results&gt;0>
-                                <#list page.rows as menu>
-                                    <tr class="">
-                                        <td>${menu_index + 1}</td>
-                                        <td>${menu.parent.name!}</td>
-                                        <td>${menu.name!}</td>
-                                        <td>${menu.sort!}</td>
-                                        <td>${menu.href!}</td>
-                                        <td>${menu.icon!}</td>
-                                        <td>
-                                            <#if menu.isShow==1>
-                                                是
-                                                <#else>
-                                                    否
-                                            </#if>
-                                        </td>
-                                        <td>${menu.permission!}</td>
-                                        <td>${menu.remarks!}</td>
-                                        <td>
-                                            <#if menu.isDeleted=='N'>
-                                                停用
-                                                <#else>
-                                                    启用
-                                            </#if>
-                                        </td>
-                                        <td>
-                                            <a class="btn btn-minier btn-primary"
-                                               href="${request.contextPath}/editMenu?id=${menu.id!}"
-                                               role="button">编辑</a>
-                                        </td>
-                                    </tr>
-                                </#list>
-                                <#else>
-                                    <tr>
-                                        <td colspan="12">
-                                            <div class="alert alert-danger" style="margin-bottom: 0px;" role="alert">
-                                                没有记录!
-                                            </div>
-                                        </td>
-                                    </tr>
-                            </#if>
+	                            <#if page?? && page.results&gt;0>
+									<#list page.rows as menu>
+									<tr class="">
+										<td>${menu_index + 1}</td>
+										<td>${menu.parent.name!}</td>
+										<td>${menu.name!}</td>
+										<td>${menu.sort!}</td>
+										<td>${menu.href!}</td>
+										<td>${menu.icon!}</td>
+										<td><#if menu.isShow==1>
+														是
+													<#else>
+														否
+													</#if></td>
+										<td>${menu.permission!}</td>
+										<td>${menu.remarks!}</td>
+										<td><#if menu.isDeleted=='N'>
+														停用
+													<#else>
+														启用
+													</#if></td>
+										<td>
+											<a class="btn btn-minier btn-primary" href="${request.contextPath}/editMenu?id=${menu.id!}"  role="button">编辑</a>
+										</td>
+									</tr>
+								</#list>
+								<#else>
+									<tr>
+										<td colspan="12">
+											<div class="alert alert-danger" style="margin-bottom: 0px;" role="alert">没有记录!</div>
+										</td>
+									</tr>
+								</#if>
                             </tbody>
                         </table>
-                        <#-- <#include "/common/paginator.html"> -->
-                        <#if page?? && page.results&gt;0>
-	                        <div id="pg_grid-pager" class="ui-pager-control" role="group">
-	                       		<#list page.pageViews as pager>
-	                       			<span class="ui-icon bigger-140">${pager}</span>
-	                       		</#list>
-	                        </div>
-                        </#if>
+                        <#include "/common/gridpager.html">
                     </div>
                 </div>
             </div>

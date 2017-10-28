@@ -278,7 +278,7 @@ public class Page<E> implements Serializable {
         }
         this.pageViews.add("共<var>" + getTotalPage()
                 + "</var>页 到第<input type='text' id='PAGENO'  size='3' />页 <input type='button' id='skip' class='hand btn60x20' value='确定' onclick=\"javascript:window.location.href = '"
-                + url + "?" + params + "&pageNo=' + $('#PAGENO').val() \"/>");
+                + url + "?" + params + "&pageNo=' + ($('#PAGENO').val()&&!isNaN($('#PAGENO').val())?$('#PAGENO').val():1) \"/>");
     }
 
     /**

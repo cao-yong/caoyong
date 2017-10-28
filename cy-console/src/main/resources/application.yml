@@ -21,3 +21,5 @@ spring:
         registry:
             address: zookeeper://192.168.128.128:2181
         scan: com.caoyong
+        consumer:
+            timeout: 600000

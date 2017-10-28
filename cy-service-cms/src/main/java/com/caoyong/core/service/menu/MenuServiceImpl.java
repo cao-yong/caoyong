@@ -11,7 +11,6 @@ import com.caoyong.core.bean.base.BaseQuery;
 import com.caoyong.core.bean.base.Page;
 import com.caoyong.core.bean.base.ResultBase;
 import com.caoyong.core.bean.menu.Menu;
-import com.caoyong.core.bean.menu.MenuQuery;
 import com.caoyong.core.dao.menu.MenuDao;
 import com.caoyong.enums.ErrorCodeEnum;
 import com.caoyong.exception.BizException;
@@ -66,8 +65,7 @@ public class MenuServiceImpl implements MenuService {
                 ToStringBuilder.reflectionToString(query, ToStringStyle.DEFAULT_STYLE));
         Page<Menu> page = new Page<>();
         try {
-            MenuQuery example = new MenuQuery();
-            int count = menuDao.countByExample(example);
+            int count = menuDao.countMenuList();
             List<Menu> rows = menuDao.selectMenuList(query);
             //设置结果及分页对象
             if (null != rows && !rows.isEmpty()) {

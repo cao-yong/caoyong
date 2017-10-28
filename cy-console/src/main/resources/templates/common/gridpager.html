@@ -1,0 +1,34 @@
+<#if page?? && page.results?? && page.results&gt;0>
+	<div class="ui-jqgrid">
+		<div id="grid-pager"
+			class="ui-state-default ui-jqgrid-pager ui-corner-bottom" dir="ltr">
+			<div id="pg_grid-pager" class="ui-pager-control" role="group">
+				<table cellspacing="0" cellpadding="0" border="0" class="ui-pg-table"
+					style="width: 100%; table-layout: fixed; height: 100%;" role="row">
+					<tbody>
+					
+						<tr>
+							<td id="grid-pager_left" align="center"></td>
+							<td id="grid-pager_center" align="center"
+								style="white-space: pre;"><table
+									cellspacing="0" cellpadding="0" border="0"
+									style="table-layout: auto; margin-left:-80px" class="ui-pg-table">
+									<tbody>
+										<tr>
+											<#if page?? && page.results&gt;0>
+						                       		<#list page.pageViews as pager>
+						                       			<td class="ui-corner-all page pb15"><span class="r inb_a page_b">${pager}</span></td>
+						                       		</#list>
+					                        </#if>
+										</tr>
+										
+									</tbody>
+								</table></td>
+							<td id="grid-pager_right" align="center"></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</#if>

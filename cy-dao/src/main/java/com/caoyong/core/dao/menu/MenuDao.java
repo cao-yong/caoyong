@@ -22,6 +22,8 @@ public interface MenuDao {
     List<Menu> selectByExample(MenuQuery example);
 
     List<Menu> selectMenuList(BaseQuery query);
+    
+    Integer countMenuList();
 
     Menu selectByPrimaryKey(String id);
 

@@ -36,6 +36,8 @@ public class MenuController {
     public String menuList(Model model, BaseQuery query) {
         log.info("request menuList start.");
         try {
+        	query.setPage(true);
+        	query.setLimit(query.getLimit());
             Page<Menu> page = menuService.queryMenuPage(query);
             model.addAttribute("page", page);
         } catch (BizException e) {
