@@ -3,6 +3,7 @@ package com.caoyong.common.utlis;
 import java.math.BigDecimal;
 import java.util.Properties;
 
+import org.apache.commons.lang3.StringUtils;
 import org.hyperic.sigar.Mem;
 import org.hyperic.sigar.OperatingSystem;
 import org.hyperic.sigar.Sigar;
@@ -49,6 +50,9 @@ public class SystemInfoUtil {
             info.setUserHome(props.getProperty("user.home"));
             info.setJavaEnv(props.getProperty("java.version"));
             info.setJavaVm(props.getProperty("java.vm.name"));
+            if(StringUtils.isBlank(os.getVendorName())){
+            	info.setOs(props.getProperty("os.name"));
+            }
 
         } catch (SigarException e) {
             log.info("getSystemInfo error:{}", e.getCause(), e);
