@@ -33,9 +33,9 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 public class ProductController {
 
-	@Reference(version = "1.0.0")
+    @Reference(version = "1.0.0")
     private ProductService productService;
-	@Reference(version = "1.0.0")
+    @Reference(version = "1.0.0")
     private BrandService   brandService;
 
     /**

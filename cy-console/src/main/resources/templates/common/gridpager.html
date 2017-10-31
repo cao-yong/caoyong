@@ -12,12 +12,12 @@
 							<td id="grid-pager_center" align="center"
 								style="white-space: pre;"><table
 									cellspacing="0" cellpadding="0" border="0"
-									style="table-layout: auto; margin-left:-80px" class="ui-pg-table">
+									style="table-layout: auto;" class="ui-pg-table">
 									<tbody>
 										<tr>
 											<#if page?? && page.results&gt;0>
 						                       		<#list page.pageViews as pager>
-						                       			<td class="ui-corner-all page pb15"><span class="r inb_a page_b">${pager}</span></td>
+						                       			<td class="ui-corner-all page pb15" style="width:30px"><span class="r inb_a page_b">${pager}</span></td>
 						                       		</#list>
 					                        </#if>
 										</tr>

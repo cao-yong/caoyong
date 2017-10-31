@@ -3,11 +3,11 @@ package com.caoyong.utils;
 import java.lang.reflect.Field;
 
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.caoyong.enums.ErrorCodeEnum;
 import com.caoyong.exception.BizException;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 参数验空工具类
@@ -15,10 +15,8 @@ import com.caoyong.exception.BizException;
  * @author yong.cao
  * @time 2017年6月24日上午10:34:12
  */
-
+@Slf4j
 public class CheckParamsUtil {
-
-    private static final Logger log = LoggerFactory.getLogger(CheckParamsUtil.class);
 
     public static void check(Object o, Class<?> cz, String... arg) throws BizException {
         if (o == null) {

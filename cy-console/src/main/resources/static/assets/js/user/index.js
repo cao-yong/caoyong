@@ -16,8 +16,8 @@ function iFrameHeight(id) {
  */
 function activeMenu(obj, url) {
 	//$("#mainFrame").attr('src',url)
-	//移除所以li的active状态
-	if(url=="/monkey"){
+	//移除所有li的active状态
+	if(url=="/console"){
 		return;
 	}
 	$(".submenu li").removeClass('active');

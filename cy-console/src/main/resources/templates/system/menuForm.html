@@ -7,7 +7,7 @@
 		<meta name="description" content="overview &amp; stats" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
 		<link rel="stylesheet" href="${request.contextPath}/static/assets/css/bootstrap.min.css" />
-		<link rel="stylesheet" href="${request.contextPath}/static/assets/font-awesome/4.2.0/css/font-awesome.min.css" />
+		<link rel="stylesheet" href="${request.contextPath}/static/assets/font-awesome/4.7.0/css/font-awesome.min.css" />
 		<!-- page specific plugin styles -->
 		<link rel="stylesheet" href="${request.contextPath}/static/assets/css/jquery-ui.custom.min.css" />
 		<link rel="stylesheet" href="${request.contextPath}/static/assets/css/jquery.gritter.min.css" />
@@ -34,7 +34,6 @@
 		<script src="${request.contextPath}/static/assets/js/bootstrapValidator.min.js"></script>
 		<!-- user scripts -->
 		<script src="${request.contextPath}/static/assets/js/user/base.js"></script>
-		
 	</head>
 
 	<body class="no-skin" style="background-color: #FFF;">
@@ -58,7 +57,6 @@
 					<div class="col-xs-12">
 						<form id="platformForm" class="form-horizontal" role="form" action="${request.contextPath}/saveMenu" method="POST">
 							<input type="hidden" id="newtext" name="newtext" value="${newtext?c}">
-							<input type="hidden" id="_csrf" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 							<#if newtext>
 								<div id="menu">
 									<div class="space-4"></div>
@@ -78,14 +76,14 @@
 							</#if>
 							
 						
-							<div id="newOrEdit">
+							<div id="newOrEdit" style="margin-left:280px">
 							<#if menu?? && menu.id??>
 							<input type="hidden" id="id" name="id" value="${menu.id}">
 							</#if>
 							<div class="form-group">
 								<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> <strong class="text-danger">*</strong>父级权限 </label>
 								<div class="col-sm-9">
-									<input type="hidden" id="parent" name="parent" value="${menu.parent!}">
+									<input type="hidden" id="parent" value="${menu.parent!}">
 									<input type="hidden" id="parent_id" name="parent_id" value="${menu.parent.id!}">
 									<input type="text" id="parentText" name="parentText" placeholder="请选择父级权限" value="${menu.parent.name!}" class="col-xs-10 col-sm-5" <#if menu?? && menu.id??>disabled='true' readOnly='true'</#if>>
 									
@@ -123,7 +121,7 @@
 									<input type="text" id="icon" name="icon" value="${menu.icon!}" class="col-xs-2 col-sm-1" disabled='true' readOnly='true'>
 									<!-- <label id="iconText" class="col-sm-1 control-label" for="form-field-1">  </label> -->
 									<button class="btn btn-info" data-toggle="modal" type="button"
-									   data-target="#myModal" <#if menu?? && menu.id??>disabled='true' readOnly='true'</#if>>选择图标
+									   data-target="#myModal" <#if menu?? && menu.parent?? && menu.parent.id?? && menu.parent.id!='1'>disabled='true' readOnly='true'</#if>>选择图标
 									</button>
 								</div>
 							</div>
@@ -143,21 +141,54 @@
 							            </h4>
 							         </div>
 							         <div class="modal-body">
-							         	<div class="fa-hover col-md-3 col-sm-4"><input type="radio" name="showButton" value="fa-tachometer" id="fa-tachometer" /><a href="javascript:void(0)"><i class="fa fa-tachometer"></i> fa-tachometer</a></div>
-										<div class="fa-hover col-md-3 col-sm-4"><input type="radio" name="showButton" value="fa-bullhorn" id="fa-bullhorn"/><a href="javascript:void(0)"><i class="fa fa-bullhorn"></i> fa-bullhorn</a></div>
-										<div class="fa-hover col-md-3 col-sm-4"><input type="radio" name="showButton" value="fa-list" id="fa-list"/><a href="javascript:void(0)"><i class="fa fa-list"></i> fa-list</a></div>
-										<div class="fa-hover col-md-3 col-sm-4"><input type="radio" name="showButton" value="fa-list-alt" id="fa-list-alt"/><a href="javascript:void(0)"><i class="fa fa-list-alt"></i> fa-list-alt</a></div>
-							           	<div class="fa-hover col-md-3 col-sm-4"><input type="radio" name="showButton" value="fa-sliders" id="fa-sliders"/><a href="javascript:void(0)"><i class="fa fa-sliders"></i> fa-sliders</a></div>
-										<div class="fa-hover col-md-3 col-sm-4"><input type="radio" name="showButton" value="fa-share-alt" id="fa-share-alt"/><a href="javascript:void(0)"><i class="fa fa-share-alt"></i> fa-share-alt</a></div>
-										<div class="fa-hover col-md-3 col-sm-4"><input type="radio" name="showButton" value="fa-archive" id="fa-archive"/><a href="javascript:void(0)"><i class="fa fa-archive"></i> fa-archive</a></div>
-										<div class="fa-hover col-md-3 col-sm-4"><input type="radio" name="showButton" value="fa-asterisk" id="fa-asterisk"/><a href="javascript:void(0)"><i class="fa fa-asterisk"></i> fa-asterisk</a></div>
-										<div class="fa-hover col-md-3 col-sm-4"><input type="radio" name="showButton" value="fa-cog" id="fa-cog"/><a href="javascript:void(0)"><i class="fa fa-cog"></i> fa-cog</a></div>
-										<div class="fa-hover col-md-3 col-sm-4"><input type="radio" name="showButton" value="fa-th" id="fa-th"/><a href="javascript:void(0)"><i class="fa fa-th"></i> fa-th</a></div>
-										<div class="fa-hover col-md-3 col-sm-4"><input type="radio" name="showButton" value="fa-align-left" id="fa-align-left"/><a href="javascript:void(0)"><i class="fa fa-align-left"></i> fa-align-left</a></div>
-										<div class="fa-hover col-md-3 col-sm-4"><input type="radio" name="showButton" value="fa-plus-square" id="fa-plus-square"/><a href="javascript:void(0)"><i class="fa fa-plus-square"></i> fa-plus-square</a></div>
-										<div class="fa-hover col-md-3 col-sm-4"><input type="radio" name="showButton" value="fa-spinner" id="fa-spinner"/><a href="javascript:void(0)"><i class="fa fa-spinner"></i> fa-spinner</a></div>
-										<div class="fa-hover col-md-3 col-sm-4"><input type="radio" name="showButton" value="fa-sitemap" id="fa-sitemap"/><a href="javascript:void(0)"><i class="fa fa-sitemap"></i> fa-sitemap</a></div>
-										<div class="fa-hover col-md-3 col-sm-4"><input type="radio" name="showButton" value="" id="none"/><a href="javascript:void(0)"> 无</a></div>
+							         	<div class="fa-hover col-md-2 col-sm-4"><input type="radio" name="showButton" icon="fa-tachometer" /><i class="fa fa-tachometer"></i></div>
+										<div class="fa-hover col-md-2 col-sm-4"><input type="radio" name="showButton" icon="fa-bullhorn"/><i class="fa fa-bullhorn"></i></div>
+										<div class="fa-hover col-md-2 col-sm-4"><input type="radio" name="showButton" icon="fa-list"/><i class="fa fa-list"></i></div>
+										<div class="fa-hover col-md-2 col-sm-4"><input type="radio" name="showButton" icon="fa-list-alt"/><i class="fa fa-list-alt"></i></div>
+							           	<div class="fa-hover col-md-2 col-sm-4"><input type="radio" name="showButton" icon="fa-sliders"/><i class="fa fa-sliders"></i></div>
+										<div class="fa-hover col-md-2 col-sm-4"><input type="radio" name="showButton" icon="fa-share-alt"/><i class="fa fa-share-alt"></i></div>
+										<div class="fa-hover col-md-2 col-sm-4"><input type="radio" name="showButton" icon="fa-archive"/><i class="fa fa-archive"></i></div>
+										<div class="fa-hover col-md-2 col-sm-4"><input type="radio" name="showButton" icon="fa-asterisk"/><i class="fa fa-asterisk"></i></div>
+										<div class="fa-hover col-md-2 col-sm-4"><input type="radio" name="showButton" icon="fa-cog"/><i class="fa fa-cog"></i></div>
+										<div class="fa-hover col-md-2 col-sm-4"><input type="radio" name="showButton" icon="fa-cogs"/><i class="fa fa-cogs"></i></div>
+										<div class="fa-hover col-md-2 col-sm-4"><input type="radio" name="showButton" icon="fa-th"/><i class="fa fa-th"></i></div>
+										<div class="fa-hover col-md-2 col-sm-4"><input type="radio" name="showButton" icon="fa-align-left"/><i class="fa fa-align-left"></i></div>
+										<div class="fa-hover col-md-2 col-sm-4"><input type="radio" name="showButton" icon="fa-spinner"/><i class="fa fa-spinner"></i></div>
+										<div class="fa-hover col-md-2 col-sm-4"><input type="radio" name="showButton" icon="fa-sitemap"/><i class="fa fa-sitemap"></i></div>
+										<div class="fa-hover col-md-2 col-sm-4"><input type="radio" name="showButton" icon="fa-envelope"/><i class="fa fa-envelope"></i></div>
+										<div class="fa-hover col-md-2 col-sm-4"><input type="radio" name="showButton" icon="fa-globe"/><i class="fa fa-globe"></i></div>
+										<div class="fa-hover col-md-2 col-sm-4"><input type="radio" name="showButton" icon="fa-bar-chart-o"/><i class="fa fa-bar-chart-o"></i></div>
+										<div class="fa-hover col-md-2 col-sm-4"><input type="radio" name="showButton" icon="fa-home"/><i class="fa fa-home"></i></div>
+										<div class="fa-hover col-md-2 col-sm-4"><input type="radio" name="showButton" icon="fa-flag"/><i class="fa fa-flag"></i></div>
+										<div class="fa-hover col-md-2 col-sm-4"><input type="radio" name="showButton" icon="fa-laptop"/><i class="fa fa-laptop"></i></div>
+										<div class="fa-hover col-md-2 col-sm-4"><input type="radio" name="showButton" icon="fa-credit-card"/><i class="fa fa-credit-card"></i></div>
+										<div class="fa-hover col-md-2 col-sm-4"><input type="radio" name="showButton" icon="fa-calendar"/><i class="fa fa-calendar"></i></div>
+										<div class="fa-hover col-md-2 col-sm-4"><input type="radio" name="showButton" icon="fa-superpowers"/><i class="fa fa-superpowers"></i></div>
+										<div class="fa-hover col-md-2 col-sm-4"><input type="radio" name="showButton" icon="fa-wpexplorer"/><i class="fa fa-wpexplorer"></i></div>
+										<div class="fa-hover col-md-2 col-sm-4"><input type="radio" name="showButton" icon="fa-linode"/><i class="fa fa-linode"></i></div>
+										<div class="fa-hover col-md-2 col-sm-4"><input type="radio" name="showButton" icon="fa-free-code-camp"/><i class="fa fa-free-code-camp"></i></div>
+										<div class="fa-hover col-md-2 col-sm-4"><input type="radio" name="showButton" icon="fa-bandcamp"/><i class="fa fa-bandcamp"></i></div>
+										<div class="fa-hover col-md-2 col-sm-4"><input type="radio" name="showButton" icon="fa-window-maximize"/><i class="fa fa-window-maximize"></i></div>
+										<div class="fa-hover col-md-2 col-sm-4"><input type="radio" name="showButton" icon="fa-eercast"/><i class="fa fa-eercast"></i></div>
+										<div class="fa-hover col-md-2 col-sm-4"><input type="radio" name="showButton" icon="fa-user-circle-o"/><i class="fa fa-user-circle-o"></i></div>
+										<div class="fa-hover col-md-2 col-sm-4"><input type="radio" name="showButton" icon="fa-id-badge"/><i class="fa fa-id-badge"></i></div>
+										<div class="fa-hover col-md-2 col-sm-4"><input type="radio" name="showButton" icon="fa-meetup"/><i class="fa fa-meetup"></i></div>
+										<div class="fa-hover col-md-2 col-sm-4"><input type="radio" name="showButton" icon="fa-telegram"/><i class="fa fa-telegram"></i></div>
+										<div class="fa-hover col-md-2 col-sm-4"><input type="radio" name="showButton" icon="fa-ravelry"/><i class="fa fa-ravelry"></i></div>
+										<div class="fa-hover col-md-2 col-sm-4"><input type="radio" name="showButton" icon="fa-podcast"/><i class="fa fa-podcast"></i></div>
+										<div class="fa-hover col-md-2 col-sm-4"><input type="radio" name="showButton" icon="fa-area-chart"/><i class="fa fa-area-chart"></i></div>
+										<div class="fa-hover col-md-2 col-sm-4"><input type="radio" name="showButton" icon="fa-bicycle"/><i class="fa fa-bicycle"></i></div>
+										<div class="fa-hover col-md-2 col-sm-4"><input type="radio" name="showButton" icon="fa-rss"/><i class="fa fa-rss"></i></div>
+										<div class="fa-hover col-md-2 col-sm-4"><input type="radio" name="showButton" icon="fa-pie-chart"/><i class="fa fa-pie-chart"></i></div>
+										<div class="fa-hover col-md-2 col-sm-4"><input type="radio" name="showButton" icon="fa-hourglass-end"/><i class="fa fa-hourglass-end"></i></div>
+										<div class="fa-hover col-md-2 col-sm-4"><input type="radio" name="showButton" icon="fa-wrench"/><i class="fa fa-wrench"></i></div>
+										<div class="fa-hover col-md-2 col-sm-4"><input type="radio" name="showButton" icon="fa-unlock"/><i class="fa fa-unlock"></i></div>
+										<div class="fa-hover col-md-2 col-sm-4"><input type="radio" name="showButton" icon="fa-tasks"/><i class="fa fa-tasks"></i></div>
+										<div class="fa-hover col-md-2 col-sm-4"><input type="radio" name="showButton" icon="fa-object-ungroup"/><i class="fa fa-object-ungroup"></i></div>
+										<div class="fa-hover col-md-2 col-sm-4"><input type="radio" name="showButton" icon="fa-paw"/><i class="fa fa-paw"></i></div>
+										<div class="fa-hover col-md-2 col-sm-4"><input type="radio" name="showButton" icon="fa-recycle"/><i class="fa fa-recycle"></i></div>
+										<div class="fa-hover col-md-2 col-sm-4"><input type="radio" name="showButton" icon="fa-leaf"/><i class="fa fa-leaf"></i></div>
+										<div class="fa-hover col-md-2 col-sm-4"><input type="radio" name="showButton" icon=""/>无</div>
 							         </div>
 							         <div class="modal-footer">
 							            <button type="button" class="btn btn-default" type="button"
@@ -178,10 +209,12 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> <strong class="text-danger">*</strong>是否在菜单中显示 </label>
 								<div class="col-sm-1">
-									<select class="form-control" name="isShow" id="isShow" <#if menu?? && menu.id??></#if>>
-										<#list isShowList as isShow>
-											<option value=${isShow.value} <#if menu.isShow == isShow.value>selected</#if>>${isShow.showName}</option>
-										</#list>
+									<select class="form-control" name="isShow" id="isShow" <#if menu?? && menu.id??>disabled='true' readOnly='true'</#if>>
+										<#if menu.isShow?? && menu.isShow==1>
+											<option value=1 selected>显示</option>
+											<#else>
+											<option value=0 selected>不显示</option>
+										</#if>
 									</select>
 								</div>
 							</div>
@@ -204,16 +237,18 @@
 								<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> <strong class="text-danger">*</strong>是否启用 </label>
 								<div class="col-sm-1">
 									<select class="form-control" name="delFlag" id="delFlag" <#if menu?? && menu.id??>disabled='true' readOnly='true'</#if>>
-										<#list delFlagList as delFlag>
-											<option value=${delFlag.value} <#if menu.delFlag == delFlag.value>selected</#if>>${delFlag.showName}</option>
-										</#list>
+										<#if menu.isDeleted?? && menu.isDeleted=='N'>
+											<option value='N' selected>启用</option>
+											<#else>
+											<option value='Y' selected>禁用</option>
+										</#if>
 									</select>
 								</div>
 							</div>
 	
-							<div class="clearfix form-actions">
+							<div class="clearfix form-actions" style="margin-left:-280px">
 								<div class="col-md-offset-4 col-md-8">
-									<button id="submitBtn" class="btn btn-info" type="button">
+									<button id="submitBtn" class="btn btn-info" type="button" style="margin-left:180px">
 										<i class="ace-icon fa fa-check bigger-110"></i>
 										保存
 									</button>
@@ -309,18 +344,35 @@
 				})
 				
 				$("#submitIcon").on("click", function(){
-					var inputIcon=document.getElementsByName("showButton");
-					var iconValue;
-					for(k in inputIcon){
-						if(inputIcon[k].checked){
-							iconValue=inputIcon[k].value;
+					var iconValue = $('input:radio[name="showButton"]:checked').attr('icon');
+					//查询图标是否已经被使用过
+					$.ajax({
+						type : 'POST',
+						url : '${request.contextPath}/menu/queryChosenMenuIcons.json',
+						dataType : 'json',
+						success : function(result){
+							if(result.success && $.inArray(iconValue, result.icons)!=-1){
+								bootbox.alert({  
+						            buttons: {  
+						               ok: {  
+						                    label: '确定'  
+						                }  
+						            },  
+						            message: '请您选择没用使用过的图标!',  
+						            title: "温馨提示",  
+						        });
+								//3秒自动关闭提示信息
+								window.setTimeout(function(){
+								    bootbox.hideAll();
+								}, 2000);
+							}else{
+								$("#icon").val(iconValue);
+								$('#myModal').modal('hide');
+							}
 						}
-					}
-					$("#icon").val(iconValue);
-					$('#myModal').modal('hide');
+					});
 				});
-			
-			
+				
 				$('#submitBtn').on('click', function(){
 					var parent_id = $("#parent_id").val();
 					var name = $("#name").val();
@@ -344,11 +396,26 @@
 					} else if(isEmpty(delFlag)) {
 						$("#delFlag").focus();
 						showMsg("请选择是否启用！");
-					} 
-					else {
-						var action="${request.contextPath}/saveMenu?isShowNew="+isShow+"&sort="+sort+"&permissionNew="+permission+"&iconNew="+icon+"&parentId="+parent_id;
-						$("#platformForm").attr("action",action);
-						$("#platformForm").submit();
+					} else {
+						var data = $.extend({
+							isShowNew:isShow,
+							sortNew:sort,
+							icon:icon,
+							permissionNew:permission
+						},$('#platformForm').serializeObject());
+						$.ajax({
+							type:'POST',
+							url:'${request.contextPath}/menu/modifyMenu.json',
+							dataType:'json',
+							data:data,
+							success:function(result){
+								if(result.success){
+									window.location.href='${request.contextPath}/menu/menuList.do';
+								}else{
+									showMsg(result.msg);
+								}
+							}
+						});
 					}
 				});
 			})

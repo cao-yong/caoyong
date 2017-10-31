@@ -9,8 +9,6 @@
     <!-- bootstrap & fontawesome -->
     <link rel="stylesheet" href="${request.contextPath}/static/assets/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="${request.contextPath}/static/assets/font-awesome/4.5.0/css/font-awesome.min.css"/>
-    <!-- page specific plugin styles -->
-    <link rel="stylesheet" href="${request.contextPath}/static/assets/css/daterangepicker.min.css"/>
     <!-- text fonts -->
     <link rel="stylesheet" href="${request.contextPath}/static/assets/css/fonts.googleapis.com.css"/>
     <!-- ace styles -->
@@ -21,10 +19,11 @@
     <!-- ace settings handler -->
     <script src="${request.contextPath}/static/assets/js/jquery-2.1.4.min.js"></script>
     <script src="${request.contextPath}/static/assets/js/ace-extra.min.js"></script>
+    <script src="${request.contextPath}/static/assets/js/bootbox.min.js"></script>
 
     <script src="${request.contextPath}/static/assets/js/user/base.js"></script>
     <link rel="stylesheet" href="${request.contextPath}/static/assets/css/bsie-paginator.css"/>
-    <link rel="stylesheet" href="${request.contextPath}/stylesheets/console.css" />
+    <link rel="stylesheet" href="${request.contextPath}/static/stylesheets/console.css" />
 </head>
 
 <body class="skin-2" style="background-color: #FFF;">
@@ -83,7 +82,8 @@
 														启用
 													</#if></td>
 										<td>
-											<a class="btn btn-minier btn-primary" href="${request.contextPath}/editMenu?id=${menu.id!}"  role="button">编辑</a>
+											<a class="btn btn-minier btn-primary" href="${request.contextPath}/menu/editMenu.do?id=${menu.id!}"  role="button">编辑</a>
+											<a class="btn btn-minier btn-danger deleteMenu" href="javascript:void(0)" menuId="${menu.id!}" role="button">删除</a>
 										</td>
 									</tr>
 								</#list>
@@ -105,6 +105,38 @@
 </div>
 <script type="text/javascript">
     if ('ontouchstart' in document.documentElement) document.write("<script src='${request.contextPath}/static/assets/js/jquery.mobile.custom.min.js'>" + "<" + "/script>");
+    jQuery(function($) {
+    	//刪除菜单
+    	$('.deleteMenu').click(function(){
+    		var id = $(this).attr('menuId');
+    		bootbox.dialog({
+				message: "确定删除吗？", 
+				buttons: {
+					"success" : {
+						"label" : "确定",
+						"className" : "btn-sm btn-primary",
+						"callback" :function(){
+							$.ajax({
+								type : 'post',
+								url : '${request.contextPath}/menu/deleteMenu.json',
+								dataType : 'json',
+								data : {
+									id : id
+								},
+								success : function(result){
+									if(result.success){
+										window.location.reload();
+									}else{
+										showMsg(result.msg);
+									}
+								}
+							});
+						}
+					}
+				}
+			});
+    	});
+    })
 </script>
 <script src="${request.contextPath}/static/assets/js/bootstrap.min.js"></script>
 

@@ -15,5 +15,12 @@
   		<artifactId>cy-pojo</artifactId>
   		<version>0.0.1-SNAPSHOT</version>
   	</dependency>
+  	
+  	<!-- 使用lombok自动生成getter、setter方法等 -->
+	<dependency>
+		<groupId>org.projectlombok</groupId>
+		<artifactId>lombok</artifactId>
+		<scope>provided</scope>
+	</dependency>
   </dependencies>
 </project>

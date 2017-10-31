@@ -22,7 +22,9 @@ public interface MenuDao {
     List<Menu> selectByExample(MenuQuery example);
 
     List<Menu> selectMenuList(BaseQuery query);
-    
+
+    Menu queryMenuById(String id);
+
     Integer countMenuList();
 
     Menu selectByPrimaryKey(String id);
