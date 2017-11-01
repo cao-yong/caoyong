@@ -36,4 +36,5 @@ public interface Constants {
     public static final String  BUYER_CART           = "BUYER_CART";
     //保存在redis中购物车的名字
     public static final String  BUYER_CART_REDIS     = "buyerCart:";
+    public static final String  ONE                  = "1";
 }

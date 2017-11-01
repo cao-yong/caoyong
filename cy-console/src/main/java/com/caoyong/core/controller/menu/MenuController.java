@@ -1,6 +1,7 @@
 package com.caoyong.core.controller.menu;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -8,13 +9,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.dubbo.config.annotation.Reference;
-import com.caoyong.core.bean.base.BaseQuery;
+import com.caoyong.common.utlis.JSONConversionUtil;
+import com.caoyong.common.web.Constants;
 import com.caoyong.core.bean.base.BaseResponse;
 import com.caoyong.core.bean.base.Page;
 import com.caoyong.core.bean.base.ResultBase;
 import com.caoyong.core.bean.menu.ChosenMenuIconsResp;
 import com.caoyong.core.bean.menu.Menu;
 import com.caoyong.core.bean.menu.MenuDTO;
+import com.caoyong.core.bean.menu.MenuQueryDTO;
+import com.caoyong.core.bean.menu.MenuTreeNodeVO;
+import com.caoyong.core.bean.menu.MenuTreeVO;
 import com.caoyong.core.service.menu.MenuService;
 import com.caoyong.enums.ErrorCodeEnum;
 import com.caoyong.exception.BizException;
@@ -41,7 +46,7 @@ public class MenuController {
      * @return
      */
     @RequestMapping("/menuList.do")
-    public String menuList(Model model, BaseQuery query) {
+    public String menuList(Model model, MenuQueryDTO query) {
         log.info("request menuList start.");
         try {
             query.setPage(true);
@@ -78,6 +83,75 @@ public class MenuController {
             log.error("editMenu Exception:{}", e.getMessage(), e);
         }
         log.info("request editMenu end.");
+        return "/system/menuForm";
+    }
+
+    /**
+     * 获取父节点信息
+     * 
+     * @param model
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/getParent.json")
+    public MenuTreeNodeVO getParent(String name) {
+        log.info("request getParent start.");
+        MenuTreeNodeVO vo = new MenuTreeNodeVO();
+        try {
+            MenuQueryDTO query = new MenuQueryDTO();
+            query.setName(name);
+            ResultBase<List<Menu>> result = menuService.queryMenuList(query);
+            if (result.isSuccess() && !result.getValue().isEmpty()) {
+                Menu menu = result.getValue().get(0);
+                vo.setMsg(menu);
+                ResultBase<List<String>> icons = menuService.queryChosenMenuIcons();
+                if (icons.isSuccess()) {
+                    vo.setIcons(icons.getValue());
+                }
+                vo.setCode(Constants.ONE);
+            }
+        } catch (BizException e) {
+            log.error("getParent BizException:{}", e.getMessage(), e);
+        } catch (Exception e) {
+            log.error("getParent Exception:{}", e.getMessage(), e);
+        }
+        log.info("request getParent end.");
+        return vo;
+    }
+
+    /**
+     * 跳转新建菜单视图
+     * 
+     * @param model
+     * @return
+     */
+    @RequestMapping("/newMenu.do")
+    public String newMenu(Model model) {
+        log.info("request newMenu start.");
+        try {
+            MenuQueryDTO query = new MenuQueryDTO();
+            ResultBase<List<Menu>> result = menuService.queryMenuList(query);
+            if (result.isSuccess()) {
+                model.addAttribute("menus", result.getValue());
+                if (result.getValue().size() > 0) {
+                    List<MenuTreeVO> menuTrees = result.getValue().stream().map(MenuTreeVO::new)
+                            .collect(Collectors.toList());
+                    //把menuTrees转成json字符串
+                    String menus = JSONConversionUtil.objToString(menuTrees);
+                    model.addAttribute("menus", menus);
+                    log.info("convert result menu:{}", menus);
+                }
+                model.addAttribute("newtext", true);
+                Menu menu = new Menu();
+                menu.setParent(new Menu());
+                model.addAttribute("menu", menu);
+            }
+        } catch (BizException e) {
+            log.error("newMenu BizException:{}", e.getMessage(), e);
+        } catch (Exception e) {
+            log.error("newMenu Exception:{}", e.getMessage(), e);
+        }
+        log.info("request newMenu end.");
         return "/system/menuForm";
     }
 

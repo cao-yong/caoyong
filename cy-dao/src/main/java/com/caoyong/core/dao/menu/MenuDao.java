@@ -4,9 +4,9 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
-import com.caoyong.core.bean.base.BaseQuery;
 import com.caoyong.core.bean.menu.Menu;
 import com.caoyong.core.bean.menu.MenuQuery;
+import com.caoyong.core.bean.menu.MenuQueryDTO;
 
 public interface MenuDao {
     int countByExample(MenuQuery example);
@@ -21,7 +21,7 @@ public interface MenuDao {
 
     List<Menu> selectByExample(MenuQuery example);
 
-    List<Menu> selectMenuList(BaseQuery query);
+    List<Menu> selectMenuList(MenuQueryDTO query);
 
     Menu queryMenuById(String id);
 

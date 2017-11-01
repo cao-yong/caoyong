@@ -11,12 +11,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.caoyong.common.web.Constants;
-import com.caoyong.core.bean.base.BaseQuery;
 import com.caoyong.core.bean.base.Page;
 import com.caoyong.core.bean.base.ResultBase;
 import com.caoyong.core.bean.menu.Menu;
 import com.caoyong.core.bean.menu.MenuDTO;
 import com.caoyong.core.bean.menu.MenuQuery;
+import com.caoyong.core.bean.menu.MenuQueryDTO;
 import com.caoyong.core.dao.menu.MenuDao;
 import com.caoyong.enums.ErrorCodeEnum;
 import com.caoyong.exception.BizException;
@@ -44,11 +44,10 @@ public class MenuServiceImpl implements MenuService {
      * @return 结果集
      */
     @Override
-    public ResultBase<List<Menu>> queryMenuList() throws BizException {
+    public ResultBase<List<Menu>> queryMenuList(MenuQueryDTO query) throws BizException {
         log.info("queryMenuList start.");
         ResultBase<List<Menu>> result = new ResultBase<List<Menu>>();
         try {
-            BaseQuery query = new BaseQuery();
             List<Menu> menuList = menuDao.selectMenuList(query);
             result.setValue(menuList);
             result.setSuccess(true);
@@ -68,7 +67,7 @@ public class MenuServiceImpl implements MenuService {
      * @return 分页
      */
     @Override
-    public Page<Menu> queryMenuPage(BaseQuery query) throws BizException {
+    public Page<Menu> queryMenuPage(MenuQueryDTO query) throws BizException {
         log.info("queryMenuPage start. query:{}",
                 ToStringBuilder.reflectionToString(query, ToStringStyle.DEFAULT_STYLE));
         Page<Menu> page = new Page<>();
@@ -142,6 +141,9 @@ public class MenuServiceImpl implements MenuService {
             record.setIsShow(menuDTO.getIsShow());
             record.setPermission(menuDTO.getPermissionNew());
             record.setUpdateTime(new Date());
+            Menu parent = new Menu();
+            parent.setId(menuDTO.getParentId());
+            record.setParent(parent);
             int count = menuDao.updateByPrimaryKeySelective(record);
             if (count > 0) {
                 result.setValue(count);

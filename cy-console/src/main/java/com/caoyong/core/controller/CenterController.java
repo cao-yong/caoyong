@@ -11,6 +11,7 @@ import com.caoyong.common.utlis.SystemInfoUtil;
 import com.caoyong.common.vo.SystemInfo;
 import com.caoyong.core.bean.base.ResultBase;
 import com.caoyong.core.bean.menu.Menu;
+import com.caoyong.core.bean.menu.MenuQueryDTO;
 import com.caoyong.core.service.menu.MenuService;
 import com.caoyong.exception.BizException;
 
@@ -35,7 +36,8 @@ public class CenterController {
         log.info("index start");
         //查询出页面的菜单
         try {
-            ResultBase<List<Menu>> result = menuService.queryMenuList();
+            MenuQueryDTO query = new MenuQueryDTO();
+            ResultBase<List<Menu>> result = menuService.queryMenuList(query);
             List<Menu> menus = result.getValue();
             model.addAttribute("menus", menus);
             //查询系统基本信息

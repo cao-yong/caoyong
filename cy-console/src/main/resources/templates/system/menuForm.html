@@ -313,7 +313,7 @@
 					if(node_class == 'node_name'){
 						node_html = $(e.target).html();
 						$.ajax({
-							url : '${request.contextPath}/getParent?nodeHtml='+node_html,
+							url : '${request.contextPath}/menu/getParent.json?name='+node_html,
 							type : "GET",
 							success:function(data) {
 								if(data.sessionStatus==540){//异步请求session过期状态
@@ -401,7 +401,8 @@
 							isShowNew:isShow,
 							sortNew:sort,
 							icon:icon,
-							permissionNew:permission
+							permissionNew:permission,
+							parentId:parent_id
 						},$('#platformForm').serializeObject());
 						$.ajax({
 							type:'POST',
