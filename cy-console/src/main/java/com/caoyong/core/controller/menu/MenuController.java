@@ -3,6 +3,7 @@ package com.caoyong.core.controller.menu;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -143,6 +144,8 @@ public class MenuController {
                 }
                 model.addAttribute("newtext", true);
                 Menu menu = new Menu();
+                menu.setIsShow(1);
+                menu.setIsDeleted(Constants.CONSTANTS_N);
                 menu.setParent(new Menu());
                 model.addAttribute("menu", menu);
             }
@@ -167,7 +170,12 @@ public class MenuController {
         log.info("request modifyMenu start.");
         BaseResponse resp = new BaseResponse();
         try {
-            ResultBase<Integer> result = menuService.updateMenuByMenuDTO(menuDTO);
+            ResultBase<Integer> result;
+            if (StringUtils.isNotBlank(menuDTO.getId())) {
+                result = menuService.updateMenuByMenuDTO(menuDTO);
+            } else {
+                result = menuService.saveMenuAndRoleMenuByMenuDTO(menuDTO);
+            }
             resp.setCode(result.getErrorCode());
             resp.setMsg(result.getErrorMsg());
             resp.setSuccess(result.isSuccess());

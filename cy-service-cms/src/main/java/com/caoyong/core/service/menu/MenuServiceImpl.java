@@ -10,6 +10,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.caoyong.common.utlis.RandomUUIDUtil;
 import com.caoyong.common.web.Constants;
 import com.caoyong.core.bean.base.Page;
 import com.caoyong.core.bean.base.ResultBase;
@@ -17,7 +18,9 @@ import com.caoyong.core.bean.menu.Menu;
 import com.caoyong.core.bean.menu.MenuDTO;
 import com.caoyong.core.bean.menu.MenuQuery;
 import com.caoyong.core.bean.menu.MenuQueryDTO;
+import com.caoyong.core.bean.menu.RoleMenu;
 import com.caoyong.core.dao.menu.MenuDao;
+import com.caoyong.core.dao.menu.RoleMenuDao;
 import com.caoyong.enums.ErrorCodeEnum;
 import com.caoyong.exception.BizException;
 import com.caoyong.utils.BeanConvertionHelp;
@@ -35,7 +38,9 @@ import lombok.extern.slf4j.Slf4j;
 @Service("menuService")
 public class MenuServiceImpl implements MenuService {
     @Autowired
-    private MenuDao menuDao;
+    private MenuDao     menuDao;
+    @Autowired
+    private RoleMenuDao roleMenuDao;
 
     /**
      * 查询菜单
@@ -156,6 +161,51 @@ public class MenuServiceImpl implements MenuService {
             throw new BizException(ErrorCodeEnum.UNKOWN_ERROR, e.getMessage(), e);
         }
         log.info("updateMenuByMenuDTO end.");
+        return result;
+    }
+
+    /**
+     * 保存
+     * 
+     * @param menuDTO 数据传输对象
+     * @return 影响的行数
+     */
+    @Override
+    public ResultBase<Integer> saveMenuAndRoleMenuByMenuDTO(MenuDTO menuDTO) throws BizException {
+        log.info("saveMenuByMenuDTO start.menuDTO:{}",
+                ToStringBuilder.reflectionToString(menuDTO, ToStringStyle.DEFAULT_STYLE));
+        ResultBase<Integer> result = new ResultBase<>();
+        try {
+            Menu record = BeanConvertionHelp.copyBeanFieldValue(Menu.class, menuDTO);
+            record.setId(RandomUUIDUtil.getRadomUUID());
+            record.setCreateTime(new Date());
+            record.setUpdateTime(new Date());
+            record.setIsDeleted(Constants.CONSTANTS_N);
+            record.setModifier(Constants.SYSTEM);
+            record.setCreator(Constants.SYSTEM);
+            Menu parent = new Menu();
+            parent.setId(menuDTO.getParentId());
+            record.setParent(parent);
+            menuDao.insertSelective(record);
+            //保存role_menu
+            RoleMenu roleMenu = new RoleMenu();
+            roleMenu.setRoleId(Constants.ONE);
+            roleMenu.setMenuId(record.getId());
+            roleMenu.setCreateTime(new Date());
+            roleMenu.setUpdateTime(new Date());
+            roleMenu.setIsDeleted(Constants.CONSTANTS_N);
+            roleMenu.setModifier(Constants.SYSTEM);
+            roleMenu.setCreator(Constants.SYSTEM);
+            roleMenuDao.insertSelective(roleMenu);
+            result.setSuccess(true);
+            result.setValue(1);
+        } catch (Exception e) {
+            log.error("saveMenuByMenuDTO Exception:{}", e.getMessage(), e);
+            result.setErrorCode(ErrorCodeEnum.UNKOWN_ERROR.getCode());
+            result.setErrorMsg(ErrorCodeEnum.UNKOWN_ERROR.getMsg());
+            throw new BizException(ErrorCodeEnum.UNKOWN_ERROR, e.getMessage(), e);
+        }
+        log.info("saveMenuByMenuDTO end.");
         return result;
     }
 

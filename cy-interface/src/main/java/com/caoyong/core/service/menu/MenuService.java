@@ -50,6 +50,15 @@ public interface MenuService {
     ResultBase<Integer> updateMenuByMenuDTO(MenuDTO menuDTO) throws BizException;
 
     /**
+     * 保存菜单
+     * 
+     * @param menuDTO 数据传输对象
+     * @return 影响的行数
+     * @throws BizException
+     */
+    ResultBase<Integer> saveMenuAndRoleMenuByMenuDTO(MenuDTO menuDTO) throws BizException;
+
+    /**
      * 通过id删除菜单
      * 
      * @param id
