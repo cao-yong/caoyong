@@ -1,6 +1,7 @@
 package com.caoyong.common.utlis;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Properties;
 
 import org.apache.commons.lang3.StringUtils;
@@ -50,8 +51,8 @@ public class SystemInfoUtil {
             info.setUserHome(props.getProperty("user.home"));
             info.setJavaEnv(props.getProperty("java.version"));
             info.setJavaVm(props.getProperty("java.vm.name"));
-            if(StringUtils.isBlank(os.getVendorName())){
-            	info.setOs(props.getProperty("os.name"));
+            if (StringUtils.isBlank(os.getVendorName())) {
+                info.setOs(props.getProperty("os.name"));
             }
 
         } catch (SigarException e) {
@@ -67,8 +68,7 @@ public class SystemInfoUtil {
      * @return
      */
     private static float computerMemery(long memory) {
-        BigDecimal mem = new BigDecimal(memory).divide(new BigDecimal(1024 * 1024L)).setScale(2,
-                BigDecimal.ROUND_HALF_UP);
+        BigDecimal mem = new BigDecimal(memory).divide(new BigDecimal(1024 * 1024L)).setScale(2, RoundingMode.HALF_UP);
         return mem.floatValue();
     }
 }

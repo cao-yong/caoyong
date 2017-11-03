@@ -10,9 +10,9 @@ import com.alibaba.dubbo.config.annotation.Reference;
 import com.caoyong.common.utlis.SystemInfoUtil;
 import com.caoyong.common.vo.SystemInfo;
 import com.caoyong.core.bean.base.ResultBase;
-import com.caoyong.core.bean.menu.Menu;
-import com.caoyong.core.bean.menu.MenuQueryDTO;
-import com.caoyong.core.service.menu.MenuService;
+import com.caoyong.core.bean.system.Menu;
+import com.caoyong.core.bean.system.MenuQueryDTO;
+import com.caoyong.core.service.system.MenuService;
 import com.caoyong.exception.BizException;
 
 import lombok.extern.slf4j.Slf4j;

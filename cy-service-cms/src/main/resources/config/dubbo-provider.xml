@@ -39,5 +39,8 @@
     <dubbo:service interface="com.caoyong.core.service.CmsService" ref="cmsService" version="1.0.0"/>
     
     <!-- 菜单服务 -->
-    <dubbo:service interface="com.caoyong.core.service.menu.MenuService" ref="menuService" version="1.0.0"/>
+    <dubbo:service interface="com.caoyong.core.service.system.MenuService" ref="menuService" version="1.0.0"/>
+
+    <!-- 角色服务 -->
+    <dubbo:service interface="com.caoyong.core.service.system.RoleService" ref="roleService" version="1.0.0"/>
 </beans>
