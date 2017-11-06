@@ -66,7 +66,7 @@ public class RoleServiceImpl implements RoleService {
         try {
             RoleQuery example = new RoleQuery();
             int count = roleDao.countByExample(example);
-            example.setStartRow(query.getStart());
+            example.setPageNo(query.getPageNo());
             example.setPageSize(query.getLimit());
             example.createCriteria().andIsDeletedEqualTo(Constants.CONSTANTS_N);
             List<Role> rows = roleDao.selectByExample(example);
