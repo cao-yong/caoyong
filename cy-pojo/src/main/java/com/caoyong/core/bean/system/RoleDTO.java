@@ -37,4 +37,8 @@ public class RoleDTO implements Serializable {
      */
     private String            remark;
 
+    /**
+     * 保存角色菜单id
+     */
+    private String            menuIds;
 }

@@ -1,9 +1,11 @@
 package com.caoyong.core.dao.system;
 
 import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
 
 import com.caoyong.core.bean.system.RoleMenu;
+import com.caoyong.core.bean.system.RoleMenuBatchDO;
 import com.caoyong.core.bean.system.RoleMenuQuery;
 
 public interface RoleMenuDao {
@@ -16,6 +18,8 @@ public interface RoleMenuDao {
     int insert(RoleMenu record);
 
     int insertSelective(RoleMenu record);
+
+    int insertBatch(RoleMenuBatchDO batchDO);
 
     List<RoleMenu> selectByExample(RoleMenuQuery example);
 

@@ -280,4 +280,13 @@
       is_deleted = #{isDeleted,jdbcType=CHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  
+  <!-- 自定义sql -->
+  <!-- 批量插入 -->
+  <insert id="insertBatch" parameterType="RoleMenuBatchDO">
+	INSERT INTO cy_role_menu(role_id, menu_id, create_time, update_time)
+	<foreach collection="roleMenuIds" item="roleMenuId" separator=" union all ">
+		SELECT #{roleId}, #{roleMenuId}, #{createTime}, #{updateTime}
+	</foreach>
+  </insert>
 </mapper>

@@ -22,6 +22,7 @@ public class MenuTreeVO implements Serializable {
     private String  pId;
     private String  name;
     private boolean open;
+    private boolean checked;
 
     public String getId() {
         return id;
@@ -55,6 +56,14 @@ public class MenuTreeVO implements Serializable {
 
     public void setOpen(boolean open) {
         this.open = open;
+    }
+
+    public boolean isChecked() {
+        return checked;
+    }
+
+    public void setChecked(boolean checked) {
+        this.checked = checked;
     }
 
 }

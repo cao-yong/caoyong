@@ -1,6 +1,7 @@
 package com.caoyong.core.dao.system;
 
 import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
 
 import com.caoyong.core.bean.system.Role;
@@ -20,6 +21,8 @@ public interface RoleDao {
     List<Role> selectByExample(RoleQuery example);
 
     Role selectByPrimaryKey(Long id);
+
+    Role selectRoleMenusByRoleId(String roleId);
 
     int updateByExampleSelective(@Param("record") Role record, @Param("example") RoleQuery example);
 

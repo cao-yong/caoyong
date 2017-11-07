@@ -130,4 +130,20 @@ public class Menu implements Serializable {
         this.parentId = parentId;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+
+        Menu menu = (Menu) o;
+
+        return id != null ? id.equals(menu.id) : menu.id == null;
+    }
+
+    @Override
+    public int hashCode() {
+        return id != null ? id.hashCode() : 0;
+    }
 }

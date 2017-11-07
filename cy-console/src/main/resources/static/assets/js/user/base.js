@@ -64,3 +64,21 @@ $.fn.serializeObject = function()
    });    
    return o;    
 };
+/**
+ * 温馨提示
+ */
+var reminder = function(msg){
+	bootbox.alert({  
+        buttons: {  
+           ok: {  
+                label: '确定'  
+            }  
+        },  
+        message: msg,  
+        title: "温馨提示",  
+    });
+	//2秒自动关闭提示信息
+	window.setTimeout(function(){
+	    bootbox.hideAll();
+	}, 2000);
+};

@@ -7,6 +7,7 @@ import com.caoyong.core.bean.base.Page;
 import com.caoyong.core.bean.base.ResultBase;
 import com.caoyong.core.bean.system.Role;
 import com.caoyong.core.bean.system.RoleDTO;
+import com.caoyong.core.bean.system.RoleQueryDTO;
 import com.caoyong.exception.BizException;
 
 /**
@@ -22,7 +23,7 @@ public interface RoleService {
      * @param query 查询条件
      * @return 结果集
      */
-    ResultBase<List<Role>> queryRoleList(BaseQuery query) throws BizException;
+    ResultBase<List<Role>> queryRoleList(RoleQueryDTO query) throws BizException;
 
     /**
      * 查询角色分页
@@ -40,6 +41,15 @@ public interface RoleService {
      * @throws BizException
      */
     ResultBase<Role> queryRoleById(Long id) throws BizException;
+
+    /**
+     * 通过id查询单个角色下的所有菜单
+     * 
+     * @param id id
+     * @return 角色对象
+     * @throws BizException
+     */
+    ResultBase<Role> selectRoleMenusByRoleId(String roleId) throws BizException;
 
     /**
      * 更新角色

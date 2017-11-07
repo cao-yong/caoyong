@@ -1,8 +1,10 @@
 package com.caoyong.core.service.system;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +18,12 @@ import com.caoyong.core.bean.base.ResultBase;
 import com.caoyong.core.bean.system.MenuDTO;
 import com.caoyong.core.bean.system.Role;
 import com.caoyong.core.bean.system.RoleDTO;
+import com.caoyong.core.bean.system.RoleMenuBatchDO;
 import com.caoyong.core.bean.system.RoleQuery;
+import com.caoyong.core.bean.system.RoleQuery.Criteria;
+import com.caoyong.core.bean.system.RoleQueryDTO;
 import com.caoyong.core.dao.system.RoleDao;
+import com.caoyong.core.dao.system.RoleMenuDao;
 import com.caoyong.enums.ErrorCodeEnum;
 import com.caoyong.exception.BizException;
 import com.caoyong.utils.BeanConvertionHelp;
@@ -32,20 +38,25 @@ import lombok.extern.slf4j.Slf4j;
  * @time 2017年11月3日 下午5:05:29
  */
 @Service("roleService")
-@Transactional
+@Transactional(rollbackFor = Exception.class)
 @Slf4j
 public class RoleServiceImpl implements RoleService {
     @Autowired
-    private RoleDao roleDao;
+    private RoleDao     roleDao;
+    @Autowired
+    private RoleMenuDao roleMenuDao;
 
     @Override
-    public ResultBase<List<Role>> queryRoleList(BaseQuery query) throws BizException {
+    public ResultBase<List<Role>> queryRoleList(RoleQueryDTO query) throws BizException {
         log.info("queryRoleList start. query:{}",
                 ToStringBuilder.reflectionToString(query, ToStringStyle.DEFAULT_STYLE));
         ResultBase<List<Role>> result = new ResultBase<>();
         try {
             RoleQuery example = new RoleQuery();
-            example.createCriteria().andIsDeletedEqualTo(Constants.CONSTANTS_N);
+            Criteria criteria = example.createCriteria().andIsDeletedEqualTo(Constants.CONSTANTS_N);
+            if (StringUtils.isNotBlank(query.getName())) {
+                criteria.andNameEqualTo(query.getName());
+            }
             List<Role> roleList = roleDao.selectByExample(example);
             result.setValue(roleList);
             result.setSuccess(true);
@@ -151,6 +162,20 @@ public class RoleServiceImpl implements RoleService {
             record.setIsDeleted(Constants.CONSTANTS_N);
             record.setModifier(Constants.SYSTEM);
             record.setCreator(Constants.SYSTEM);
+            int count = roleDao.insertSelective(record);
+            //保存角色菜单
+            if (StringUtils.isNotBlank(roleDTO.getMenuIds())) {
+                List<String> roleMenuIds = Arrays.asList(roleDTO.getMenuIds().split(","));
+                RoleMenuBatchDO batchDO = new RoleMenuBatchDO();
+                batchDO.setRoleMenuIds(roleMenuIds);
+                batchDO.setRoleId(String.valueOf(record.getId()));
+                batchDO.setCreateTime(new Date());
+                batchDO.setUpdateTime(new Date());
+                count += roleMenuDao.insertBatch(batchDO);
+            }
+            log.info("saveRoleByRoleDTO {} rows affects", count);
+            result.setValue(count);
+            result.setSuccess(true);
         } catch (Exception e) {
             log.error("saveRoleByRoleDTO Exception:{}", e.getMessage(), e);
             result.setErrorCode(ErrorCodeEnum.UNKOWN_ERROR.getCode());
@@ -174,9 +199,7 @@ public class RoleServiceImpl implements RoleService {
             record.setIsDeleted(Constants.CONSTANTS_Y);
             record.setUpdateTime(new Date());
             int count = roleDao.updateByPrimaryKeySelective(record);
-            if (count > 0) {
-                result.setValue(count);
-            }
+            result.setValue(count);
             result.setSuccess(true);
         } catch (Exception e) {
             log.error("deleteRoleById Exception:{}", e.getMessage(), e);
@@ -185,6 +208,23 @@ public class RoleServiceImpl implements RoleService {
             throw new BizException(ErrorCodeEnum.UNKOWN_ERROR, e.getMessage(), e);
         }
         log.info("deleteRoleById end.");
+        return result;
+    }
+
+    @Override
+    public ResultBase<Role> selectRoleMenusByRoleId(String roleId) throws BizException {
+        log.info("selectRoleMenusByRoleId start roleId:{}", roleId);
+        ResultBase<Role> result = new ResultBase<>();
+        try {
+            Role role = roleDao.selectRoleMenusByRoleId(roleId);
+            result.setSuccess(true);
+            result.setValue(role);
+        } catch (Exception e) {
+            result.setErrorCode(e.getMessage());
+            result.setErrorCode(e.getMessage());
+            log.error("selectRoleMenusByRoleId error:{}", e.getMessage(), e);
+        }
+        log.info("selectRoleMenusByRoleId end.");
         return result;
     }
 

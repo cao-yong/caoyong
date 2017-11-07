@@ -334,7 +334,7 @@
 										$("#"+icons[k]).attr("readOnly","true");
 									}
 								} else {
-									showMsg(data.msg);
+									reminder(data.msg);
 								}
 							},
 							error:function(data) {
@@ -352,19 +352,7 @@
 						dataType : 'json',
 						success : function(result){
 							if(result.success && $.inArray(iconValue, result.icons)!=-1){
-								bootbox.alert({  
-						            buttons: {  
-						               ok: {  
-						                    label: '确定'  
-						                }  
-						            },  
-						            message: '请您选择没用使用过的图标!',  
-						            title: "温馨提示",  
-						        });
-								//3秒自动关闭提示信息
-								window.setTimeout(function(){
-								    bootbox.hideAll();
-								}, 2000);
+								reminder('请您选择没用使用过的图标!');
 							}else{
 								$("#icon").val(iconValue);
 								$('#myModal').modal('hide');
@@ -386,16 +374,16 @@
 					//数据合法性校验
 					if(isEmpty(name)) {
 						$("#name").focus();
-						showMsg("名称不能为空！");
+						reminder('名称不能为空!');
 					} else if(isEmpty(sort)) {
 						$("#sort").focus();
-						showMsg("排序不能为空！");
+						reminder('排序不能为空!');
 					}else if(isEmpty(isShow)) {
 						$("#isShow").focus();
-						showMsg("请选择是否显示！");
+						reminder('请选择是否显示!');
 					} else if(isEmpty(delFlag)) {
 						$("#delFlag").focus();
-						showMsg("请选择是否启用！");
+						reminder('请选择是否启用!');
 					} else {
 						var data = $.extend({
 							isShowNew:isShow,
@@ -413,7 +401,7 @@
 								if(result.success){
 									window.location.href='${request.contextPath}/menu/menuList.do';
 								}else{
-									showMsg(result.msg);
+									reminder(result.msg);
 								}
 							}
 						});

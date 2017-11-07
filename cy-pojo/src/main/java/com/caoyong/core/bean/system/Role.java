@@ -2,6 +2,7 @@ package com.caoyong.core.bean.system;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -11,6 +12,9 @@ import lombok.ToString;
 @Setter
 @ToString
 public class Role implements Serializable {
+
+    private static final long serialVersionUID = 1644155928561565023L;
+
     /**
      * 主键
      */
@@ -66,6 +70,6 @@ public class Role implements Serializable {
      */
     private String            isDeleted;
 
-    private static final long serialVersionUID = 1L;
+    private List<Menu>        menuList;
 
 }
