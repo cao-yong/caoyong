@@ -15,7 +15,6 @@ import com.caoyong.common.web.Constants;
 import com.caoyong.core.bean.base.BaseQuery;
 import com.caoyong.core.bean.base.Page;
 import com.caoyong.core.bean.base.ResultBase;
-import com.caoyong.core.bean.system.MenuDTO;
 import com.caoyong.core.bean.system.Role;
 import com.caoyong.core.bean.system.RoleDTO;
 import com.caoyong.core.bean.system.RoleMenuBatchDO;
@@ -131,7 +130,7 @@ public class RoleServiceImpl implements RoleService {
                 ToStringBuilder.reflectionToString(roleDTO, ToStringStyle.DEFAULT_STYLE));
         ResultBase<Integer> result = new ResultBase<>();
         try {
-            CheckParamsUtil.check(roleDTO, MenuDTO.class, "id");
+            CheckParamsUtil.check(roleDTO, RoleDTO.class, "id");
             Role record = BeanConvertionHelp.copyBeanFieldValue(Role.class, roleDTO);
             record.setUpdateTime(new Date());
 

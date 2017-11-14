@@ -62,7 +62,7 @@ public class SystemInfoUtil {
     }
 
     /**
-     * 把内存从btye转成M并转成float
+     * 把内存从byte转成M并转成float
      * 
      * @param memory
      * @return

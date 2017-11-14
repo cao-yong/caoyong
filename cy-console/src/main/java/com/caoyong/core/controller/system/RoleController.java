@@ -22,6 +22,7 @@ import com.caoyong.core.bean.system.RoleDTO;
 import com.caoyong.core.bean.system.RoleQueryDTO;
 import com.caoyong.core.service.system.MenuService;
 import com.caoyong.core.service.system.RoleService;
+import com.caoyong.enums.ErrorCodeEnum;
 import com.caoyong.exception.BizException;
 
 import lombok.extern.slf4j.Slf4j;
@@ -132,7 +133,6 @@ public class RoleController {
                     log.info("convert result menu:{}", menus);
                 }
             }
-            model.addAttribute("role", new Role());
         } catch (BizException e) {
             log.error("editRole BizException:{}", e.getMessage(), e);
         } catch (Exception e) {
@@ -140,6 +140,33 @@ public class RoleController {
         }
         log.info("request editRole end.");
         return "/system/roleForm";
+    }
+
+    /**
+     * 删除角色
+     * 
+     * @param id
+     * @return
+     */
+    @RequestMapping("/deleteRole.json")
+    @ResponseBody
+    public BaseResponse deleteRole(Long id) {
+        log.info("request deleteRole start.");
+        BaseResponse resp = new BaseResponse();
+        try {
+            ResultBase<Integer> result = roleService.deleteRoleById(id);
+            resp.setCode(result.getErrorCode());
+            resp.setMsg(result.getErrorMsg());
+            resp.setSuccess(result.isSuccess());
+        } catch (BizException e) {
+            log.error("deleteRole BizException:{}", e.getMessage(), e);
+            resp.setMsg(ErrorCodeEnum.UNKOWN_ERROR.getMsg());
+        } catch (Exception e) {
+            log.error("deleteRole Exception:{}", e.getMessage(), e);
+            resp.setMsg(ErrorCodeEnum.UNKOWN_ERROR.getMsg());
+        }
+        log.info("request deleteRole end.");
+        return resp;
     }
 
     /**
@@ -157,7 +184,7 @@ public class RoleController {
             RoleQueryDTO query = new RoleQueryDTO();
             query.setName(roleDTO.getName());
             ResultBase<List<Role>> result = roleService.queryRoleList(query);
-            if (result.isSuccess() && result.getValue() != null && !result.getValue().isEmpty()) {
+            if (result.isSuccess() && !result.getValue().isEmpty() && roleDTO.getId() == null) {
                 resp.setMsg("角色已存在");
                 return resp;
             }
