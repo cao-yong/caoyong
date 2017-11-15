@@ -77,4 +77,12 @@ public interface RoleService {
      */
     ResultBase<Integer> deleteRoleById(Long id) throws BizException;
 
+    /**
+     * 删除角色菜单
+     * 
+     * @param roleDTO
+     * @return
+     * @throws BizException
+     */
+    ResultBase<Integer> updateRoleMenusIsDeletedByRoleDTO(RoleDTO roleDTO) throws BizException;
 }

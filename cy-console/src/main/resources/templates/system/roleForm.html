@@ -150,6 +150,7 @@
 				$('#submitBtn').on('click', function(){
 					var name = $("#name").val();
 					var ename = $("#englishName").val();
+					syncCheckedIds();//提交前同步一所勾选的菜单
 					//数据合法性校验
 					if(!name) {
 						$("#name").focus();

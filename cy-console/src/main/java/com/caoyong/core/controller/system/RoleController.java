@@ -111,7 +111,7 @@ public class RoleController {
         try {
             //查询角色下的所有菜单
             ResultBase<Role> result = roleService.selectRoleMenusByRoleId(roleId);
-            if (result.isSuccess()) {
+            if (result.isSuccess() && result.getValue() != null) {
                 List<Menu> roleMenus = result.getValue().getMenuList();
                 model.addAttribute("role", result.getValue());
                 //查询所有的菜单
@@ -131,6 +131,22 @@ public class RoleController {
                     String menus = JSONConversionUtil.objToString(menuTrees);
                     model.addAttribute("menus", menus);
                     log.info("convert result menu:{}", menus);
+                }
+            } else {
+                ResultBase<Role> roleResult = roleService.queryRoleById(Long.valueOf(roleId));
+                model.addAttribute("role", roleResult.getValue());
+                MenuQueryDTO query = new MenuQueryDTO();
+                ResultBase<List<Menu>> menuResult = menuService.queryMenuList(query);
+                if (menuResult.isSuccess()) {
+                    model.addAttribute("menus", menuResult.getValue());
+                    if (menuResult.getValue().size() > 0) {
+                        List<MenuTreeVO> menuTrees = menuResult.getValue().stream().map(MenuTreeVO::new)
+                                .collect(Collectors.toList());
+                        //把menuTrees转成json字符串
+                        String menus = JSONConversionUtil.objToString(menuTrees);
+                        model.addAttribute("menus", menus);
+                        log.info("convert result menu:{}", menus);
+                    }
                 }
             }
         } catch (BizException e) {

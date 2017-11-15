@@ -1,8 +1,10 @@
 package com.caoyong.core.service.system;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -17,7 +19,9 @@ import com.caoyong.core.bean.base.Page;
 import com.caoyong.core.bean.base.ResultBase;
 import com.caoyong.core.bean.system.Role;
 import com.caoyong.core.bean.system.RoleDTO;
+import com.caoyong.core.bean.system.RoleMenu;
 import com.caoyong.core.bean.system.RoleMenuBatchDO;
+import com.caoyong.core.bean.system.RoleMenuQuery;
 import com.caoyong.core.bean.system.RoleQuery;
 import com.caoyong.core.bean.system.RoleQuery.Criteria;
 import com.caoyong.core.bean.system.RoleQueryDTO;
@@ -135,6 +139,65 @@ public class RoleServiceImpl implements RoleService {
             record.setUpdateTime(new Date());
 
             int count = roleDao.updateByPrimaryKeySelective(record);
+            //编辑角色菜单
+            //先查询出该角色已有的菜单
+            RoleMenuQuery example = new RoleMenuQuery();
+            example.createCriteria().andRoleIdEqualTo(String.valueOf(roleDTO.getId()));
+            List<RoleMenu> roleMenus = roleMenuDao.selectByExample(example);
+            String[] ids = new String[0];
+            if (StringUtils.isNotBlank(roleDTO.getMenuIds())) {
+                ids = roleDTO.getMenuIds().split(",");
+            }
+            List<String> roleMenuIds = Arrays.asList(ids);
+            List<String> delRoleMenuIds;
+            List<String> newRoleMenuIds = new ArrayList<>();
+            if (roleMenuIds != null && !roleMenuIds.isEmpty()) {
+                //筛选出所有需要删除的roleMenuIds,在用户原来的所有菜单中不包含所选的，即需要删除的
+                delRoleMenuIds = roleMenus.stream().filter(roleMenu -> !roleMenuIds.contains(roleMenu.getMenuId()))
+                        .map(RoleMenu::getMenuId).collect(Collectors.toList());
+                if (null != delRoleMenuIds && !delRoleMenuIds.isEmpty()) {
+                    RoleDTO delRoleMenu = new RoleDTO();
+                    delRoleMenu.setId(roleDTO.getId());
+                    delRoleMenu.setIsDeleted(Constants.CONSTANTS_Y);
+                    delRoleMenu.setRoleMenuIds(delRoleMenuIds);
+                    count += updateRoleMenusIsDeletedByRoleDTO(delRoleMenu).getValue();
+                }
+                //所有要新增的roleMenuIds，所选菜单中在原来菜单中找不到的，需要新增
+                roleMenuIds.stream().forEach(menuId -> {
+                    boolean noneMatch = roleMenus.stream().noneMatch(roleMenu -> roleMenu.getMenuId().equals(menuId));
+                    if (noneMatch) {
+                        newRoleMenuIds.add(menuId);
+                    }
+                });
+                //新增，调用批量插入方法
+                if (!newRoleMenuIds.isEmpty()) {
+                    RoleMenuBatchDO batchDO = new RoleMenuBatchDO();
+                    batchDO.setRoleMenuIds(newRoleMenuIds);
+                    batchDO.setRoleId(String.valueOf(record.getId()));
+                    batchDO.setCreateTime(new Date());
+                    batchDO.setUpdateTime(new Date());
+                    count += roleMenuDao.insertBatch(batchDO);
+                }
+                //找出原来删除过的，这次又需要添加的
+                List<String> updateRoleMenuIds = roleMenus.stream()
+                        .filter(roleMenu -> Constants.CONSTANTS_Y.equals(roleMenu.getIsDeleted())
+                                && roleMenuIds.contains(roleMenu.getMenuId()))
+                        .map(RoleMenu::getMenuId).collect(Collectors.toList());
+                if (null != updateRoleMenuIds && !updateRoleMenuIds.isEmpty()) {
+                    RoleDTO updateRoleMenu = new RoleDTO();
+                    updateRoleMenu.setId(roleDTO.getId());
+                    updateRoleMenu.setIsDeleted(Constants.CONSTANTS_N);
+                    updateRoleMenu.setRoleMenuIds(updateRoleMenuIds);
+                    count += updateRoleMenusIsDeletedByRoleDTO(updateRoleMenu).getValue();
+                }
+            } else {
+                //所有的都不选，删除该用户所有的角色菜单
+                if (null != roleMenus && !roleMenus.isEmpty()) {
+                    RoleMenu roleMenuRecord = new RoleMenu();
+                    roleMenuRecord.setIsDeleted(Constants.CONSTANTS_Y);
+                    count += roleMenuDao.updateByExampleSelective(roleMenuRecord, example);
+                }
+            }
             if (count > 0) {
                 result.setValue(count);
             }
@@ -145,7 +208,7 @@ public class RoleServiceImpl implements RoleService {
             result.setErrorMsg(ErrorCodeEnum.UNKOWN_ERROR.getMsg());
             throw new BizException(ErrorCodeEnum.UNKOWN_ERROR, e.getMessage(), e);
         }
-        log.info("updateRoleByRoleDTO end.");
+        log.info("updateRoleByRoleDTO end, {} row(s) affected", result.getValue());
         return result;
     }
 
@@ -164,7 +227,11 @@ public class RoleServiceImpl implements RoleService {
             int count = roleDao.insertSelective(record);
             //保存角色菜单
             if (StringUtils.isNotBlank(roleDTO.getMenuIds())) {
-                List<String> roleMenuIds = Arrays.asList(roleDTO.getMenuIds().split(","));
+                String[] ids = new String[0];
+                if (StringUtils.isNotBlank(roleDTO.getMenuIds())) {
+                    ids = roleDTO.getMenuIds().split(",");
+                }
+                List<String> roleMenuIds = Arrays.asList(ids);
                 RoleMenuBatchDO batchDO = new RoleMenuBatchDO();
                 batchDO.setRoleMenuIds(roleMenuIds);
                 batchDO.setRoleId(String.valueOf(record.getId()));
@@ -181,7 +248,7 @@ public class RoleServiceImpl implements RoleService {
             result.setErrorMsg(ErrorCodeEnum.UNKOWN_ERROR.getMsg());
             throw new BizException(ErrorCodeEnum.UNKOWN_ERROR, e.getMessage(), e);
         }
-        log.info("saveRoleByRoleDTO end.");
+        log.info("saveRoleByRoleDTO end, {} row(s) affected", result.getValue());
         return result;
     }
 
@@ -219,11 +286,36 @@ public class RoleServiceImpl implements RoleService {
             result.setSuccess(true);
             result.setValue(role);
         } catch (Exception e) {
-            result.setErrorCode(e.getMessage());
-            result.setErrorCode(e.getMessage());
+            result.setErrorCode(ErrorCodeEnum.UNKOWN_ERROR.getCode());
+            result.setErrorMsg(ErrorCodeEnum.UNKOWN_ERROR.getMsg());
             log.error("selectRoleMenusByRoleId error:{}", e.getMessage(), e);
         }
         log.info("selectRoleMenusByRoleId end.");
+        return result;
+    }
+
+    @Override
+    public ResultBase<Integer> updateRoleMenusIsDeletedByRoleDTO(RoleDTO roleDTO) throws BizException {
+        log.info("deleteRoleMenuByRoleDTO start.roleDTO:{}",
+                ToStringBuilder.reflectionToString(roleDTO, ToStringStyle.DEFAULT_STYLE));
+        ResultBase<Integer> result = new ResultBase<>();
+        try {
+            int count = 0;
+            RoleMenuQuery example = new RoleMenuQuery();
+            example.createCriteria().andRoleIdEqualTo(String.valueOf(roleDTO.getId()))
+                    .andMenuIdIn(roleDTO.getRoleMenuIds());
+            RoleMenu record = new RoleMenu();
+            record.setIsDeleted(roleDTO.getIsDeleted());
+            record.setUpdateTime(new Date());
+            count += roleMenuDao.updateByExampleSelective(record, example);
+            result.setSuccess(true);
+            result.setValue(count);
+        } catch (Exception e) {
+            result.setErrorCode(ErrorCodeEnum.UNKOWN_ERROR.getCode());
+            result.setErrorMsg(ErrorCodeEnum.UNKOWN_ERROR.getMsg());
+            log.error("deleteRoleMenusByRoleDTO error:{}", e.getMessage(), e);
+        }
+        log.info("deleteRoleMenusByRoleDTO end.");
         return result;
     }
 

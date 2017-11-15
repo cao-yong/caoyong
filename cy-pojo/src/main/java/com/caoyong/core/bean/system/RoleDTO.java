@@ -1,6 +1,7 @@
 package com.caoyong.core.bean.system;
 
 import java.io.Serializable;
+import java.util.List;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -41,4 +42,11 @@ public class RoleDTO implements Serializable {
      * 保存角色菜单id
      */
     private String            menuIds;
+
+    private List<String>      roleMenuIds;
+
+    /**
+     * 是否删除（Y：是，N：否）
+     */
+    private String            isDeleted;
 }
