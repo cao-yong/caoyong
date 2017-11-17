@@ -18,7 +18,8 @@ public enum ErrorCodeEnum {
     USERNAME_CAN_NOT_BE_NULL("1008", "请输入账户名"),
     PASSWORD_CAN_NOT_BE_NULL("1009", "请输入密码"),
     PASSWORD_ERROR("1010", "账户名与密码不匹配，请重新输入"),
-    USER_NOT_EXIST("1011", "账户名不存在，请重新输入");
+    USER_NOT_EXIST("1011", "账户名不存在，请重新输入"),
+    USER_EXIST("1012", "登录名已存在，请重新输入");
 
     private String code;
     private String msg;

@@ -14,8 +14,8 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class User implements Serializable {
-    private static final long serialVersionUID = -7173493818216806624L;
+public class UserDTO implements Serializable {
+    private static final long serialVersionUID = -6993801235194804384L;
 
     /**
      * 主键
@@ -50,7 +50,7 @@ public class User implements Serializable {
     /**
      * 是否可用
      */
-    private Integer           isEnable         = 1;
+    private Integer           isEnable;
 
     /**
      * 最后登录IP
@@ -63,34 +63,11 @@ public class User implements Serializable {
     private Date              operateDate;
 
     /**
-     * 创建时间
-     */
-    private Date              createTime;
-
-    /**
-     * 修改时间
-     */
-    private Date              updateTime;
-
-    /**
-     * 创建者
-     */
-    private String            creator;
-
-    /**
-     * 修改者
-     */
-    private String            modifier;
-
-    /**
-     * 扩展字段
-     */
-    private String            extraInfo;
-
-    /**
      * 是否删除（Y：是，N：否）
      */
     private String            isDeleted;
+
+    private boolean           useable;
 
     private List<Role>        roles            = new ArrayList<>();
 
@@ -112,4 +89,5 @@ public class User implements Serializable {
             roles.add(role);
         }
     }
+
 }

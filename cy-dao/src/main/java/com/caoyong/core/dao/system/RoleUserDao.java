@@ -1,10 +1,12 @@
 package com.caoyong.core.dao.system;
 
 import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
 
 import com.caoyong.core.bean.system.RoleUser;
 import com.caoyong.core.bean.system.RoleUserQuery;
+import com.caoyong.core.bean.system.User;
 
 public interface RoleUserDao {
     int countByExample(RoleUserQuery example);
@@ -14,6 +16,8 @@ public interface RoleUserDao {
     int deleteByPrimaryKey(Integer id);
 
     int insert(RoleUser record);
+
+    int insertBatch(User user);
 
     int insertSelective(RoleUser record);
 

@@ -52,9 +52,7 @@
 			</div>
 			<div class="row">
 				<div class="col-xs-12">
-					<form id="platformForm" class="form-horizontal" role="form" action="${request.contextPath}/saveUser" method="POST">
-						<input type="hidden" id="_csrf" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-						<input type="hidden" id="hiddenMd5" name="hiddenMd5" value="${user.password!}">
+					<form id="userForm" class="form-horizontal" role="form" method="POST">
 						<#if message??>
 						<input type="hidden" id="message" name="message" value="${message}">
 						</#if>
@@ -65,7 +63,7 @@
 						<div class="form-group">
 							<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 姓名 </label>
 							<div class="col-sm-9">
-								<input type="text" id="characterName" name="characterName" placeholder="姓名" value="${user.characterName!}" class="col-xs-10 col-sm-5">
+								<input type="text" id="name" name="name" placeholder="姓名" value="${user.name!}" class="col-xs-10 col-sm-5">
 							</div>
 						</div>
 						<div class="space-4"></div>
@@ -80,6 +78,8 @@
 							<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 密码 </label>
 							<div class="col-sm-9">
 								<input type="password" id="password" name="password"  placeholder="密码" value="${user.password!}" class="col-xs-10 col-sm-5">
+								&nbsp;<button class="btn btn-xs btn-info" type="button" onclick="createPwd();"><i class="ace-icon fa fa-pencil-square-o align-top bigger-125"></i>随机生成</button>
+								&nbsp;<span id="pwd"></span>
 							</div>
 						</div>
 						<div class="space-4"></div>
@@ -127,7 +127,7 @@
 							<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 是否启用 </label>
 							<div class="col-sm-9">
 								<label style="margin-top:7px;">
-									<input id="isEnable" name="isEnable" class="ace ace-switch ace-switch-2" type="checkbox" <#if user?? && user.isEnable=1>checked="checked"</#if> >
+									<input id="isEnable" name="useable" class="ace ace-switch ace-switch-2" type="checkbox" <#if user?? && user.isEnable=1>checked="checked"</#if> >
 									<span class="lbl"></span>
 								</label>
 							</div>
@@ -150,71 +150,60 @@
 			</div><!-- /.row -->
 		</div>
 
-
 		<!-- inline scripts related to this page -->
 		<script type="text/javascript">
-		$(document).ready(function(event) {
-			
+			$(function(){  
 				var message = $('#message').val();
-				if(message)
-				{
-					showMsg(message);
+				if(message){
+					reminder(message);
 				}
 				$('#submitBtn').on('click', function(){
-					/* var telRule=new RegExp("(\d{3}-|\d{4}-)?(\d{8}|\d{7})");
-					var emailRule=new RegExp("^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$");
-					var telphone=$("#phone").val();
-					var email=$("#email").val(); */
 					var userid = $("#id").val();
-					var name = $("#characterName").val();
+					var name = $("#name").val();
 					var loginName = $("#username").val();
 					var password = $("#password").val();
 					var rePassword = $("#rePassword").val();
 					var result = "0";
 					var message = "";
-					if(userid==null || userid==""){
+					if(!userid){
 						$.ajax({
-							url : '${request.contextPath}/checkUserName?username='+loginName,
+							url : "${request.contextPath}/user/isExistUser.json",
 							type : "GET",
+							dataType : "json",
 							async: false,
-							success:function(data) {
-								if(data.sessionStatus==540){//异步请求session过期状态
-									window.location.href="${request.contextPath}/login";
-								}else{
-									result = data.result;
-									message=data.msg;
+							data:{username:loginName},
+							success : function(res) {
+								if(!res.success){
+									reminder(res.msg);
+									result = "1";
 								}
-							},
-							error:function(data) {
 							}
 						});
 					}
 					
 					//数据合法性校验
-					if(result == "1")
-					{
-						showMsg(message);
+					if(result == "1"){
 						return;
 					}
-					else if(isEmpty(name)) {
+					else if(isEmpty(name)){
 						$("#characterName").focus();
-						showMsg("姓名不能为空！");
+						reminder("姓名不能为空！");
 						return;
-					} else if(isEmpty(loginName)) {
+					} else if(isEmpty(loginName)){
 						$("#username").focus();
-						showMsg("登录名不能为空！");
+						reminder("登录名不能为空！");
 						return;
-					} else if(isEmpty(password)) {
+					} else if(isEmpty(password)){
 						$("#password").focus();
-						showMsg("密码不能为空！");
+						reminder("密码不能为空！");
 						return;
-					} else if(isEmpty(rePassword)) {
+					} else if(isEmpty(rePassword)){
 						$("#rePassword").focus();
-						showMsg("确认密码不能为空！");
+						reminder("确认密码不能为空！");
 						return;
-					} else if(password != rePassword) {
+					} else if(password != rePassword){
 						$("#rePassword").focus();
-						showMsg("两次输入的密码不一致！");
+						reminder("两次输入的密码不一致！");
 						return;
 					} 
 					var role_value =[]; 
@@ -222,12 +211,36 @@
 						role_value.push($(this).val()); 
 					}); 
 					if(role_value.length==0){
-						showMsg("用户权限不能为空！");
+						reminder("用户权限不能为空！");
 						return;
 					}
-					$("#platformForm").submit();
+					//保存
+					$.ajax({
+						url : '${request.contextPath}/user/saveUser.json',
+						type : 'POST',
+						dataType : 'json',
+						data : $('#userForm').serializeObject(),
+						success : function(result){
+							if(result.success){
+								window.location.href = '${request.contextPath}/user/userList.do';
+							}else{
+								reminder(result.msg);
+							}
+						}
+					});
 				});
 			});
+			//生成随机密码
+			var createPwd = function() {
+	            var num="";
+	            for(var i=0;i<6;i++){
+	                num+=Math.floor(Math.random()*10);
+	            }
+	            $("#password").val(num);
+	            $("#rePassword").val(num);
+	            $("#pwd").html(num);
+	            $("#isReset").val("0");
+	        }
 		</script>
 	</body>
 </html>

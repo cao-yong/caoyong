@@ -34,9 +34,9 @@ public class EncodeUtil {
             char[] encodeHex = Hex.encodeHex(digest);
             return new String(encodeHex);
         } catch (NoSuchAlgorithmException e) {
-            log.info("encodePassword algorithm name error:", e.getMessage(), e);
+            log.info("encodePassword algorithm name error:{}", e.getMessage(), e);
         } catch (Exception e) {
-            log.info("encodePassword error:", e.getMessage(), e);
+            log.info("encodePassword error:{}", e.getMessage(), e);
         }
         log.info("encodePassword end.");
         return null;

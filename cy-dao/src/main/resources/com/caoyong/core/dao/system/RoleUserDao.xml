@@ -280,4 +280,13 @@
       is_deleted = #{isDeleted,jdbcType=CHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  
+  <!-- 自定义SQL -->
+  <!-- 批量插入 -->
+  <insert id="insertBatch" parameterType="User">
+	INSERT INTO cy_role_user(user_id, role_id, update_time, create_time)
+	<foreach collection="roles" item="role" separator=" union all ">
+		SELECT #{id}, #{role.id}, now(), now()
+	</foreach>
+  </insert>
 </mapper>

@@ -132,7 +132,7 @@
       #{modifier,jdbcType=VARCHAR}, #{extraInfo,jdbcType=VARCHAR}, #{isDeleted,jdbcType=CHAR}
       )
   </insert>
-  <insert id="insertSelective" parameterType="User" >
+  <insert id="insertSelective" parameterType="User" useGeneratedKeys="true" keyProperty="id">
     insert into cy_user
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >

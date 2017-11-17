@@ -50,7 +50,8 @@ public class MenuServiceImpl implements MenuService {
      */
     @Override
     public ResultBase<List<Menu>> queryMenuList(MenuQueryDTO query) throws BizException {
-        log.info("queryMenuList start.");
+        log.info("queryMenuList start.query:{}",
+                ToStringBuilder.reflectionToString(query, ToStringStyle.DEFAULT_STYLE));
         ResultBase<List<Menu>> result = new ResultBase<>();
         try {
             List<Menu> menuList = menuDao.selectMenuList(query);

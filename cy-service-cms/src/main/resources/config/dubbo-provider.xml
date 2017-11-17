@@ -43,4 +43,7 @@
 
     <!-- 角色服务 -->
     <dubbo:service interface="com.caoyong.core.service.system.RoleService" ref="roleService" version="1.0.0"/>
+    
+    <!-- 用户服务 -->
+    <dubbo:service interface="com.caoyong.core.service.system.UserService" ref="userService" version="1.0.0"/>
 </beans>
