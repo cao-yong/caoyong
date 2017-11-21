@@ -75,6 +75,82 @@ public class UserController {
         return "/system/userForm";
     }
 
+    @RequestMapping("/editUser.do")
+    public String editUser(Model model, Integer id) {
+        log.info("request editUser start.");
+        try {
+            RoleQueryDTO query = new RoleQueryDTO();
+            ResultBase<List<Role>> result = roleService.queryRoleList(query);
+            if (result.isSuccess() && !result.getValue().isEmpty()) {
+                model.addAttribute("roles", result.getValue());
+            }
+            ResultBase<User> userResult = userService.queryUserRoleById(id);
+            if (userResult.isSuccess() && null != userResult.getValue()) {
+                model.addAttribute("user", userResult.getValue());
+            }
+        } catch (BizException e) {
+            log.error("request editUser BizException:{}", e.getMessage(), e);
+        } catch (Exception e) {
+            log.error("request editUser Exception:{}", e.getMessage(), e);
+        }
+        log.info("request editUser end.");
+        return "/system/userForm";
+    }
+
+    /**
+     * 删除用户
+     * 
+     * @param id
+     * @return
+     */
+    @RequestMapping("/deleteUser.json")
+    @ResponseBody
+    public BaseResponse deleteUser(Integer id) {
+        log.info("request deleteUser start.");
+        BaseResponse resp = new BaseResponse();
+        try {
+            ResultBase<Integer> result = userService.deleteUserById(id);
+            resp.setCode(result.getErrorCode());
+            resp.setMsg(result.getErrorMsg());
+            resp.setSuccess(result.isSuccess());
+        } catch (BizException e) {
+            log.error("deleteUser BizException:{}", e.getMessage(), e);
+            resp.setMsg(ErrorCodeEnum.UNKOWN_ERROR.getMsg());
+        } catch (Exception e) {
+            log.error("deleteUser Exception:{}", e.getMessage(), e);
+            resp.setMsg(ErrorCodeEnum.UNKOWN_ERROR.getMsg());
+        }
+        log.info("request deleteUser end.");
+        return resp;
+    }
+
+    /**
+     * 停用、启用 用户
+     * 
+     * @param id
+     * @return
+     */
+    @RequestMapping("/enableUser.json")
+    @ResponseBody
+    public BaseResponse enableUser(Integer id) {
+        log.info("request enableUser start.");
+        BaseResponse resp = new BaseResponse();
+        try {
+            ResultBase<Integer> result = userService.enableUserById(id);
+            resp.setCode(result.getErrorCode());
+            resp.setMsg(result.getErrorMsg());
+            resp.setSuccess(result.isSuccess());
+        } catch (BizException e) {
+            log.error("enableUser BizException:{}", e.getMessage(), e);
+            resp.setMsg(ErrorCodeEnum.UNKOWN_ERROR.getMsg());
+        } catch (Exception e) {
+            log.error("enableUser Exception:{}", e.getMessage(), e);
+            resp.setMsg(ErrorCodeEnum.UNKOWN_ERROR.getMsg());
+        }
+        log.info("request enableUser end.");
+        return resp;
+    }
+
     @RequestMapping("/isExistUser.json")
     @ResponseBody
     public BaseResponse isExistUser(UserQueryDTO query) {
@@ -107,8 +183,13 @@ public class UserController {
         log.info("request saveUser start, user:{}",
                 ToStringBuilder.reflectionToString(userDTO, ToStringStyle.DEFAULT_STYLE));
         try {
-            ResultBase<Integer> users = userService.saveUserByUserDTO(userDTO);
-            if (users.isSuccess() && users.getValue() > 0) {
+            ResultBase<Integer> result;
+            if (null == userDTO.getId()) {
+                result = userService.saveUserByUserDTO(userDTO);
+            } else {
+                result = userService.updateUserByUserDTO(userDTO);
+            }
+            if (result.isSuccess() && result.getValue() > 0) {
                 resp.setSuccess(true);
             }
         } catch (BizException e) {

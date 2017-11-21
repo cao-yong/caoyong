@@ -195,6 +195,7 @@ public class RoleServiceImpl implements RoleService {
                 if (null != roleMenus && !roleMenus.isEmpty()) {
                     RoleMenu roleMenuRecord = new RoleMenu();
                     roleMenuRecord.setIsDeleted(Constants.CONSTANTS_Y);
+                    roleMenuRecord.setUpdateTime(new Date());
                     count += roleMenuDao.updateByExampleSelective(roleMenuRecord, example);
                 }
             }

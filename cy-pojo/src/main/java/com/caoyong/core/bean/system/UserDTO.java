@@ -63,6 +63,11 @@ public class UserDTO implements Serializable {
     private Date              operateDate;
 
     /**
+     * 扩展字段
+     */
+    private String            extraInfo;
+
+    /**
      * 是否删除（Y：是，N：否）
      */
     private String            isDeleted;
@@ -70,6 +75,8 @@ public class UserDTO implements Serializable {
     private boolean           useable;
 
     private List<Role>        roles            = new ArrayList<>();
+
+    private List<String>      roleIds;
 
     @JsonIgnore
     public List<Long> getRoleIdList() {

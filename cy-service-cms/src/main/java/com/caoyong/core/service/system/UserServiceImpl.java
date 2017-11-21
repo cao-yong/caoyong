@@ -15,11 +15,13 @@ import com.caoyong.common.utlis.EncodeUtil;
 import com.caoyong.common.web.Constants;
 import com.caoyong.core.bean.base.Page;
 import com.caoyong.core.bean.base.ResultBase;
+import com.caoyong.core.bean.system.Role;
 import com.caoyong.core.bean.system.RoleUser;
 import com.caoyong.core.bean.system.RoleUserQuery;
 import com.caoyong.core.bean.system.User;
 import com.caoyong.core.bean.system.UserDTO;
 import com.caoyong.core.bean.system.UserQuery;
+import com.caoyong.core.bean.system.UserQuery.Criteria;
 import com.caoyong.core.bean.system.UserQueryDTO;
 import com.caoyong.core.dao.system.RoleUserDao;
 import com.caoyong.core.dao.system.UserDao;
@@ -51,8 +53,9 @@ public class UserServiceImpl implements UserService {
                 ToStringBuilder.reflectionToString(query, ToStringStyle.DEFAULT_STYLE));
         try {
             UserQuery example = new UserQuery();
+            Criteria criteria = example.createCriteria().andIsDeletedEqualTo(Constants.CONSTANTS_N);
             if (StringUtils.isNotBlank(query.getUsername())) {
-                example.createCriteria().andUsernameEqualTo(query.getUsername());
+                criteria.andUsernameEqualTo(query.getUsername());
             }
             List<User> users = userDao.selectByExample(example);
             result.setValue(users);
@@ -77,8 +80,9 @@ public class UserServiceImpl implements UserService {
             example.setPageNo(query.getPageNo());
             example.setPageSize(query.getLimit());
             example.setStartRow(query.getStart());
+            Criteria criteria = example.createCriteria().andIsDeletedEqualTo(Constants.CONSTANTS_N);
             if (StringUtils.isNotBlank(query.getUsername())) {
-                example.createCriteria().andUsernameEqualTo(query.getUsername());
+                criteria.andUsernameEqualTo(query.getUsername());
             }
             List<User> rows = userDao.selectByExample(example);
             //设置结果及分页对象
@@ -117,8 +121,8 @@ public class UserServiceImpl implements UserService {
             result.setSuccess(true);
             result.setValue(menu);
         } catch (Exception e) {
-            result.setErrorCode(e.getMessage());
-            result.setErrorCode(e.getMessage());
+            result.setErrorCode(ErrorCodeEnum.UNKOWN_ERROR.getCode());
+            result.setErrorMsg(ErrorCodeEnum.UNKOWN_ERROR.getMsg());
             log.error("queryUserById error:{}", e.getMessage(), e);
         }
         log.info("queryUserById end.");
@@ -134,7 +138,11 @@ public class UserServiceImpl implements UserService {
             CheckParamsUtil.check(userDTO, UserDTO.class, "id");
             User record = BeanConvertionHelp.copyBeanFieldValue(User.class, userDTO);
             if (StringUtils.isNotBlank(userDTO.getPassword())) {
-                record.setPassword(EncodeUtil.encodePassword(userDTO.getPassword()));
+                //查询用户
+                User user = userDao.selectByPrimaryKey(userDTO.getId());
+                if (!user.getPassword().equals(userDTO.getPassword())) {
+                    record.setPassword(EncodeUtil.encodePassword(userDTO.getPassword()));
+                }
             }
             record.setUpdateTime(new Date());
             int count = userDao.updateByPrimaryKeySelective(record);
@@ -151,14 +159,13 @@ public class UserServiceImpl implements UserService {
             //用户本次要新增的角色
             List<String> newRoleUserIds = new ArrayList<>();
             if (roleUserIds != null && !roleUserIds.isEmpty()) {
-                //2.筛选出所有需要删除的roleUserIds,在用户原来的所有企角色中不包含所选的，即需要删除的
+                //2.筛选出所有需要删除的roleUserIds,在用户原来的所有角色中不包含所选的，即需要删除的
                 delRoleUserIds = roleUsers.stream().filter(roleUser -> !roleUserIds.contains(roleUser.getRoleId()))
                         .map(RoleUser::getRoleId).collect(Collectors.toList());
                 if (null != delRoleUserIds && !delRoleUserIds.isEmpty()) {
-                    UserDTO delRoleUser = new UserDTO();
-                    delRoleUser.setId(userDTO.getId());
-                    delRoleUser.setIsDeleted(Constants.CONSTANTS_Y);
-                    count += updateRoleUserIsDeletedByUserDTO(delRoleUser).getValue();
+                    userDTO.setIsDeleted(Constants.CONSTANTS_Y);
+                    userDTO.setRoleIds(delRoleUserIds);
+                    count += updateRoleUserIsDeletedByUserDTO(userDTO).getValue();
                 }
                 //3.所有要新增的roleUserIds，所选角色中在原来角色中找不到的，需要新增
                 roleUserIds.stream().forEach(roleId -> {
@@ -177,16 +184,16 @@ public class UserServiceImpl implements UserService {
                                 && roleUserIds.contains(roleUser.getRoleId()))
                         .map(RoleUser::getRoleId).collect(Collectors.toList());
                 if (null != updateRoleUserIds && !updateRoleUserIds.isEmpty()) {
-                    UserDTO updateRoleUser = new UserDTO();
-                    updateRoleUser.setId(userDTO.getId());
-                    updateRoleUser.setIsDeleted(Constants.CONSTANTS_N);
-                    count += updateRoleUserIsDeletedByUserDTO(updateRoleUser).getValue();
+                    userDTO.setRoleIds(updateRoleUserIds);
+                    userDTO.setIsDeleted(Constants.CONSTANTS_N);
+                    count += updateRoleUserIsDeletedByUserDTO(userDTO).getValue();
                 }
             } else {
                 //所有的都不选，删除该用户所有的角色
                 if (null != roleUsers && !roleUsers.isEmpty()) {
                     RoleUser roleUserRecord = new RoleUser();
                     roleUserRecord.setIsDeleted(Constants.CONSTANTS_Y);
+                    roleUserRecord.setUpdateTime(new Date());
                     count += roleUserDao.updateByExampleSelective(roleUserRecord, example);
                 }
             }
@@ -268,8 +275,8 @@ public class UserServiceImpl implements UserService {
         try {
             int count = 0;
             RoleUserQuery example = new RoleUserQuery();
-            List<String> roleIds = userDTO.getRoleIdList().stream().map(String::valueOf).collect(Collectors.toList());
-            example.createCriteria().andUserIdEqualTo(String.valueOf(userDTO.getId())).andRoleIdIn(roleIds);
+            example.createCriteria().andUserIdEqualTo(String.valueOf(userDTO.getId()))
+                    .andRoleIdIn(userDTO.getRoleIds());
             RoleUser record = new RoleUser();
             record.setIsDeleted(userDTO.getIsDeleted());
             record.setUpdateTime(new Date());
@@ -282,6 +289,52 @@ public class UserServiceImpl implements UserService {
             log.error("deleteRoleMenusByRoleDTO error:{}", e.getMessage(), e);
         }
         log.info("deleteRoleMenusByRoleDTO end.");
+        return result;
+    }
+
+    @Override
+    public ResultBase<User> queryUserRoleById(Integer id) throws BizException {
+        log.info("queryUserRoleById start id:{}", id);
+        ResultBase<User> result = new ResultBase<>();
+        try {
+            User user = userDao.selectByPrimaryKey(id);
+            List<Role> roles = userDao.selectUserRoleById(id);
+            result.setSuccess(true);
+            if (user != null && roles != null && !roles.isEmpty()) {
+                user.setRoles(roles);
+            }
+            result.setValue(user);
+        } catch (Exception e) {
+            result.setErrorCode(ErrorCodeEnum.UNKOWN_ERROR.getCode());
+            result.setErrorMsg(ErrorCodeEnum.UNKOWN_ERROR.getMsg());
+            log.error("queryUserRoleById error:{}", e.getMessage(), e);
+        }
+        log.info("queryUserRoleById end.");
+        return result;
+    }
+
+    @Override
+    public ResultBase<Integer> enableUserById(Integer id) throws BizException {
+        log.info("enableUserById start.id:{}", id);
+        ResultBase<Integer> result = new ResultBase<>();
+        try {
+            //查询用户
+            User user = userDao.selectByPrimaryKey(id);
+            Integer isEnable = user.getIsEnable();
+            //更新
+            User updateUser = new User();
+            updateUser.setId(id);
+            updateUser.setIsEnable(isEnable == 0 ? 1 : 0);
+            updateUser.setUpdateTime(new Date());
+            userDao.updateByPrimaryKeySelective(updateUser);
+            result.setSuccess(true);
+        } catch (Exception e) {
+            log.error("enableUserById Exception:{}", e.getMessage(), e);
+            result.setErrorCode(ErrorCodeEnum.UNKOWN_ERROR.getCode());
+            result.setErrorMsg(ErrorCodeEnum.UNKOWN_ERROR.getMsg());
+            throw new BizException(ErrorCodeEnum.UNKOWN_ERROR, e.getMessage(), e);
+        }
+        log.info("enableUserById end.");
         return result;
     }
 

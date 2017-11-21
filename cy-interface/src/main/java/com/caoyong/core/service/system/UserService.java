@@ -68,6 +68,15 @@ public interface UserService {
     ResultBase<Integer> deleteUserById(Integer id) throws BizException;
 
     /**
+     * 通过id停用、启用用户
+     * 
+     * @param id
+     * @return
+     * @throws BizException
+     */
+    ResultBase<Integer> enableUserById(Integer id) throws BizException;
+
+    /**
      * 删除或恢复角色用户
      * 
      * @param userDTO
@@ -75,5 +84,14 @@ public interface UserService {
      * @throws BizException
      */
     ResultBase<Integer> updateRoleUserIsDeletedByUserDTO(UserDTO userDTO) throws BizException;
+
+    /**
+     * 根据id查询用户的角色
+     * 
+     * @param id
+     * @return
+     * @throws BizException
+     */
+    ResultBase<User> queryUserRoleById(Integer id) throws BizException;
 
 }

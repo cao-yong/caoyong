@@ -375,4 +375,23 @@
       is_deleted = #{isDeleted,jdbcType=CHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  
+  <!-- 自定义sql -->
+  <!-- 查询用户拥有的角色 -->
+  <select id="selectUserRoleById" parameterType="java.lang.Integer" resultType="Role" >
+  	SELECT DISTINCT
+	  a.id,
+	  a.name,
+	  a.english_name englishName,
+	  a.remark,
+	  a.is_deleted isDeleted
+	FROM cy_role a
+	  LEFT JOIN cy_role_user ur
+	    ON ur.role_id = a.id
+	  LEFT JOIN cy_user u
+	    ON u.id = ur.user_id
+	WHERE a.is_deleted = 'N' AND ur.is_deleted = 'N' AND u.is_deleted = 'N'
+	    AND u.id = #{id}
+	ORDER BY a.name
+  </select>
 </mapper>

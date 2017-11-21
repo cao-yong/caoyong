@@ -1,8 +1,10 @@
 package com.caoyong.core.dao.system;
 
 import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
 
+import com.caoyong.core.bean.system.Role;
 import com.caoyong.core.bean.system.User;
 import com.caoyong.core.bean.system.UserQuery;
 
@@ -18,6 +20,8 @@ public interface UserDao {
     int insertSelective(User record);
 
     List<User> selectByExample(UserQuery example);
+
+    List<Role> selectUserRoleById(Integer id);
 
     User selectByPrimaryKey(Integer id);
 

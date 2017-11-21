@@ -73,13 +73,9 @@
 												</#if>
 												<td>
 													<input type="hidden" id="user" name="user" value="${user.id}">
-													<a class="btn btn-minier btn-primary" href="${request.contextPath}/user/editUser?id=${user.id!}" role="button">编辑</a>
-													<button class="btn btn-minier btn-danger" onclick="deleteUser(this)" role="button">删除</button>
-													<#if user.isEnable==1>
-													<a class="btn btn-minier btn-primary" href="${request.contextPath}/enableUser?id=${user.id!}&isEnable=0" role="button">停用</a>
-													<#else>
-													<a class="btn btn-minier btn-primary" href="${request.contextPath}/enableUser?id=${user.id!}&isEnable=1" role="button">启用</a>
-													</#if>
+													<a class="btn btn-minier btn-primary" href="${request.contextPath}/user/editUser.do?id=${user.id!}" role="button">编辑</a>
+													<button class="btn btn-minier btn-danger deleteUser" userId="${user.id}" role="button">删除</button>
+													<button class="btn btn-minier btn-primary enableUser" userId="${user.id}" role="button"><#if user.isEnable==1>停用<#else>启用</#if></button>
 												</td>
 											</tr>
 										</#list>
@@ -92,7 +88,6 @@
 				</div>
 			</div>
 		</div>
-		<input type="hidden" id="userlistcontext" value="${request.contextPath}"/>
 		<script src="${request.contextPath}/static/assets/js/jquery-2.1.4.min.js"></script>
 		<script type="text/javascript">
 			if('ontouchstart' in document.documentElement) document.write("<script src='${request.contextPath}/static/assets/js/jquery.mobile.custom.min.js'>"+"<"+"/script>");
@@ -112,36 +107,57 @@
 		<!-- user scripts -->
 		<script src="${request.contextPath}/static/assets/js/user/base.js"></script>
 		<script type="text/javascript">
-			var userlistcontext = $("#userlistcontext").val();
-			function deleteUser(object){
-				var userid = $(object).parent().children().eq(0).val();
-				if(userid=='1'){
-					bootbox.alert("超级管理员不允许被删除！");
-					return;
-				}
-				
-				
-				bootbox.confirm("<strong style='font-size:15px;padding-left:200px'>删除后数据不可恢复，确认删除用户吗？</strong>", function(result){
-					if(result){
-						$.ajax({
-							url : userlistcontext+'/deleteUser?id='+userid,
-							type : "GET",
-							async: false,
-							success:function(data) {
-								if(data.sessionStatus==540){//异步请求session过期状态
-									window.location.href=userlistcontext+"/login";
-								}else{
-									$(object).parents("tr").remove();
+			jQuery(function($) {
+				//刪除用户
+		    	$('.deleteUser').click(function(){
+		    		var id = $(this).attr('userId');
+		    		bootbox.dialog({
+						message: "确定删除吗？", 
+						buttons: {
+							"success" : {
+								"label" : "确定",
+								"className" : "btn-sm btn-primary",
+								"callback" :function(){
+									$.ajax({
+										type : 'post',
+										url : '${request.contextPath}/user/deleteUser.json',
+										dataType : 'json',
+										data : {
+											id : id
+										},
+										success : function(result){
+											if(result.success){
+												window.location.reload();
+											}else{
+												reminder(result.msg);
+											}
+										}
+									});
 								}
-							},
-							error:function(data) {
 							}
-						});
-					}
-				});
-				
-			}
-
+						}
+					});
+		    	});
+				//停用,启用 用户
+		    	$('.enableUser').click(function(){
+		    		var id = $(this).attr('userId');
+		    		$.ajax({
+						type : 'POST',
+						url : '${request.contextPath}/user/enableUser.json',
+						dataType : 'json',
+						data : {
+							id : id
+						},
+						success : function(result){
+							if(result.success){
+								window.location.reload();
+							}else{
+								reminder(result.msg);
+							}
+						}
+					});
+		    	});
+			})
 		</script>
 	</body>
 </html>
