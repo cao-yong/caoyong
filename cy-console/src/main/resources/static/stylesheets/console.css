@@ -59,8 +59,8 @@ input.btn60x20 {
 .btn60x20{width:60px;height:20px;line-height:20px;background:url("../images/btn60x20.gif") no-repeat}
 .hand{cursor:pointer;border:0}
 div,h1,h2,h3,h4,h5,h6,p,dl,dt,dd,blockquote,form,input,select,textarea,.ul,.uls{margin:0;padding:0}
-input[type=text],input[type=password]{height:17px;}
-input[type=text],input[type=password],textarea{border-top:1px solid #404040;border-left:1px solid #404040;border-right:1px solid #D4D0C8;border-bottom:1px solid #D4D0C8;}
+.page-input input[type=text],input[type=password]{height:17px;}
+.page-input input[type=text],input[type=password],textarea{border-top:1px solid #404040;border-left:1px solid #404040;border-right:1px solid #D4D0C8;border-bottom:1px solid #D4D0C8;}
 /*链接总的css定义*/
 a{text-decoration:none;}
 a:link{color:#364f56;}
@@ -91,4 +91,39 @@ a.u:hover{text-decoration:none}
 	text-overflow: ellipsis; 
 	white-space: nowrap; 
 	overflow: hidden;
+}
+/*鼠标移动提示*/
+.tips {
+	display: none;
+}
+
+.show-tips:hover .tips {
+	display: block;
+	position: absolute;
+	z-index: 3;
+	background: rgba(17, 17, 17, 0.9);
+	border-radius: 6px;
+	color: #fff;
+	width: 50px;
+	font-size: 12px;
+	padding: .5em 1em;
+	word-break: break-all;
+	margin-bottom: 11px;
+	text-align: left;
+	opacity: 0.8;
+}
+
+s {
+	position: absolute;
+	top: -10px;
+	*top: -12px;
+	left: 10px;
+	display: block;
+	height: 0;
+	width: 0;
+	font-size: 0;
+	line-height: 0;
+	border-color: transparent transparent rgba(17, 17, 17, 0.9) transparent;
+	border-style: dashed dashed solid dashed;
+	border-width: 5px;
 }

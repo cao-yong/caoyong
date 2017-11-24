@@ -1,7 +1,6 @@
 package com.caoyong.core.controller.product;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -10,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.alibaba.dubbo.config.annotation.Reference;
+import com.caoyong.common.enums.ProductIsShowEnum;
 import com.caoyong.core.bean.base.Page;
 import com.caoyong.core.bean.base.ResultBase;
 import com.caoyong.core.bean.product.Brand;
@@ -31,6 +31,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Controller
+@RequestMapping(value = "/product")
 public class ProductController {
 
     @Reference(version = "1.0.0")
@@ -45,21 +46,24 @@ public class ProductController {
      * @param model
      * @return
      */
-    @RequestMapping(value = ("/product/list.do"))
+    @RequestMapping(value = ("/productList.do"))
     public String list(ProductQueryDTO query, Model model) {
         log.info("query list start. query:{}", ToStringBuilder.reflectionToString(query, ToStringStyle.DEFAULT_STYLE));
         try {
             //查询品牌结果集
             List<Brand> brands = brandService.selectListByQuery(1);
             model.addAttribute("brands", brands);
+            model.addAttribute("showTypes", ProductIsShowEnum.values());
             query.setPage(true);
             Page<Product> page = productService.selectPageByQuery(query);
             if (null != page) {
                 model.addAttribute("page", page);
                 model.addAttribute("name", query.getName());
                 model.addAttribute("brandId", query.getBrandId());
-                model.addAttribute("isShow", Optional.ofNullable(query.getIsShow()).orElseGet(() -> false));
                 log.info("page = {}", page);
+            }
+            if (query.getIsShow() != null) {
+                model.addAttribute("isShowCode", query.getIsShow() ? 1 : 0);
             }
         } catch (BizException e) {
             log.error("query list BizException:{}", e.getMessage(), e);
@@ -67,7 +71,7 @@ public class ProductController {
             log.error("query list Exception:{}", e.getMessage(), e);
         }
         log.info("query brand list end.");
-        return "product/list";
+        return "/product/productList";
     }
 
     /**
@@ -76,9 +80,9 @@ public class ProductController {
      * @param model
      * @return
      */
-    @RequestMapping(value = ("/product/toAdd.do"))
-    public String toAdd(Model model) {
-        log.info("toAdd start.");
+    @RequestMapping(value = ("/addProduct.do"))
+    public String addProduct(Model model) {
+        log.info("addProduct start.");
         try {
             //查询品牌结果集
             List<Brand> brands = brandService.selectListByQuery(1);
@@ -91,12 +95,12 @@ public class ProductController {
                 model.addAttribute("colors", colors);
             }
         } catch (BizException e) {
-            log.error("toAdd list BizException:{}", e.getMessage(), e);
+            log.error("addProduct BizException:{}", e.getMessage(), e);
         } catch (Exception e) {
-            log.error("toAdd list Exception:{}", e.getMessage(), e);
+            log.error("addProduct Exception:{}", e.getMessage(), e);
         }
-
-        return "product/add";
+        log.info("addProduct end.");
+        return "/product/productForm";
     }
 
     /**
@@ -105,7 +109,7 @@ public class ProductController {
      * @param product
      * @return
      */
-    @RequestMapping(value = ("/product/add.do"))
+    @RequestMapping(value = ("/add.do"))
     public String add(Product product) {
         log.info("add start.product:{}", ToStringBuilder.reflectionToString(product, ToStringStyle.DEFAULT_STYLE));
         try {
@@ -124,7 +128,7 @@ public class ProductController {
      * @param ids
      * @return
      */
-    @RequestMapping(value = ("/product/isShow"))
+    @RequestMapping(value = ("/isShow"))
     public String isShow(Long[] ids) {
         log.info("isShow start. ids:{}", ToStringBuilder.reflectionToString(ids, ToStringStyle.DEFAULT_STYLE));
         try {

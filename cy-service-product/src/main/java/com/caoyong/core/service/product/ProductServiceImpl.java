@@ -79,10 +79,6 @@ public class ProductServiceImpl implements ProductService {
         if (null != query.getIsShow()) {
             createCriteria.andIsShowEqualTo(query.getIsShow());
             params.append("&isShow=").append(query.getIsShow());
-        } else {
-            //默认是下架
-            createCriteria.andIsShowEqualTo(false);
-            params.append("&isShow=").append(false);
         }
         try {
             Integer count = productDao.countByExample(example);
@@ -109,7 +105,7 @@ public class ProductServiceImpl implements ProductService {
         }
         log.info("selectPageByQuery end.");
         //分页展示
-        String url = "/product/list.do";
+        String url = "/product/productList.do";
         page.pageView(url, params.toString());
         return page;
     }

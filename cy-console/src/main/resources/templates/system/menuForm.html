@@ -55,7 +55,7 @@
 				</div>
 				<div class="row">
 					<div class="col-xs-12">
-						<form id="platformForm" class="form-horizontal" role="form" action="${request.contextPath}/saveMenu" method="POST">
+						<form id="platformForm" class="form-horizontal" role="form" method="POST">
 							<input type="hidden" id="newtext" name="newtext" value="${newtext?c}">
 							<#if newtext>
 								<div id="menu">
@@ -391,7 +391,7 @@
 							icon:icon,
 							permissionNew:permission,
 							parentId:parent_id
-						},$('#platformForm').serializeObject());
+						},$('#platformForm').serializeToObject());
 						$.ajax({
 							type:'POST',
 							url:'${request.contextPath}/menu/modifyMenu.json',

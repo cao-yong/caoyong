@@ -48,8 +48,8 @@ function showMsg(msg) {
 /**
  * Form转json
  */
-$.fn.serializeObject = function() {    
-   /*var o = {};    
+$.fn.serializeToObject = function() {    
+   var o = {};    
    var a = this.serializeArray();    
    $.each(a, function() {    
        if (o[this.name]) {    
@@ -61,19 +61,24 @@ $.fn.serializeObject = function() {
            o[this.name] = this.value || '';    
        }    
    });    
-   return o;    */
+   return o;
+};
+/**
+ * Form转json,解决checkbox不选时不序列化问题
+ */
+$.fn.serializeObject = function() {    
 	var a = this.serializeArray();
 	var $radio = $('input[type=radio],input[type=checkbox]', this);
 	var temp = {};
 	$.each($radio, function () {
-	    if (!temp.hasOwnProperty(this.name)) {
-	        if ($("input[name='" + this.name + "']:checked").length == 0) {
-	            temp[this.name] = "";
-	            a.push({name: this.name, value: ""});
-	        }
-	    }
+		if (!temp.hasOwnProperty(this.name)) {
+			if ($("input[name='" + this.name + "']:checked").length == 0) {
+				temp[this.name] = "";
+				a.push({name: this.name, value: ""});
+			}
+		}
 	});
-    return jQuery.param(a);
+	return jQuery.param(a);
 };
 /**
  * 温馨提示

@@ -111,6 +111,10 @@
 				//刪除用户
 		    	$('.deleteUser').click(function(){
 		    		var id = $(this).attr('userId');
+		    		if(id == '1'){
+			    		reminder("超级管理员不允许被删除！");
+			    		return;
+		    		}
 		    		bootbox.dialog({
 						message: "确定删除吗？", 
 						buttons: {

@@ -11300,7 +11300,7 @@ input.ace+.lbl.padding-0::before {
 }
 
 .nav-tabs.tab-color-blue>li>a, .nav-tabs.tab-color-blue>li>a:focus {
-	background-color: #C6487E
+	background-color: #7DB4D8
 }
 
 .nav-tabs[class*=tab-color-]>li.active>a, .nav-tabs[class*=tab-color-]>li.active>a:focus,
@@ -11313,8 +11313,8 @@ input.ace+.lbl.padding-0::before {
 
 .nav-tabs.tab-color-blue>li.active>a, .nav-tabs.tab-color-blue>li.active>a:focus,
 	.nav-tabs.tab-color-blue>li.active>a:hover {
-	color: #C6487E;
-	border-color: #C6487E #C6487E transparent
+	color: #4c718a;
+	border-color: #7DB4D8 #7DB4D8 transparent
 }
 
 .tabs-below .nav-tabs.tab-color-blue>li.active>a {
