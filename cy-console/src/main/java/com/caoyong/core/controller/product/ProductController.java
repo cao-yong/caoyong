@@ -34,9 +34,9 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping(value = "/product")
 public class ProductController {
 
-    @Reference(version = "1.0.0")
+    @Reference(version = "1.0.0", timeout = 3000000)
     private ProductService productService;
-    @Reference(version = "1.0.0")
+    @Reference(version = "1.0.0", timeout = 3000000)
     private BrandService   brandService;
 
     /**

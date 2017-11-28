@@ -28,35 +28,57 @@
     <link rel="stylesheet" href="${request.contextPath}/static/assets/css/bsie-paginator.css"/>
     
     <style type="text/css">
-    /* Mimic table appearance */
-    div.table {
-      display: table;
-    }
-    div.table .file-row {
-      display: table-row;
-    }
-    div.table .file-row > div {
-      display: table-cell;
-      vertical-align: top;
-      border-top: 1px solid #ddd;
-      padding: 8px;
-    }
-    div.table .file-row:nth-child(odd) {
-      background: #f9f9f9;
-    }
-    
-    /* The total progress gets shown by event listeners */
-    #total-progress {
-      opacity: 0;
-      transition: opacity 0.3s linear;
-    }
-
-    /* Hide the progress bar when finished */
-    #previews .file-row.dz-success .progress {
-      opacity: 0;
-      transition: opacity 0.3s linear;
-    }
-
+		/*图片上传样式*/
+		html, body {
+		  height: 100%;
+		}
+		#actions {
+		  margin: 2em 0;
+		}
+		
+		
+		/* Mimic table appearance */
+		div.table {
+		  display: table;
+		}
+		div.table .file-row {
+		  display: table-row;
+		}
+		div.table .file-row > div {
+		  display: table-cell;
+		  vertical-align: top;
+		  border-top: 1px solid #ddd;
+		  padding: 8px;
+		}
+		div.table .file-row:nth-child(odd) {
+		  background: #f9f9f9;
+		}
+		/* The total progress gets shown by event listeners */
+		#total-progress {
+		  opacity: 0;
+		  transition: opacity 0.3s linear;
+		}
+		
+		/* Hide the progress bar when finished */
+		#previews .file-row.dz-success .progress {
+		  opacity: 0;
+		  transition: opacity 0.3s linear;
+		}
+		
+		/* Hide the delete button initially */
+		#previews .file-row .delete {
+		  display: none;
+		}
+		
+		/* Hide the start and cancel buttons and show the delete button */
+		
+		#previews .file-row.dz-success .start,
+		#previews .file-row.dz-success .cancel {
+		  display: none;
+		}
+		#previews .file-row.dz-success .delete {
+		  display: block;
+		}
     </style>
 </head>
 
@@ -179,7 +201,9 @@
 					
 					<!-- 商品图片开始 -->
 					<div id="tab2" class="tab-pane">
+						<!-- 上传图片上面控制按钮 开始 -->
 						<div id="actions" class="row">
+
 					      <div class="col-lg-7">
 					        <!-- The fileinput-button span is used to style the file input field as button -->
 					        <span class="btn btn-success fileinput-button">
@@ -192,7 +216,7 @@
 					        </button>
 					        <button type="reset" class="btn btn-warning cancel">
 					            <i class="glyphicon glyphicon-ban-circle"></i>
-					            <span>取消</span>
+					            <span>取消上传</span>
 					        </button>
 					      </div>
 					
@@ -206,7 +230,11 @@
 					      </div>
 					
 					    </div>
+					    <!-- 上传图片上面控制按钮 结束 -->
+					    
+					    <!-- 上传图片表格 开始  -->
 					    <div class="table table-striped files" id="previews">
+
 					      <div id="template" class="file-row">
 					        <!-- This is used as the file preview template -->
 					        <div>
@@ -218,15 +246,28 @@
 					        </div>
 					        <div>
 					            <p class="size" data-dz-size></p>
+					            <div class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+					              <div class="progress-bar progress-bar-success" style="width:0%;" data-dz-uploadprogress></div>
+					            </div>
 					        </div>
 					        <div>
-					          <button data-dz-remove class="btn btn-xs btn-danger delete">
+					          <button class="btn btn-primary start">
+					              <i class="glyphicon glyphicon-upload"></i>
+					              <span>开始</span>
+					          </button>
+					          <button data-dz-remove class="btn btn-warning cancel">
+					              <i class="glyphicon glyphicon-ban-circle"></i>
+					              <span>取消</span>
+					          </button>
+					          <button data-dz-remove class="btn btn-danger delete">
 					            <i class="glyphicon glyphicon-trash"></i>
 					            <span>删除</span>
 					          </button>
 					        </div>
 					      </div>
+					
 					    </div>
+					    <!-- 上传图片表格 结束  -->
 					</div>
 					<!-- 商品图片结束 -->
 					<div id="tab3" class="tab-pane">
@@ -289,25 +330,38 @@
    		
    		/******************商品图片上传START********************/
    		// Get the template HTML and remove it from the doument
-	    var previewNode = document.querySelector("#template");
-	    previewNode.id = "";
-	    var previewTemplate = previewNode.parentNode.innerHTML;
-	    previewNode.parentNode.removeChild(previewNode);
-
-	  	var myDropzone = new Dropzone(document.body, { // Make the whole body a dropzone
-		    url: "${request.contextPath}/upload/uploadDropZonePics.do", // Set the url
-		    thumbnailWidth: 80,
-		    thumbnailHeight: 80,
-		    parallelUploads: 20,
-		    previewTemplate: previewTemplate,
-		    autoQueue: false, // Make sure the files aren't queued until manually added
-		    previewsContainer: "#previews", // Define the container to display the previews
-		    clickable: ".fileinput-button" // Define the element that should be used as click trigger to select files.
-	  	});
-
+		var previewNode = document.querySelector("#template");
+		previewNode.id = "";
+		var previewTemplate = previewNode.parentNode.innerHTML;
+		previewNode.parentNode.removeChild(previewNode);
+		//index of urls
+		var index = 0;
+		var myDropzone = new Dropzone(document.body, { // Make the whole body a dropzone
+		  url: "${request.contextPath}/upload/uploadDropZonePics.do", // Set the url
+		  thumbnailWidth: 80,
+		  thumbnailHeight: 80,
+		  uploadMultiple: true,
+		  parallelUploads: 20,
+		  previewTemplate: previewTemplate,
+		  autoQueue: false, // Make sure the files aren't queued until manually added
+		  previewsContainer: "#previews", // Define the container to display the previews
+		  clickable: ".fileinput-button", // Define the element that should be used as click trigger to select files.
+		  init: function() {
+		    this.on("success", function(file, response) {
+		      // Handle the responseText here. For example, add the text to the preview element:
+		      var input = document.createElement("input"); 
+		      input.type = "hidden" ;
+		      input.name = "imgUrl" ;
+		      input.value = response.urls[index];
+		      file.previewTemplate.appendChild(input);
+		      index ++;
+		    });
+		  }
+		});
+		
 		myDropzone.on("addedfile", function(file) {
 		  // Hookup the start button
-		  file.previewElement.querySelector(".delete").onclick = function() { myDropzone.enqueueFile(file); };
+		  file.previewElement.querySelector(".start").onclick = function() { myDropzone.enqueueFile(file); };
 		});
 		
 		// Update the total progress bar
@@ -317,16 +371,21 @@
 		
 		myDropzone.on("sending", function(file) {
 		  // Show the total progress bar when upload starts
-		  //document.querySelector("#total-progress").style.opacity = "1";
+		  document.querySelector("#total-progress").style.opacity = "1";
 		  // And disable the start button
-		  //file.previewElement.querySelector(".start").setAttribute("disabled", "disabled");
+		  file.previewElement.querySelector(".start").setAttribute("disabled", "disabled");
 		});
 		
 		// Hide the total progress bar when nothing's uploading anymore
 		myDropzone.on("queuecomplete", function(progress) {
 		  document.querySelector("#total-progress").style.opacity = "0";
 		});
-		
+		//when success, show the url
+		myDropzone.on("successmultiple", function(files, response) {
+		  index = 0;
+	      // Gets triggered when the files have successfully been sent.
+	      // Redirect user or notify of success.
+		});
 		// Setup the buttons for all transfers
 		// The "add files" button doesn't need to be setup because the config
 		// `clickable` has already been specified.

@@ -43,7 +43,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping(value = ("/upload"))
 public class UploadController {
 
-    @Reference(version = "1.0.0")
+    @Reference(version = "1.0.0", timeout = 3000000)
     private UploadService uploadService;
 
     /**
@@ -187,6 +187,7 @@ public class UploadController {
      * @param pic
      */
     @RequestMapping(value = ("/uploadDropZonePics.do"))
+    @ResponseBody
     public UploadResponse uploadDropZonePic(MultipartHttpServletRequest request) {
         log.info("uploadPic uploadDropZonePic start.");
         UploadResponse resp = new UploadResponse();

@@ -30,7 +30,7 @@ import lombok.extern.slf4j.Slf4j;
  */
 public class SkuController {
 
-    @Reference(version = "1.0.0")
+    @Reference(version = "1.0.0", timeout = 3000000)
     private SkuService skuService;
 
     @RequestMapping(value = ("/sku/list.do"))

@@ -27,7 +27,7 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 public class BrandController {
 
-	@Reference(version = "1.0.0")
+    @Reference(version = "1.0.0", timeout = 3000000)
     private BrandService brandService;
 
     //查询
