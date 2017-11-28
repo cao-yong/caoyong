@@ -210,7 +210,6 @@ public class BrandServiceImpl implements BrandService {
             for (Entry<String, String> entry : entrySet) {
                 Brand brand = new Brand();
                 brand.setId(Long.parseLong(entry.getKey()));
-                ;
                 brand.setName(entry.getValue());
                 brands.add(brand);
             }

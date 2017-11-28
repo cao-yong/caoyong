@@ -3,26 +3,34 @@ package com.caoyong.core.bean.product;
 import java.io.Serializable;
 import java.util.Date;
 
+import org.apache.commons.lang3.StringUtils;
+
+/**
+ * 商品
+ * 
+ * @author yong.cao
+ * @time 2017年11月28日 下午11:25:27
+ */
 public class Product implements Serializable {
     /**
      * ID或商品编号
      */
-    private Long id;
+    private Long    id;
 
     /**
      * 品牌ID
      */
-    private Long brandId;
+    private Long    brandId;
 
     /**
      * 商品名称
      */
-    private String name;
+    private String  name;
 
     /**
      * 重量 单位:克
      */
-    private String weight;
+    private String  weight;
 
     /**
      * 是否新品:0:旧品,1:新品
@@ -45,72 +53,74 @@ public class Product implements Serializable {
     private Boolean isShow;
 
     /**
-     * 商品图片集  img,img1,
+     * 商品图片集 img,img1,
      */
-    private String imgUrl;
+    private String  imgUrl;
 
     /**
      * 商品描述
      */
-    private String description;
+    private String  description;
 
     /**
      * 包装清单
      */
-    private String packageList;
+    private String  packageList;
 
     /**
      * 颜色集
      */
-    private String colors;
+    private String  colors;
 
     /**
      * 尺寸集
      */
-    private String sizes;
+    private String  sizes;
 
     /**
      * 创建者
      */
-    private String creator;
+    private String  creator;
 
     /**
      * 修改者
      */
-    private String modifier;
+    private String  modifier;
 
     /**
      * 创建时间
      */
-    private Date createTime;
+    private Date    createTime;
 
     /**
      * 修改时间
      */
-    private Date updateTime;
+    private Date    updateTime;
 
     /**
      * 扩展字段
      */
-    private String extraInfo;
+    private String  extraInfo;
 
     /**
      * 是否删除（Y：是，N：否）
      */
-    private String isDeleted;
+    private String  isDeleted;
 
     /**
      * 获取图片数组
+     * 
      * @return
      */
-    public String[] getImages(){
-    	return null != imgUrl ? imgUrl.split(",") : null;
+    public String[] getImages() {
+        return null != imgUrl ? imgUrl.split(",") : null;
     }
+
     /**
      * 最低价
      */
-    private String price;
-    
+    private String            price;
+
     private static final long serialVersionUID = 1L;
 
     public Long getId() {
@@ -266,14 +276,23 @@ public class Product implements Serializable {
     }
 
     public String getPrice() {
-		return price;
-	}
+        return price;
+    }
 
-	public void setPrice(String price) {
-		this.price = price;
-	}
+    public void setPrice(String price) {
+        this.price = price;
+    }
 
-	@Override
+    public String getShortName() {
+        if (StringUtils.isNotBlank(name) && name.length() > 40) {
+            return name.substring(0, 40) + "..." + "<a title='" + name
+                    + "' data-rel='tooltip' href='javascript:void(0)' class='tooltip-info'>更多</a>";
+        } else {
+            return name;
+        }
+    }
+
+    @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append(getClass().getSimpleName());

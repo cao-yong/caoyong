@@ -141,7 +141,7 @@
 											</label>
 										</td>
                                         <td>${product.id?c }</td>
-                                        <td align="center" class="product-name">${product.name }</td>
+                                        <td align="center" class="product-name">${product.shortName }</td>
                                         <td align="center"><img width="50" height="50" src="${product.images[0] }"/>
                                         </td>
                                         <td align="center">
@@ -268,12 +268,13 @@
         //初始化选择框
    		$('.chosen-select').chosen();
    		$('.chosen-select-deselect').chosen({ allow_single_deselect: true });
+   		//tooltip
+   		$('[data-rel=tooltip]').tooltip();
     });
 </script>
 <script src="${request.contextPath}/static/assets/js/bootstrap.min.js"></script>
 
 <!-- page specific plugin scripts -->
-<script src="${request.contextPath}/static/assets/js/jquery-ui.min.js"></script>
 <script src="${request.contextPath}/static/assets/js/jquery.ui.touch-punch.min.js"></script>
 <script src="${request.contextPath}/static/assets/js/jquery.gritter.min.js"></script>
 
