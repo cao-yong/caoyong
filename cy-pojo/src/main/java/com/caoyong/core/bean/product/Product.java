@@ -284,9 +284,9 @@ public class Product implements Serializable {
     }
 
     public String getShortName() {
-        if (StringUtils.isNotBlank(name) && name.length() > 40) {
-            return name.substring(0, 40) + "..." + "<a title='" + name
-                    + "' data-rel='tooltip' href='javascript:void(0)' class='tooltip-info'>更多</a>";
+        if (StringUtils.isNotBlank(name) && name.length() > 42) {
+            return name.substring(0, 42) + "<a title='" + name
+                    + "' data-rel='tooltip' href='javascript:void(0)' class='tooltip-info'>...</a>";
         } else {
             return name;
         }
