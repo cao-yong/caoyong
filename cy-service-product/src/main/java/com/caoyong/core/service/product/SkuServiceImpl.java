@@ -36,7 +36,7 @@ import redis.clients.jedis.Jedis;
  */
 @Slf4j
 @Service("skuService")
-@Transactional
+@Transactional(rollbackFor = Exception.class)
 public class SkuServiceImpl implements SkuService {
     @Autowired
     private SkuDao     skuDao;

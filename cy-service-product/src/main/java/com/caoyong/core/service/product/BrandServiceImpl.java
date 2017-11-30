@@ -32,7 +32,7 @@ import redis.clients.jedis.Jedis;
  */
 
 @Service("brandService")
-@Transactional
+@Transactional(rollbackFor = Exception.class)
 @Slf4j
 public class BrandServiceImpl implements BrandService {
     @Autowired

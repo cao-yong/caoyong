@@ -26,6 +26,7 @@ import com.caoyong.core.dao.product.ProductDao;
 import com.caoyong.core.dao.product.SkuDao;
 import com.caoyong.enums.ErrorCodeEnum;
 import com.caoyong.exception.BizException;
+import com.caoyong.utils.CheckParamsUtil;
 
 import lombok.extern.slf4j.Slf4j;
 import redis.clients.jedis.Jedis;
@@ -39,7 +40,7 @@ import redis.clients.jedis.Jedis;
 
 @Slf4j
 @Service("productService")
-@Transactional
+@Transactional(rollbackFor = Exception.class)
 public class ProductServiceImpl implements ProductService {
     @Autowired
     private ProductDao  productDao;
@@ -138,10 +139,14 @@ public class ProductServiceImpl implements ProductService {
     public ResultBase<Integer> saveProduct(Product product) throws BizException {
         log.info("saveProduct start. product:{}",
                 ToStringBuilder.reflectionToString(product, ToStringStyle.DEFAULT_STYLE));
+        CheckParamsUtil.check(product, Product.class, "name", "color", "size", "weight", "images", "brandId");
         ResultBase<Integer> result = new ResultBase<Integer>();
         //返回影响的行数
         Integer count = 0;
         try {
+            product.setSizes(StringUtils.join(product.getSize(), ","));
+            product.setColors(StringUtils.join(product.getColor(), ","));
+            product.setImgUrl(StringUtils.join(product.getImages(), ","));
             //redis生成商品id
             Long proudctId = jedis.incr("pno");
             product.setId(proudctId);
@@ -154,26 +159,30 @@ public class ProductServiceImpl implements ProductService {
             product.setModifier(Constants.SYSTEM);
             count += productDao.insertSelective(product);
 
-            String[] colors = product.getColors().split(",");
-            String[] sizes = product.getSizes().split(",");
-            for (String color : colors) {
-                for (String size : sizes) {
-                    //保存sku
-                    Sku sku = new Sku();
-                    sku.setIsDeleted(Constants.CONSTANTS_N);
-                    sku.setProductId(product.getId());
-                    sku.setColorId(Long.parseLong(color));
-                    sku.setSize(size);
-                    sku.setMarketPrice(Constants.DEAFAULT_PRICE);
-                    sku.setPrice(Constants.DEAFAULT_PRICE);
-                    sku.setDeliveFee(Constants.DEAFAULT_DELIVE_FEE);
-                    sku.setUpperLimit(Constants.DEAFAULT_UPPER_LIMIT);
-                    sku.setCreateTime(new Date());
-                    sku.setUpdateTime(new Date());
-                    sku.setCreator(Constants.SYSTEM);
-                    sku.setModifier(Constants.SYSTEM);
-                    sku.setStock(Constants.DEAFAULT_STOCK);
-                    count += skuDao.insert(sku);
+            String[] colors = product.getColor();
+            String[] sizes = product.getSize();
+            if (null != colors && colors.length > 0) {
+                for (String color : colors) {
+                    if (null != sizes && sizes.length > 0) {
+                        for (String size : sizes) {
+                            //保存sku
+                            Sku sku = new Sku();
+                            sku.setIsDeleted(Constants.CONSTANTS_N);
+                            sku.setProductId(product.getId());
+                            sku.setColorId(Long.parseLong(color));
+                            sku.setSize(size);
+                            sku.setMarketPrice(Constants.DEAFAULT_PRICE);
+                            sku.setPrice(Constants.DEAFAULT_PRICE);
+                            sku.setDeliveFee(Constants.DEAFAULT_DELIVE_FEE);
+                            sku.setUpperLimit(Constants.DEAFAULT_UPPER_LIMIT);
+                            sku.setCreateTime(new Date());
+                            sku.setUpdateTime(new Date());
+                            sku.setCreator(Constants.SYSTEM);
+                            sku.setModifier(Constants.SYSTEM);
+                            sku.setStock(Constants.DEAFAULT_STOCK);
+                            count += skuDao.insert(sku);
+                        }
+                    }
                 }
             }
             result.setSuccess(true);

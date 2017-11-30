@@ -26,60 +26,7 @@
 
 	<link rel="stylesheet" href="${request.contextPath}/static/assets/css/bootstrap.css" />
     <link rel="stylesheet" href="${request.contextPath}/static/assets/css/bsie-paginator.css"/>
-    
-    <style type="text/css">
-		/*图片上传样式*/
-		html, body {
-		  height: 100%;
-		}
-		#actions {
-		  margin: 2em 0;
-		}
-		
-		
-		/* Mimic table appearance */
-		div.table {
-		  display: table;
-		}
-		div.table .file-row {
-		  display: table-row;
-		}
-		div.table .file-row > div {
-		  display: table-cell;
-		  vertical-align: top;
-		  border-top: 1px solid #ddd;
-		  padding: 8px;
-		}
-		div.table .file-row:nth-child(odd) {
-		  background: #f9f9f9;
-		}
-		/* The total progress gets shown by event listeners */
-		#total-progress {
-		  opacity: 0;
-		  transition: opacity 0.3s linear;
-		}
-		
-		/* Hide the progress bar when finished */
-		#previews .file-row.dz-success .progress {
-		  opacity: 0;
-		  transition: opacity 0.3s linear;
-		}
-		
-		/* Hide the delete button initially */
-		#previews .file-row .delete {
-		  display: none;
-		}
-		
-		/* Hide the start and cancel buttons and show the delete button */
-		
-		#previews .file-row.dz-success .start,
-		#previews .file-row.dz-success .cancel {
-		  display: none;
-		}
-		#previews .file-row.dz-success .delete {
-		  display: block;
-		}
-    </style>
+    <link rel="stylesheet" href="${request.contextPath}/static/stylesheets/console.css"/>
 </head>
 
 <body class="skin-2" style="background-color: #FFF;">
@@ -104,22 +51,23 @@
 						<a data-toggle="tab" href="#tab4">包装清单</a>
 					</li>
 				</ul>
-	
+				
 				<div class="tab-content">
 					<!-- 基本信息开始 -->
 					<div id="tab1" class="tab-pane in active">
-						<form class="form-horizontal" role="form">
+						<form class="form-horizontal" id="productForm" role="form">
+							<input type="hidden" id="description" name="description"/>
 							<div class="form-group">
 								<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 商品名称  </label>
-
+	
 								<div class="col-sm-9">
-									<input type="text" id="form-field-1" placeholder="请输入商品名称" style="width:258px"/>
+									<input type="text" id="name" name="name" placeholder="请输入商品名称" style="width:258px"/>
 								</div>
 							</div>
-
+	
 							<div class="form-group">
 								<label class="col-sm-3 control-label no-padding-right" for="form-field-1-1"> 商品品牌  </label>
-
+	
 								<div class="col-sm-2">
 									<select class="chosen-select" id="brandId" name="brandId">
 		                           	<option value="">全部</option>
@@ -134,9 +82,9 @@
 				
 							<div class="form-group">
 								<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 商品毛重  </label>
-
+	
 								<div class="col-sm-9">
-									<input type="text" id="form-field-1" placeholder="请输入商品毛重 " style="width:258px"/>KG
+									<input type="text" id="weight" name="weight" placeholder="请输入商品毛重 " style="width:258px"/>KG
 								</div>
 							</div>
 							
@@ -145,7 +93,7 @@
 								<div class="col-sm-9">
 									<#list colors as color>
 										<label class="pos-rel">
-											<input name="colors" type="checkbox" class="ace"  value="${color.id}"/>
+											<input name="color" type="checkbox" class="ace"  value="${color.id}"/>
 											<span class="lbl">${color.name }</span>
 										</label>
 									</#list>
@@ -156,23 +104,23 @@
 								<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 尺码  </label>
 								<div class="col-sm-9">
 									<label class="pos-rel">
-										<input name="sizes" type="checkbox" class="ace"  value="S"/>
+										<input name="size" type="checkbox" class="ace"  value="S"/>
 										<span class="lbl">S</span>
 									</label>
 									<label class="pos-rel">
-										<input name="sizes" type="checkbox" class="ace"  value="M"/>
+										<input name="size" type="checkbox" class="ace"  value="M"/>
 										<span class="lbl">M</span>
 									</label>
 									<label class="pos-rel">
-										<input name="sizes" type="checkbox" class="ace"  value="L"/>
+										<input name="size" type="checkbox" class="ace"  value="L"/>
 										<span class="lbl">L</span>
 									</label>
 									<label class="pos-rel">
-										<input name="sizes" type="checkbox" class="ace"  value="XL"/>
+										<input name="size" type="checkbox" class="ace"  value="XL"/>
 										<span class="lbl">XL</span>
 									</label>
 									<label class="pos-rel">
-										<input name="sizes" type="checkbox" class="ace"  value="XLL"/>
+										<input name="size" type="checkbox" class="ace"  value="XLL"/>
 										<span class="lbl">XLL</span>
 									</label>
 								</div>
@@ -198,98 +146,99 @@
 						</form>
 					</div>
 					<!-- 基本信息结束 -->
-					
-					<!-- 商品图片开始 -->
-					<div id="tab2" class="tab-pane">
-						<!-- 上传图片上面控制按钮 开始 -->
-						<div id="actions" class="row">
-
-					      <div class="col-lg-7">
-					        <!-- The fileinput-button span is used to style the file input field as button -->
-					        <span class="btn btn-success fileinput-button">
-					            <i class="glyphicon glyphicon-plus"></i>
-					            <span>添加图片</span>
-					        </span>
-					        <button type="submit" class="btn btn-primary start">
-					            <i class="glyphicon glyphicon-upload"></i>
-					            <span>开始上传</span>
-					        </button>
-					        <button type="reset" class="btn btn-warning cancel">
-					            <i class="glyphicon glyphicon-ban-circle"></i>
-					            <span>取消上传</span>
-					        </button>
-					      </div>
-					
-					      <div class="col-lg-5">
-					        <!-- The global file processing state -->
-					        <span class="fileupload-process">
-					          <div id="total-progress" class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
-					            <div class="progress-bar progress-bar-success" style="width:0%;" data-dz-uploadprogress></div>
-					          </div>
-					        </span>
-					      </div>
-					
-					    </div>
-					    <!-- 上传图片上面控制按钮 结束 -->
-					    
-					    <!-- 上传图片表格 开始  -->
-					    <div class="table table-striped files" id="previews">
-
-					      <div id="template" class="file-row">
-					        <!-- This is used as the file preview template -->
-					        <div>
-					            <span class="preview"><img data-dz-thumbnail /></span>
-					        </div>
-					        <div>
-					            <p class="name" data-dz-name></p>
-					            <strong class="error text-danger" data-dz-errormessage></strong>
-					        </div>
-					        <div>
-					            <p class="size" data-dz-size></p>
-					            <div class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
-					              <div class="progress-bar progress-bar-success" style="width:0%;" data-dz-uploadprogress></div>
-					            </div>
-					        </div>
-					        <div>
-					          <button class="btn btn-primary start">
-					              <i class="glyphicon glyphicon-upload"></i>
-					              <span>开始</span>
-					          </button>
-					          <button data-dz-remove class="btn btn-warning cancel">
-					              <i class="glyphicon glyphicon-ban-circle"></i>
-					              <span>取消</span>
-					          </button>
-					          <button data-dz-remove class="btn btn-danger delete">
-					            <i class="glyphicon glyphicon-trash"></i>
-					            <span>删除</span>
-					          </button>
-					        </div>
-					      </div>
-					
-					    </div>
-					    <!-- 上传图片表格 结束  -->
+						
+						<!-- 商品图片开始 -->
+						<div id="tab2" class="tab-pane">
+							<!-- 上传图片上面控制按钮 开始 -->
+							<div id="actions" class="row">
+	
+						      <div class="col-lg-7">
+						        <!-- The fileinput-button span is used to style the file input field as button -->
+						        <span class="btn btn-success fileinput-button">
+						            <i class="glyphicon glyphicon-plus"></i>
+						            <span>添加图片</span>
+						        </span>
+						        <button type="submit" class="btn btn-primary start">
+						            <i class="glyphicon glyphicon-upload"></i>
+						            <span>开始上传</span>
+						        </button>
+						        <button type="reset" class="btn btn-warning cancel">
+						            <i class="glyphicon glyphicon-ban-circle"></i>
+						            <span>取消上传</span>
+						        </button>
+						      </div>
+						
+						      <div class="col-lg-5">
+						        <!-- The global file processing state -->
+						        <span class="fileupload-process">
+						          <div id="total-progress" class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+						            <div class="progress-bar progress-bar-success" style="width:0%;" data-dz-uploadprogress></div>
+						          </div>
+						        </span>
+						      </div>
+						
+						    </div>
+						    <!-- 上传图片上面控制按钮 结束 -->
+						    
+						    <!-- 上传图片表格 开始  -->
+						    <div class="table table-striped files" id="previews">
+	
+						      <div id="template" class="file-row">
+						        <!-- This is used as the file preview template -->
+						        <div>
+						            <span class="preview"><img data-dz-thumbnail /></span>
+						        </div>
+						        <div>
+						            <p class="name" data-dz-name></p>
+						            <strong class="error text-danger" data-dz-errormessage></strong>
+						        </div>
+						        <div>
+						            <p class="size" data-dz-size></p>
+						            <div class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+						              <div class="progress-bar progress-bar-success" style="width:0%;" data-dz-uploadprogress></div>
+						            </div>
+						        </div>
+						        <div>
+						          <button class="btn btn-primary start">
+						              <i class="glyphicon glyphicon-upload"></i>
+						              <span>开始</span>
+						          </button>
+						          <button data-dz-remove class="btn btn-warning cancel">
+						              <i class="glyphicon glyphicon-ban-circle"></i>
+						              <span>取消</span>
+						          </button>
+						          <button data-dz-remove class="btn btn-danger delete">
+						            <i class="glyphicon glyphicon-trash"></i>
+						            <span>删除</span>
+						          </button>
+						        </div>
+						      </div>
+						
+						    </div>
+						    <!-- 上传图片表格 结束  -->
+						</div>
+						<!-- 商品图片结束 -->
+						<div id="tab3" class="tab-pane">
+							<div class="row">
+								<div class="col-xs-12">
+									<!-- PAGE CONTENT BEGINS -->
+									<h4 class="header green clearfix">
+										请上传商品描述的图片
+									</h4>
+	
+									<div class="wysiwyg-editor" id="editor1"></div>
+									
+									<div class="hr hr-double dotted"></div>
+									<!-- PAGE CONTENT ENDS -->
+								</div><!-- /.col -->
+							</div><!-- /.row -->
+						</div>
+						
+						<div id="tab4" class="tab-pane">
+							<textarea rows="20" cols="180" id="packageList" name="packageList"></textarea>
+						</div>
 					</div>
-					<!-- 商品图片结束 -->
-					<div id="tab3" class="tab-pane">
-						<div class="row">
-							<div class="col-xs-12">
-								<!-- PAGE CONTENT BEGINS -->
-								<h4 class="header green clearfix">
-									请上传商品描述的图片
-								</h4>
-
-								<div class="wysiwyg-editor" id="editor1"></div>
-
-								<div class="hr hr-double dotted"></div>
-								<!-- PAGE CONTENT ENDS -->
-							</div><!-- /.col -->
-						</div><!-- /.row -->
-					</div>
-					
-					<div id="tab4" class="tab-pane">
-						<textarea rows="20" cols="180" id="description" name="description"></textarea>
-					</div>
-				</div>
+				
 			</div>
 		</div>
 		<!-- 保存、取消 开始 -->
@@ -315,7 +264,8 @@
 <script src="${request.contextPath}/static/assets/js/d3.v3.min.js"></script>
 <script src="${request.contextPath}/static/assets/js/markdown.min.js"></script>
 <script src="${request.contextPath}/static/assets/js/bootstrap-markdown.min.js"></script>
-<script src="${request.contextPath}/static/assets/js/bootstrap-wysiwyg.min.js"></script>
+<script src="${request.contextPath}/static/assets/js/jquery.hotkeys.index.min.js"></script>
+<script src="${request.contextPath}/static/assets/js/bootstrap-wysiwyg.js"></script>
 <!-- ace scripts -->
 <script src="${request.contextPath}/static/assets/js/ace-elements.min.js"></script>
 <script src="${request.contextPath}/static/assets/js/ace.min.js"></script>
@@ -342,6 +292,8 @@
 		  thumbnailHeight: 80,
 		  uploadMultiple: true,
 		  parallelUploads: 20,
+		  maxFiles: 5,
+		  //dictMaxFilesExceeded: "最多只能上传5张图片!",
 		  previewTemplate: previewTemplate,
 		  autoQueue: false, // Make sure the files aren't queued until manually added
 		  previewsContainer: "#previews", // Define the container to display the previews
@@ -351,7 +303,7 @@
 		      // Handle the responseText here. For example, add the text to the preview element:
 		      var input = document.createElement("input"); 
 		      input.type = "hidden" ;
-		      input.name = "imgUrl" ;
+		      input.name = "images" ;
 		      input.value = response.urls[index];
 		      file.previewTemplate.appendChild(input);
 		      index ++;
@@ -360,187 +312,145 @@
 		});
 		
 		myDropzone.on("addedfile", function(file) {
-		  // Hookup the start button
-		  file.previewElement.querySelector(".start").onclick = function() { myDropzone.enqueueFile(file); };
+		  	// Hookup the start button
+		  	file.previewElement.querySelector(".start").onclick = function() { myDropzone.enqueueFile(file); };
 		});
 		
 		// Update the total progress bar
 		myDropzone.on("totaluploadprogress", function(progress) {
-		  document.querySelector("#total-progress .progress-bar").style.width = progress + "%";
+			document.querySelector("#total-progress .progress-bar").style.width = progress + "%";
 		});
 		
 		myDropzone.on("sending", function(file) {
-		  // Show the total progress bar when upload starts
-		  document.querySelector("#total-progress").style.opacity = "1";
-		  // And disable the start button
-		  file.previewElement.querySelector(".start").setAttribute("disabled", "disabled");
+			// Show the total progress bar when upload starts
+		  	document.querySelector("#total-progress").style.opacity = "1";
+		  	// And disable the start button
+			file.previewElement.querySelector(".start").setAttribute("disabled", "disabled");
 		});
 		
 		// Hide the total progress bar when nothing's uploading anymore
 		myDropzone.on("queuecomplete", function(progress) {
-		  document.querySelector("#total-progress").style.opacity = "0";
+			document.querySelector("#total-progress").style.opacity = "0";
 		});
-		//when success, show the url
 		myDropzone.on("successmultiple", function(files, response) {
-		  index = 0;
-	      // Gets triggered when the files have successfully been sent.
-	      // Redirect user or notify of success.
+			//Initializing index when success
+		  	index = 0;
+		});
+		myDropzone.on("maxfilesexceeded", function(file) { 
+			this.removeFile(file);
+			reminder("最多只能上传<font color='red'>5</font>张图片!")
 		});
 		// Setup the buttons for all transfers
 		// The "add files" button doesn't need to be setup because the config
 		// `clickable` has already been specified.
 		document.querySelector("#actions .start").onclick = function() {
-		  myDropzone.enqueueFiles(myDropzone.getFilesWithStatus(Dropzone.ADDED));
+			myDropzone.enqueueFiles(myDropzone.getFilesWithStatus(Dropzone.ADDED));
 		};
 		document.querySelector("#actions .cancel").onclick = function() {
-		  myDropzone.removeAllFiles(true);
+			myDropzone.removeAllFiles(true);
 		};
    		/******************商品图片上传END********************/
    		
-   		/******************markdown编辑器START********************/
-   		jQuery(function($){
-			$('textarea[data-provide="markdown"]').each(function(){
-		        var $this = $(this);
-		
-				if ($this.data('markdown')) {
-				  $this.data('markdown').showEditor();
-				}
-				else $this.markdown()
-				
-				$this.parent().find('.btn').addClass('btn-white');
-		    })
-			function showErrorAlert (reason, detail) {
-				var msg='';
-				if (reason==='unsupported-file-type') { msg = "Unsupported format " +detail; }
-				else {
-					//console.log("error uploading file", reason, detail);
-				}
-				$('<div class="alert"> <button type="button" class="close" data-dismiss="alert">&times;</button>'+ 
-				 '<strong>File upload error</strong> '+msg+' </div>').prependTo('#alerts');
+		/******************markdown编辑器START********************/
+		$('textarea[data-provide="markdown"]').each(function(){
+	        var $this = $(this);
+	
+			if ($this.data('markdown')) {
+			  $this.data('markdown').showEditor();
 			}
-			//$('#editor1').ace_wysiwyg();//this will create the default editor will all buttons
-			//but we want to change a few buttons colors for the third style
-			$('#editor1').ace_wysiwyg({
-				toolbar:
-				[
-					'font',
-					null,
-					'fontSize',
-					null,
-					{name:'bold', className:'btn-info'},
-					{name:'italic', className:'btn-info'},
-					{name:'strikethrough', className:'btn-info'},
-					{name:'underline', className:'btn-info'},
-					null,
-					{name:'insertunorderedlist', className:'btn-success'},
-					{name:'insertorderedlist', className:'btn-success'},
-					{name:'outdent', className:'btn-purple'},
-					{name:'indent', className:'btn-purple'},
-					null,
-					{name:'justifyleft', className:'btn-primary'},
-					{name:'justifycenter', className:'btn-primary'},
-					{name:'justifyright', className:'btn-primary'},
-					{name:'justifyfull', className:'btn-inverse'},
-					null,
-					{name:'createLink', className:'btn-pink'},
-					{name:'unlink', className:'btn-pink'},
-					null,
-					{name:'insertImage', className:'btn-success'},
-					null,
-					'foreColor',
-					null,
-					{name:'undo', className:'btn-grey'},
-					{name:'redo', className:'btn-grey'}
-				],
-				'wysiwyg': {
-					fileUploadError: showErrorAlert
-				}
-			}).prev().addClass('wysiwyg-style2');
-			/**
-			//make the editor have all the available height
-			$(window).on('resize.editor', function() {
-				var offset = $('#editor1').parent().offset();
-				var winHeight =  $(this).height();
-				
-				$('#editor1').css({'height':winHeight - offset.top - 10, 'max-height': 'none'});
-			}).triggerHandler('resize.editor');
-			*/
-			$('[data-toggle="buttons"] .btn').on('click', function(e){
-				var target = $(this).find('input[type=radio]');
-				var which = parseInt(target.val());
-				var toolbar = $('#editor1').prev().get(0);
-				if(which >= 1 && which <= 4) {
-					toolbar.className = toolbar.className.replace(/wysiwyg\-style(1|2)/g , '');
-					if(which == 1) $(toolbar).addClass('wysiwyg-style1');
-					else if(which == 2) $(toolbar).addClass('wysiwyg-style2');
-					if(which == 4) {
-						$(toolbar).find('.btn-group > .btn').addClass('btn-white btn-round');
-					} else $(toolbar).find('.btn-group > .btn-white').removeClass('btn-white btn-round');
-				}
-			});
-		
-			//RESIZE IMAGE
+			else $this.markdown()
 			
-			//Add Image Resize Functionality to Chrome and Safari
-			//webkit browsers don't have image resize functionality when content is editable
-			//so let's add something using jQuery UI resizable
-			//another option would be opening a dialog for user to enter dimensions.
-			if ( typeof jQuery.ui !== 'undefined' && ace.vars['webkit'] ) {
-				
-				var lastResizableImg = null;
-				function destroyResizable() {
-					if(lastResizableImg == null) return;
-					lastResizableImg.resizable( "destroy" );
-					lastResizableImg.removeData('resizable');
-					lastResizableImg = null;
-				}
-		
-				var enableImageResize = function() {
-					$('.wysiwyg-editor')
-					.on('mousedown', function(e) {
-						var target = $(e.target);
-						if( e.target instanceof HTMLImageElement ) {
-							if( !target.data('resizable') ) {
-								target.resizable({
-									aspectRatio: e.target.width / e.target.height,
-								});
-								target.data('resizable', true);
-								
-								if( lastResizableImg != null ) {
-									//disable previous resizable image
-									lastResizableImg.resizable( "destroy" );
-									lastResizableImg.removeData('resizable');
-								}
-								lastResizableImg = target;
-							}
-						}
-					})
-					.on('click', function(e) {
-						if( lastResizableImg != null && !(e.target instanceof HTMLImageElement) ) {
-							destroyResizable();
-						}
-					})
-					.on('keydown', function() {
-						destroyResizable();
-					});
-			    }
-		
-				enableImageResize();
-		
-				/**
-				//or we can load the jQuery UI dynamically only if needed
-				if (typeof jQuery.ui !== 'undefined') enableImageResize();
-				else {//load jQuery UI if not loaded
-					//in Ace demo ./components will be replaced by correct components path
-					$.getScript("assets/js/jquery-ui.custom.min.js", function(data, textStatus, jqxhr) {
-						enableImageResize()
-					});
-				}
-				*/
+			$this.parent().find('.btn').addClass('btn-white');
+	    })
+		function showErrorAlert (reason, detail) {
+			var msg='';
+			if (reason==='unsupported-file-type') { msg = "Unsupported format " +detail; }
+			else {
+				//console.log("error uploading file", reason, detail);
 			}
-		
+			$('<div class="alert"> <button type="button" class="close" data-dismiss="alert">&times;</button>'+ 
+			 '<strong>File upload error</strong> '+msg+' </div>').prependTo('#alerts');
+		}
+		//$('#editor1').ace_wysiwyg();//this will create the default editor will all buttons
+		//but we want to change a few buttons colors for the third style
+		$('#editor1').ace_wysiwyg({
+			toolbar:
+			[
+				'font',
+				null,
+				'fontSize',
+				null,
+				{name:'bold', className:'btn-info'},
+				{name:'italic', className:'btn-info'},
+				{name:'strikethrough', className:'btn-info'},
+				{name:'underline', className:'btn-info'},
+				null,
+				{name:'insertunorderedlist', className:'btn-success'},
+				{name:'insertorderedlist', className:'btn-success'},
+				{name:'outdent', className:'btn-purple'},
+				{name:'indent', className:'btn-purple'},
+				null,
+				{name:'justifyleft', className:'btn-primary'},
+				{name:'justifycenter', className:'btn-primary'},
+				{name:'justifyright', className:'btn-primary'},
+				{name:'justifyfull', className:'btn-inverse'},
+				null,
+				{name:'createLink', className:'btn-pink'},
+				{name:'unlink', className:'btn-pink'},
+				null,
+				{name:'insertImage', className:'btn-success'},
+				null,
+				'foreColor',
+				null,
+				{name:'undo', className:'btn-grey'},
+				{name:'redo', className:'btn-grey'}
+			],
+			'wysiwyg': {
+				fileUploadError: showErrorAlert
+			}
+		}).prev().addClass('wysiwyg-style2');
+		/**
+		//make the editor have all the available height
+		$(window).on('resize.editor', function() {
+			var offset = $('#editor1').parent().offset();
+			var winHeight =  $(this).height();
+			
+			$('#editor1').css({'height':winHeight - offset.top - 10, 'max-height': 'none'});
+		}).triggerHandler('resize.editor');
+		*/
+		$('[data-toggle="buttons"] .btn').on('click', function(e){
+			var target = $(this).find('input[type=radio]');
+			var which = parseInt(target.val());
+			var toolbar = $('#editor1').prev().get(0);
+			if(which >= 1 && which <= 4) {
+				toolbar.className = toolbar.className.replace(/wysiwyg\-style(1|2)/g , '');
+				if(which == 1) $(toolbar).addClass('wysiwyg-style1');
+				else if(which == 2) $(toolbar).addClass('wysiwyg-style2');
+				if(which == 4) {
+					$(toolbar).find('.btn-group > .btn').addClass('btn-white btn-round');
+				} else $(toolbar).find('.btn-group > .btn-white').removeClass('btn-white btn-round');
+			}
 		});
    		/******************markdown编辑器END********************/
+   		//提交表单
+   		$('#submitBtn').click(function(){
+   			//设置描述
+   			$('#description').val($('#editor1').html());
+   			//提交
+   			var data = $("input[name],select[name],textarea[name]").serializeObject();
+   			$.ajax({
+				url : '${request.contextPath}/product/saveProduct.json',
+				type : 'POST',
+				data : data,
+				success : function(result){
+					if(result.success){
+						window.location.href = '${request.contextPath}/product/productList.do';
+					}else{
+						reminder(result.msg);
+					}
+				}
+			});
+   		});
     });
 </script>
 </body>

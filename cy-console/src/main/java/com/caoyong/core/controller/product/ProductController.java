@@ -7,9 +7,11 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.caoyong.common.enums.ProductIsShowEnum;
+import com.caoyong.core.bean.base.BaseResponse;
 import com.caoyong.core.bean.base.Page;
 import com.caoyong.core.bean.base.ResultBase;
 import com.caoyong.core.bean.product.Brand;
@@ -18,6 +20,7 @@ import com.caoyong.core.bean.product.Product;
 import com.caoyong.core.bean.product.ProductQueryDTO;
 import com.caoyong.core.service.product.BrandService;
 import com.caoyong.core.service.product.ProductService;
+import com.caoyong.enums.ErrorCodeEnum;
 import com.caoyong.exception.BizException;
 
 import lombok.extern.slf4j.Slf4j;
@@ -109,17 +112,23 @@ public class ProductController {
      * @param product
      * @return
      */
-    @RequestMapping(value = ("/add.do"))
-    public String add(Product product) {
-        log.info("add start.product:{}", ToStringBuilder.reflectionToString(product, ToStringStyle.DEFAULT_STYLE));
+    @ResponseBody
+    @RequestMapping(value = ("/saveProduct.json"))
+    public BaseResponse saveProduct(Product product) {
+        BaseResponse resp = new BaseResponse();
+        log.info("saveProduct start.product:{}",
+                ToStringBuilder.reflectionToString(product, ToStringStyle.DEFAULT_STYLE));
         try {
             ResultBase<Integer> result = productService.saveProduct(product);
             log.info("resut:{}", ToStringBuilder.reflectionToString(result, ToStringBuilder.getDefaultStyle()));
+            resp.setSuccess(result.isSuccess());
+            resp.setCode(result.getErrorCode());
         } catch (Exception e) {
-            log.error("add error:{}", e.getMessage(), e);
+            log.error("saveProduct error:{}", e.getMessage(), e);
+            resp.setCode(e.getMessage());
+            resp.setMsg(ErrorCodeEnum.UNKOWN_ERROR.getMsg());
         }
-
-        return "redirect:/product/list.do";
+        return resp;
     }
 
     /**

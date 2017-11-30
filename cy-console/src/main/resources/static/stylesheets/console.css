@@ -60,7 +60,7 @@ input.btn60x20 {
 .hand{cursor:pointer;border:0}
 div,h1,h2,h3,h4,h5,h6,p,dl,dt,dd,blockquote,form,input,select,textarea,.ul,.uls{margin:0;padding:0}
 .page-input input[type=text],input[type=password]{height:17px;}
-.page-input input[type=text],input[type=password],textarea{border-top:1px solid #404040;border-left:1px solid #404040;border-right:1px solid #D4D0C8;border-bottom:1px solid #D4D0C8;}
+.page-input input[type=text],input[type=password]{border-top:1px solid #404040;border-left:1px solid #404040;border-right:1px solid #D4D0C8;border-bottom:1px solid #D4D0C8;}
 /*链接总的css定义*/
 a{text-decoration:none;}
 a:link{color:#364f56;}
@@ -126,4 +126,46 @@ s {
 	border-color: transparent transparent rgba(17, 17, 17, 0.9) transparent;
 	border-style: dashed dashed solid dashed;
 	border-width: 5px;
+}
+/*图片上传样式*/
+#actions {
+  margin: 2em 0;
+}
+/* Mimic table appearance */
+div.table {
+  display: table;
+}
+div.table .file-row {
+  display: table-row;
+}
+div.table .file-row > div {
+  display: table-cell;
+  vertical-align: top;
+  border-top: 1px solid #ddd;
+  padding: 8px;
+}
+div.table .file-row:nth-child(odd) {
+  background: #f9f9f9;
+}
+/* The total progress gets shown by event listeners */
+#total-progress {
+  opacity: 0;
+  transition: opacity 0.3s linear;
+}
+/* Hide the progress bar when finished */
+#previews .file-row.dz-success .progress {
+  opacity: 0;
+  transition: opacity 0.3s linear;
+}
+/* Hide the delete button initially */
+#previews .file-row .delete {
+  display: none;
+}
+/* Hide the start and cancel buttons and show the delete button */
+#previews .file-row.dz-success .start,
+#previews .file-row.dz-success .cancel {
+  display: none;
+}
+#previews .file-row.dz-success .delete {
+  display: block;
 }

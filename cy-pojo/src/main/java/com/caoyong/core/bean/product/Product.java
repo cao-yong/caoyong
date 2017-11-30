@@ -12,116 +12,116 @@ import org.apache.commons.lang3.StringUtils;
  * @time 2017年11月28日 下午11:25:27
  */
 public class Product implements Serializable {
+
+    private static final long serialVersionUID = -8275359175496689743L;
+
     /**
      * ID或商品编号
      */
-    private Long    id;
+    private Long              id;
 
     /**
      * 品牌ID
      */
-    private Long    brandId;
+    private Long              brandId;
 
     /**
      * 商品名称
      */
-    private String  name;
+    private String            name;
 
     /**
      * 重量 单位:克
      */
-    private String  weight;
+    private String            weight;
 
     /**
      * 是否新品:0:旧品,1:新品
      */
-    private Boolean isNew;
+    private Boolean           isNew;
 
     /**
      * 是否热销:0,否 1:是
      */
-    private Boolean isHot;
+    private Boolean           isHot;
 
     /**
      * 推荐 1推荐 0 不推荐
      */
-    private Boolean isCommend;
+    private Boolean           isCommend;
 
     /**
      * 上下架:0否 1是
      */
-    private Boolean isShow;
+    private Boolean           isShow;
 
     /**
      * 商品图片集 img,img1,
      */
-    private String  imgUrl;
+    private String            imgUrl;
 
     /**
      * 商品描述
      */
-    private String  description;
+    private String            description;
 
     /**
      * 包装清单
      */
-    private String  packageList;
+    private String            packageList;
 
     /**
      * 颜色集
      */
-    private String  colors;
+    private String            colors;
 
     /**
      * 尺寸集
      */
-    private String  sizes;
+    private String            sizes;
 
     /**
      * 创建者
      */
-    private String  creator;
+    private String            creator;
 
     /**
      * 修改者
      */
-    private String  modifier;
+    private String            modifier;
 
     /**
      * 创建时间
      */
-    private Date    createTime;
+    private Date              createTime;
 
     /**
      * 修改时间
      */
-    private Date    updateTime;
+    private Date              updateTime;
 
     /**
      * 扩展字段
      */
-    private String  extraInfo;
+    private String            extraInfo;
 
     /**
      * 是否删除（Y：是，N：否）
      */
-    private String  isDeleted;
+    private String            isDeleted;
 
     /**
-     * 获取图片数组
-     * 
-     * @return
+     * 图片数组
      */
-    public String[] getImages() {
-        return null != imgUrl ? imgUrl.split(",") : null;
-    }
-
+    private String[]          images;
     /**
      * 最低价
      */
     private String            price;
 
-    private static final long serialVersionUID = 1L;
+    private String[]          color;
+
+    private String[]          size;
 
     public Long getId() {
         return id;
@@ -292,6 +292,33 @@ public class Product implements Serializable {
         }
     }
 
+    public String[] getImages() {
+        if (images == null && StringUtils.isNotBlank(imgUrl)) {
+            return imgUrl.split(",");
+        }
+        return images;
+    }
+
+    public void setImages(String[] images) {
+        this.images = images;
+    }
+
+    public String[] getColor() {
+        return color;
+    }
+
+    public void setColor(String[] color) {
+        this.color = color;
+    }
+
+    public String[] getSize() {
+        return size;
+    }
+
+    public void setSize(String[] size) {
+        this.size = size;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -317,7 +344,6 @@ public class Product implements Serializable {
         sb.append(", updateTime=").append(updateTime);
         sb.append(", extraInfo=").append(extraInfo);
         sb.append(", isDeleted=").append(isDeleted);
-        sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();
     }
