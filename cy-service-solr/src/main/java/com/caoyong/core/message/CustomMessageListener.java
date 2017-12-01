@@ -5,8 +5,10 @@ import javax.jms.Message;
 import javax.jms.MessageListener;
 
 import org.apache.activemq.command.ActiveMQTextMessage;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.caoyong.common.enums.ProductIsShowEnum;
 import com.caoyong.core.service.SearchService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -28,9 +30,17 @@ public class CustomMessageListener implements MessageListener {
         ActiveMQTextMessage am = (ActiveMQTextMessage) message;
         try {
             //调用sevice保存商品信息到solr
-            Long id = Long.parseLong(am.getText());
+            if (StringUtils.isBlank(am.getText())) {
+                return;
+            }
+            String[] msg = am.getText().split(":");
+            Long id = Long.parseLong(msg[0]);
             log.info("deal with mq message start, id:{}", id);
-            searchService.insertProductToSolr(id);
+            if (ProductIsShowEnum.PUT_OFF.getValue().equals(Integer.parseInt(msg[1]))) {
+                searchService.deleteProductToSolr(id);
+            } else if (ProductIsShowEnum.PUT_ON.getValue().equals(Integer.parseInt(msg[1]))) {
+                searchService.insertProductToSolr(id);
+            }
         } catch (JMSException e) {
             log.error("ActiveMQ error:", e.getMessage(), e);
         } catch (Exception e) {

@@ -6,6 +6,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -17,6 +18,7 @@ import com.caoyong.core.bean.base.ResultBase;
 import com.caoyong.core.bean.product.Brand;
 import com.caoyong.core.bean.product.Color;
 import com.caoyong.core.bean.product.Product;
+import com.caoyong.core.bean.product.ProductIsShowVO;
 import com.caoyong.core.bean.product.ProductQueryDTO;
 import com.caoyong.core.service.product.BrandService;
 import com.caoyong.core.service.product.ProductService;
@@ -132,22 +134,104 @@ public class ProductController {
     }
 
     /**
+     * 删除商品
+     * 
+     * @param id
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = ("/deleteProduct.json"))
+    public BaseResponse deleteProduct(Long id) {
+        BaseResponse resp = new BaseResponse();
+        log.info("deleteProduct start.id:{}", id);
+        try {
+            ResultBase<Integer> result = productService.deleteProductById(id);
+            log.info("resut:{}", ToStringBuilder.reflectionToString(result, ToStringBuilder.getDefaultStyle()));
+            resp.setSuccess(result.isSuccess());
+            resp.setCode(result.getErrorCode());
+        } catch (Exception e) {
+            log.error("deleteProduct error:{}", e.getMessage(), e);
+            resp.setCode(e.getMessage());
+            resp.setMsg(ErrorCodeEnum.UNKOWN_ERROR.getMsg());
+        }
+        return resp;
+    }
+
+    /**
+     * 修改商品
+     * 
+     * @param id
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = ("/editProduct.json"))
+    public BaseResponse editProduct(Product product) {
+        BaseResponse resp = new BaseResponse();
+        log.info("editProduct start.product:{}",
+                ToStringBuilder.reflectionToString(product, ToStringStyle.DEFAULT_STYLE));
+        try {
+            ResultBase<Integer> result = productService.updateProductById(product);
+            log.info("resut:{}", ToStringBuilder.reflectionToString(result, ToStringBuilder.getDefaultStyle()));
+            resp.setSuccess(result.isSuccess());
+            resp.setCode(result.getErrorCode());
+        } catch (Exception e) {
+            log.error("editProduct error:{}", e.getMessage(), e);
+            resp.setCode(e.getMessage());
+            resp.setMsg(ErrorCodeEnum.UNKOWN_ERROR.getMsg());
+        }
+        return resp;
+    }
+
+    /**
+     * 批量删除商品
+     * 
+     * @param ids
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = ("/deleteProducts.json"))
+    public BaseResponse deleteProducts(Long[] ids) {
+        BaseResponse resp = new BaseResponse();
+        log.info("deleteProducts start.ids:{}",
+                ToStringBuilder.reflectionToString(ids, ToStringBuilder.getDefaultStyle()));
+        try {
+            ResultBase<Integer> result = productService.deleteProductByIds(ids);
+            log.info("resut:{}", ToStringBuilder.reflectionToString(result, ToStringBuilder.getDefaultStyle()));
+            resp.setSuccess(result.isSuccess());
+            resp.setCode(result.getErrorCode());
+        } catch (Exception e) {
+            log.error("deleteProducts error:{}", e.getMessage(), e);
+            resp.setCode(e.getMessage());
+            resp.setMsg(ErrorCodeEnum.UNKOWN_ERROR.getMsg());
+        }
+        return resp;
+    }
+
+    /**
      * 上架
      * 
      * @param ids
      * @return
      */
-    @RequestMapping(value = ("/isShow"))
-    public String isShow(Long[] ids) {
-        log.info("isShow start. ids:{}", ToStringBuilder.reflectionToString(ids, ToStringStyle.DEFAULT_STYLE));
+    @RequestMapping(value = ("/isShow.json"))
+    @ResponseBody
+    public BaseResponse isShow(@RequestBody ProductIsShowVO isShowVO) {
+        log.info("isShow start. ids:{}", ToStringBuilder.reflectionToString(isShowVO, ToStringStyle.DEFAULT_STYLE));
+        BaseResponse resp = new BaseResponse();
         try {
-            ResultBase<Integer> result = productService.isShow(ids);
+            ResultBase<Integer> result = productService.isShow(isShowVO);
             log.info("result:{}", ToStringBuilder.reflectionToString(result, ToStringStyle.DEFAULT_STYLE));
+            resp.setSuccess(result.isSuccess());
+            resp.setCode(result.getErrorCode());
         } catch (BizException e) {
             log.error("isShow biz error:{}", e.getMessage(), e);
+            resp.setCode(e.getMessage());
+            resp.setMsg(ErrorCodeEnum.UNKOWN_ERROR.getMsg());
         } catch (Exception e) {
             log.error("isShow error:{}", e.getMessage(), e);
+            resp.setCode(e.getMessage());
+            resp.setMsg(ErrorCodeEnum.UNKOWN_ERROR.getMsg());
         }
-        return "forward:/product/list.do";
+        return resp;
     }
 }

@@ -1,5 +1,6 @@
 package com.caoyong.core.service.product;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -11,12 +12,14 @@ import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.caoyong.common.enums.ProductIsShowEnum;
 import com.caoyong.common.web.Constants;
 import com.caoyong.core.bean.base.Page;
 import com.caoyong.core.bean.base.ResultBase;
 import com.caoyong.core.bean.product.Color;
 import com.caoyong.core.bean.product.ColorQuery;
 import com.caoyong.core.bean.product.Product;
+import com.caoyong.core.bean.product.ProductIsShowVO;
 import com.caoyong.core.bean.product.ProductQuery;
 import com.caoyong.core.bean.product.ProductQuery.Criteria;
 import com.caoyong.core.bean.product.ProductQueryDTO;
@@ -202,20 +205,25 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ResultBase<Integer> isShow(Long[] ids) throws BizException {
-        log.info("isShow start:{}", ToStringBuilder.reflectionToString(ids, ToStringStyle.DEFAULT_STYLE));
+    public ResultBase<Integer> isShow(ProductIsShowVO isShowVO) throws BizException {
+        log.info("isShow start:{}", ToStringBuilder.reflectionToString(isShowVO, ToStringStyle.DEFAULT_STYLE));
+        CheckParamsUtil.check(isShowVO, ProductIsShowVO.class, "ids", "showType");
         ResultBase<Integer> result = new ResultBase<Integer>();
         int count = 0;
         try {
             Product product = new Product();
             product.setIsShow(true);
+            if (ProductIsShowEnum.PUT_OFF.getValue().equals(isShowVO.getShowType())) {
+                product.setIsShow(false);
+            }
             //循环
-            for (Long id : ids) {
+            for (Long id : isShowVO.getIds()) {
                 //上架，更改商品状态
                 product.setId(id);
                 count += productDao.updateByPrimaryKeySelective(product);
                 //发送消息到ActiveMQ java8 lambda 表达式实现函数式接口，两个订阅者：1，solr上传，2静态化
-                jmsTemplate.send(session -> session.createTextMessage(String.valueOf(id)));
+                jmsTemplate
+                        .send(session -> session.createTextMessage(String.valueOf(id) + ":" + isShowVO.getShowType()));
             }
             result.setValue(count);
             result.setSuccess(true);
@@ -227,6 +235,93 @@ public class ProductServiceImpl implements ProductService {
             log.error("isShow error:{}", e.getMessage(), e);
             throw new BizException(ErrorCodeEnum.UNKOWN_ERROR, e.getMessage(), e);
         }
+        return result;
+    }
+
+    @Override
+    public ResultBase<Integer> updateProductById(Product product) throws BizException {
+        ResultBase<Integer> result = new ResultBase<Integer>();
+        result.setValue(0);
+        log.info("updateproductById start. brand:{}",
+                ToStringBuilder.reflectionToString(product, ToStringStyle.DEFAULT_STYLE));
+        CheckParamsUtil.check(product, Product.class, "id");
+        try {
+            //保存品牌到redis
+            int count = productDao.updateByPrimaryKeySelective(product);
+            result.setValue(count);
+            if (count > 0) {
+                result.setSuccess(true);
+            }
+        } catch (Exception e) {
+            result.setErrorCode(ErrorCodeEnum.UNKOWN_ERROR.getCode());
+            result.setErrorMsg(ErrorCodeEnum.UNKOWN_ERROR.getMsg());
+            log.error("updateproductById Exception:{}", e.getMessage(), e);
+            throw new BizException(ErrorCodeEnum.UNKOWN_ERROR, e.getMessage(), e);
+        }
+        log.info("updateproductById end, result:{}",
+                ToStringBuilder.reflectionToString(result, ToStringStyle.DEFAULT_STYLE));
+        return result;
+    }
+
+    @Override
+    public ResultBase<Integer> deleteProductByIds(Long[] ids) throws BizException {
+        log.info("deleteProductByIds start. ids:{}",
+                ToStringBuilder.reflectionToString(ids, ToStringStyle.DEFAULT_STYLE));
+        ResultBase<Integer> result = new ResultBase<Integer>();
+        if (ids == null) {
+            result.setSuccess(false);
+            result.setValue(0);
+            throw new BizException(ErrorCodeEnum.PARAMETER_CAN_NOT_BE_NULL);
+        }
+        try {
+            ProductQuery example = new ProductQuery();
+            List<Long> values = Arrays.asList(ids);
+            example.createCriteria().andIdIn(values);
+            Product record = new Product();
+            record.setUpdateTime(new Date());
+            record.setIsDeleted(Constants.CONSTANTS_Y);
+            int count = productDao.updateByExampleSelective(record, example);
+            if (count > 0) {
+                result.setSuccess(true);
+            }
+        } catch (Exception e) {
+            log.error("deleteProductByIds Exception:{}", e.getMessage(), e);
+            result.setErrorCode(ErrorCodeEnum.UNKOWN_ERROR.getCode());
+            result.setErrorMsg(ErrorCodeEnum.UNKOWN_ERROR.getMsg());
+            throw new BizException(ErrorCodeEnum.UNKOWN_ERROR, e.getMessage(), e);
+        }
+        log.info("deleteProductByIds end result:{}",
+                ToStringBuilder.reflectionToString(result, ToStringStyle.DEFAULT_STYLE));
+        return result;
+    }
+
+    @Override
+    public ResultBase<Integer> deleteProductById(Long id) throws BizException {
+        log.info("deleteProductById start. id:{}", id);
+        ResultBase<Integer> result = new ResultBase<Integer>();
+        if (id == null) {
+            result.setSuccess(false);
+            result.setValue(0);
+            throw new BizException(ErrorCodeEnum.PARAMETER_CAN_NOT_BE_NULL);
+        }
+        try {
+            ProductQuery example = new ProductQuery();
+            example.createCriteria().andIdEqualTo(id);
+            Product record = new Product();
+            record.setUpdateTime(new Date());
+            record.setIsDeleted(Constants.CONSTANTS_Y);
+            int count = productDao.updateByExampleSelective(record, example);
+            if (count > 0) {
+                result.setSuccess(true);
+            }
+        } catch (Exception e) {
+            log.error("deleteProductById Exception:{}", e.getMessage(), e);
+            result.setErrorCode(ErrorCodeEnum.UNKOWN_ERROR.getCode());
+            result.setErrorMsg(ErrorCodeEnum.UNKOWN_ERROR.getMsg());
+            throw new BizException(ErrorCodeEnum.UNKOWN_ERROR, e.getMessage(), e);
+        }
+        log.info("deleteProductById end result:{}",
+                ToStringBuilder.reflectionToString(result, ToStringStyle.DEFAULT_STYLE));
         return result;
     }
 }

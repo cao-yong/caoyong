@@ -91,12 +91,12 @@
                     </button>
                 </div>
                 <div class="pull-left tableTools-container" style="margin-left: 10px">
-                    <button class="btn btn-xs btn-primary batch" attr="puton"><i
+                    <button class="btn btn-xs btn-primary batch" attr="isShow" showType="1"><i
                             class="green ace-icon fa fa-arrow-circle-o-up align-top bigger-125"></i>上架
                     </button>
                 </div>
                 <div class="pull-left tableTools-container" style="margin-left: 10px">
-                    <button class="btn btn-xs btn-primary batch" attr="putoff"><i
+                    <button class="btn btn-xs btn-primary batch" attr="isShow" showType="0"><i
                             class="orange ace-icon fa fa-arrow-circle-o-down align-top bigger-125"></i>下架
                     </button>
                 </div>
@@ -175,20 +175,20 @@
                                         </td>
                                         <td align="center">
                                             <div class="hidden-sm hidden-xs action-buttons">
-												<a class="blue show-tips" href="#">
+												<a class="blue show-tips queryProduct" productId="${product.id}" href="javascript:void(0)">
 													<i class="ace-icon fa fa-search-plus bigger-130"></i>
-													<span class='tips'><span>查询</span><s></s></span>
+													<span class='tips'><span>查看</span><s></s></span>
 												</a>
 	
-												<a class="green show-tips" href="#">
+												<a class="green show-tips editProduct" productId="${product.id}" href="javascript:void(0)">
 													<i class="ace-icon fa fa-pencil bigger-130"></i>
 													<span class='tips'><span>修改</span><s></s></span>
 												</a>
-												<a class="red show-tips" href="#">
+												<a class="red show-tips deleteProduct" productId="${product.id}" href="javascript:void(0)">
 													<i class="ace-icon fa fa-trash-o bigger-130"></i>
 													<span class='tips'><span>删除</span><s></s></span>
 												</a>
-												<a class="purple show-tips" href="#">
+												<a class="purple show-tips proudctSku" productId="${product.id}" href="javascript:void(0)">
 													<i class="ace-icon fa fa-truck bigger-130"></i>
 													<span class='tips'><span>库存</span><s></s></span>
 												</a>
@@ -239,6 +239,36 @@
 			var box = $(this).closest('tr').find('input[type=checkbox]').eq(0);
 			box.prop('checked', !box.is(':checked'));
 		});
+		//删除产品
+		$('.deleteProduct').click(function(){
+			var productId = $(this).attr('productId');
+			bootbox.dialog({
+				message: "确定删除吗？", 
+				buttons: {
+					"success" : {
+						"label" : "确定",
+						"className" : "btn-sm btn-primary",
+						"callback" :function(){
+							$.ajax({
+								type : 'post',
+								url : '${request.contextPath}/product/deleteProduct.json',
+								dataType : 'json',
+								data : {
+									id : productId
+								},
+								success : function(result){
+									if(result.success){
+										window.location.reload();
+									}else{
+										reminder(result.msg);
+									}
+								}
+							});
+						}
+					}
+				}
+			});
+		});
     	//批量操作
     	$('.batch').click(function(){
     		//请至少选择一个
@@ -247,25 +277,75 @@
                 reminder("请至少选择一个");
                 return;
             }
-    	});
-        //上架
-        function isShow() {
-            bootbox.dialog({
-                message: "您确定上架吗？",
-                buttons: {
-                    "success": {
-                        "label": "确定",
-                        "className": "btn-sm btn-primary",
-                        "callback": function () {
-                            //提交 Form表单
-                            $("#jvForm").attr("action", "${request.contextPath}/product/isShow.do");
-                            $("#jvForm").attr("method", "post");
-                            $("#jvForm").submit();
+            var operation = $(this).attr('attr');
+            //批量删除
+            if(operation === 'delete'){
+	            bootbox.dialog({
+					message: "您确定删除这<font color='red'>"+ size +"</font>件商品吗？", 
+					buttons: {
+						"success" : {
+							"label" : "确定",
+							"className" : "btn-sm btn-primary",
+							"callback" :function(){
+								$.ajax({
+									type : 'post',
+									url : '${request.contextPath}/product/deleteProducts.json',
+									dataType : 'json',
+									data : $("input[name='ids']:checked").serializeObject(),
+									success : function(result){
+										if(result.success){
+											window.location.reload();
+										}else{
+											reminder(result.msg);
+										}
+									}
+								});
+							}
+						}
+					}
+				});
+            }else if(operation === 'isShow'){
+            	//上架
+            	var showType = $(this).attr('showType');
+            	var ids = $("input[name='ids']:checked").serializeToObject();
+            	if(size === 1){
+            		var id = ids.ids;
+            		var idArray = [];
+            		idArray.push(id);
+            		ids = {ids : idArray}
+            	}
+            	var typeMsg = "上架";
+            	if(showType==="0"){
+            		typeMsg = "下架";
+            	}
+            	var data = $.extend({showType : showType}, ids);
+                bootbox.dialog({
+                    message: "您确定"+typeMsg+"这<font color='red'>"+size+"</font>件商品吗？",
+                    buttons: {
+                        "success": {
+                            "label": "确定",
+                            "className": "btn-sm btn-primary",
+                            "callback": function () {
+                                $.ajax({
+									type : 'post',
+									url : '${request.contextPath}/product/isShow.json',
+									dataType : 'json',
+									contentType: "application/json; charset=utf-8",
+									data : JSON.stringify(data),
+									success : function(result){
+										if(result.success){
+											window.location.reload();
+										}else{
+											reminder(result.msg);
+										}
+									}
+								});
+                            }
                         }
                     }
-                }
-            });
-        }
+                });
+            }
+    	});
         //初始化选择框
    		$('.chosen-select').chosen();
    		$('.chosen-select-deselect').chosen({ allow_single_deselect: true });

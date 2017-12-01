@@ -11,8 +11,8 @@ import java.util.stream.Stream;
  */
 public enum ProductIsShowEnum {
     ALL(null, "全部"),
-    PUT_ON(0, "下架"),
-    PUT_OFF(1, "上架");
+    PUT_OFF(0, "下架"),
+    PUT_ON(1, "上架");
     private Integer value;
     private String  showName;
 

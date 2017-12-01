@@ -29,4 +29,12 @@ public interface SearchService {
      * @throws BizException
      */
     void insertProductToSolr(Long id) throws BizException;
+
+    /**
+     * 从solr服务器删除商品信息
+     * 
+     * @param id
+     * @throws BizException
+     */
+    void deleteProductToSolr(Long id) throws BizException;
 }

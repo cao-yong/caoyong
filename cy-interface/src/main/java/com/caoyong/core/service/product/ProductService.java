@@ -6,6 +6,7 @@ import com.caoyong.core.bean.base.Page;
 import com.caoyong.core.bean.base.ResultBase;
 import com.caoyong.core.bean.product.Color;
 import com.caoyong.core.bean.product.Product;
+import com.caoyong.core.bean.product.ProductIsShowVO;
 import com.caoyong.core.bean.product.ProductQueryDTO;
 import com.caoyong.exception.BizException;
 
@@ -43,8 +44,37 @@ public interface ProductService {
     /**
      * 上架
      * 
+     * @param isShowVO
+     * @return
+     * @throws BizException
+     */
+    ResultBase<Integer> isShow(ProductIsShowVO isShowVO) throws BizException;
+
+    /**
+     * 根据 productId修改产品信息
+     * 
+     * @param product
+     * @return
+     * @throws BizException
+     */
+    ResultBase<Integer> updateProductById(Product product) throws BizException;
+
+    /**
+     * 根据 productId删除产品
+     * 
+     * @param id
+     * @return
+     * @throws BizException
+     */
+    ResultBase<Integer> deleteProductById(Long id) throws BizException;
+
+    /**
+     * 根据 ids删除产品
+     * 
      * @param ids
      * @return
+     * @throws BizException
      */
-    ResultBase<Integer> isShow(Long[] ids) throws BizException;
+    ResultBase<Integer> deleteProductByIds(Long ids[]) throws BizException;
+
 }

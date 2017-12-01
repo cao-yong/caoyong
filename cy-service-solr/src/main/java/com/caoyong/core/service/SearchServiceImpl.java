@@ -168,7 +168,7 @@ public class SearchServiceImpl implements SearchService {
 
     @Override
     public void insertProductToSolr(Long id) throws BizException {
-        log.info("insertProductToSolr id:{}", id);
+        log.info("insertProductToSolr start, id:{}", id);
         try {
             //保存到solr服务器
             SolrInputDocument doc = new SolrInputDocument();
@@ -208,5 +208,24 @@ public class SearchServiceImpl implements SearchService {
             log.error("insertProductToSolr error:{}", e.getMessage(), e);
             throw new BizException(ErrorCodeEnum.UNKOWN_ERROR, e.getMessage(), e);
         }
+    }
+
+    @Override
+    public void deleteProductToSolr(Long id) throws BizException {
+        log.info("deleteProductToSolr start, id:{}", id);
+        try {
+            solrServer.deleteById(String.valueOf(id));
+            solrServer.commit();
+        } catch (SolrServerException e) {
+            log.error("deleteProductToSolr solr error:{}", e.getMessage(), e);
+            throw new BizException(ErrorCodeEnum.SOLR_SERVER_ERROR, e.getMessage(), e);
+        } catch (IOException e) {
+            log.error("deleteProductToSolr io error:{}", e.getMessage(), e);
+            throw new BizException(ErrorCodeEnum.IO_ERROR, e.getMessage(), e);
+        } catch (Exception e) {
+            log.error("deleteProductToSolr error:{}", e.getMessage(), e);
+            throw new BizException(ErrorCodeEnum.UNKOWN_ERROR, e.getMessage(), e);
+        }
+        log.info("deleteProductToSolr end.");
     }
 }

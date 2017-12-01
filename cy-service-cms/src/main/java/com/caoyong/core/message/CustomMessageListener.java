@@ -10,8 +10,10 @@ import javax.jms.Message;
 import javax.jms.MessageListener;
 
 import org.apache.activemq.command.ActiveMQTextMessage;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.caoyong.common.enums.ProductIsShowEnum;
 import com.caoyong.core.bean.base.ResultBase;
 import com.caoyong.core.bean.product.Color;
 import com.caoyong.core.bean.product.Product;
@@ -39,8 +41,16 @@ public class CustomMessageListener implements MessageListener {
     public void onMessage(Message message) {
         ActiveMQTextMessage am = (ActiveMQTextMessage) message;
         try {
+            if (StringUtils.isBlank(am.getText())) {
+                return;
+            }
+            //不处理下架的
+            String[] msg = am.getText().split(":");
+            if (ProductIsShowEnum.PUT_OFF.getValue().equals(Integer.parseInt(msg[1]))) {
+                return;
+            }
             //从发布者接受到的id
-            String id = am.getText();
+            String id = msg[0];
             Map<String, Object> root = new HashMap<>();
 
             log.info("deal with mq message start, id:{}", id);
