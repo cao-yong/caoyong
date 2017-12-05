@@ -6,12 +6,14 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.caoyong.common.enums.ProductIsShowEnum;
+import com.caoyong.common.enums.ProductSizesEnum;
 import com.caoyong.core.bean.base.BaseResponse;
 import com.caoyong.core.bean.base.Page;
 import com.caoyong.core.bean.base.ResultBase;
@@ -80,18 +82,20 @@ public class ProductController {
     }
 
     /**
-     * 去商品添加页面
+     * 去商品视图页面
      * 
      * @param model
+     * @param id
      * @return
      */
-    @RequestMapping(value = ("/addProduct.do"))
-    public String addProduct(Model model) {
-        log.info("addProduct start.");
+    @RequestMapping(value = ("/productView{operation}.do"))
+    public String productView(Model model, Long id, @PathVariable String operation) {
+        log.info("productView start. id:{}, operation:{}", id, operation);
         try {
             //查询品牌结果集
             List<Brand> brands = brandService.selectListByQuery(1);
             model.addAttribute("brands", brands);
+            model.addAttribute("productSizes", ProductSizesEnum.values());
             //查询颜色结果集
             ResultBase<List<Color>> colorResult = productService.selectColorList();
             log.info("colorResult:{}", ToStringBuilder.reflectionToString(colorResult, ToStringStyle.DEFAULT_STYLE));
@@ -99,13 +103,21 @@ public class ProductController {
                 List<Color> colors = colorResult.getValue();
                 model.addAttribute("colors", colors);
             }
+            if (null != id) {
+                //查询产品
+                ResultBase<Product> productResult = productService.selectProductById(id);
+                if (productResult.isSuccess() && null != productResult.getValue()) {
+                    Product product = productResult.getValue();
+                    model.addAttribute("product", product);
+                }
+            }
         } catch (BizException e) {
-            log.error("addProduct BizException:{}", e.getMessage(), e);
+            log.error("productView BizException:{}", e.getMessage(), e);
         } catch (Exception e) {
-            log.error("addProduct Exception:{}", e.getMessage(), e);
+            log.error("productView Exception:{}", e.getMessage(), e);
         }
-        log.info("addProduct end.");
-        return "/product/productForm";
+        log.info("productView end.");
+        return "/product/product" + operation;
     }
 
     /**
@@ -130,6 +142,33 @@ public class ProductController {
             resp.setCode(e.getMessage());
             resp.setMsg(ErrorCodeEnum.UNKOWN_ERROR.getMsg());
         }
+        log.info("saveProduct end.");
+        return resp;
+    }
+
+    /**
+     * 修改商品
+     * 
+     * @param product
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = ("/updateProduct.json"))
+    public BaseResponse updateProduct(Product product) {
+        BaseResponse resp = new BaseResponse();
+        log.info("updateProduct start.product:{}",
+                ToStringBuilder.reflectionToString(product, ToStringStyle.DEFAULT_STYLE));
+        try {
+            ResultBase<Integer> result = productService.updateProductById(product);
+            log.info("resut:{}", ToStringBuilder.reflectionToString(result, ToStringBuilder.getDefaultStyle()));
+            resp.setSuccess(result.isSuccess());
+            resp.setCode(result.getErrorCode());
+        } catch (Exception e) {
+            log.error("updateProduct error:{}", e.getMessage(), e);
+            resp.setCode(e.getMessage());
+            resp.setMsg(ErrorCodeEnum.UNKOWN_ERROR.getMsg());
+        }
+        log.info("updateProduct end.");
         return resp;
     }
 

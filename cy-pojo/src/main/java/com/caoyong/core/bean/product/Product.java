@@ -38,17 +38,17 @@ public class Product implements Serializable {
     /**
      * 是否新品:0:旧品,1:新品
      */
-    private Boolean           isNew;
+    private Boolean           isNew            = Boolean.FALSE;
 
     /**
      * 是否热销:0,否 1:是
      */
-    private Boolean           isHot;
+    private Boolean           isHot            = Boolean.FALSE;
 
     /**
      * 推荐 1推荐 0 不推荐
      */
-    private Boolean           isCommend;
+    private Boolean           isCommend        = Boolean.FALSE;
 
     /**
      * 上下架:0否 1是

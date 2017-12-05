@@ -169,3 +169,4 @@ div.table .file-row:nth-child(odd) {
 #previews .file-row.dz-success .delete {
   display: block;
 }
+#editor1 {overflow:scroll; min-height:400px}

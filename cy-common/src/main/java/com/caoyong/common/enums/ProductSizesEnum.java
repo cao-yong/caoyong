@@ -4,19 +4,21 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 /**
- * 商品展示状态枚举
+ * 商品尺码规则枚举
  * 
- * @author yong.cao
- * @time 2017年7月23日下午6:34:13
+ * @author caoyong
+ * @time 2017年12月5日 下午2:00:11
  */
-public enum ProductIsShowEnum {
-    ALL(null, "全部"),
-    PUT_OFF(0, "下架"),
-    PUT_ON(1, "上架");
+public enum ProductSizesEnum {
+    S(1, "S"),
+    M(2, "M"),
+    L(3, "L"),
+    XL(4, "XL"),
+    XXL(5, "XXL");
     private Integer value;
     private String  showName;
 
-    private ProductIsShowEnum(Integer value, String showName) {
+    private ProductSizesEnum(Integer value, String showName) {
         this.value = value;
         this.showName = showName;
     }
@@ -35,8 +37,8 @@ public enum ProductIsShowEnum {
      * @param value
      * @return
      */
-    public static ProductIsShowEnum getEnum(Integer value) {
-        Optional<ProductIsShowEnum> en = Stream.of(ProductIsShowEnum.values()).filter(e -> e.value.equals(value))
+    public static ProductSizesEnum getEnum(Integer value) {
+        Optional<ProductSizesEnum> en = Stream.of(ProductSizesEnum.values()).filter(e -> e.value.equals(value))
                 .findFirst();
         if (en.isPresent()) {
             return en.get();

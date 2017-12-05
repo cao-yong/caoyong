@@ -1,6 +1,7 @@
 package com.caoyong.core.bean.product;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import lombok.Data;
 
@@ -18,5 +19,6 @@ public @Data class Brand implements Serializable {
     private Integer           sort;
     //是否可用   0 不可用 1 可用
     private Integer           isDisplay;                             //is_display
-
+    //修改时间
+    private Date              updateTime;
 }

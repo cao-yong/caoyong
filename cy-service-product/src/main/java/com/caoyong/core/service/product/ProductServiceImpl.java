@@ -55,6 +55,8 @@ public class ProductServiceImpl implements ProductService {
     private Jedis       jedis;
     @Autowired
     private JmsTemplate jmsTemplate;
+    @Autowired
+    private SkuService  skuService;
 
     @Override
     public Page<Product> selectPageByQuery(ProductQueryDTO query) throws BizException {
@@ -117,7 +119,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ResultBase<List<Color>> selectColorList() throws BizException {
         log.info("selectColorList start.");
-        ResultBase<List<Color>> result = new ResultBase<List<Color>>();
+        ResultBase<List<Color>> result = new ResultBase<>();
         result.setSuccess(false);
         ColorQuery example = new ColorQuery();
         example.createCriteria().andParentIdNotEqualTo(0).andIsDeletedEqualTo(Constants.CONSTANTS_N);
@@ -143,7 +145,7 @@ public class ProductServiceImpl implements ProductService {
         log.info("saveProduct start. product:{}",
                 ToStringBuilder.reflectionToString(product, ToStringStyle.DEFAULT_STYLE));
         CheckParamsUtil.check(product, Product.class, "name", "color", "size", "weight", "images", "brandId");
-        ResultBase<Integer> result = new ResultBase<Integer>();
+        ResultBase<Integer> result = new ResultBase<>();
         //返回影响的行数
         Integer count = 0;
         try {
@@ -208,7 +210,7 @@ public class ProductServiceImpl implements ProductService {
     public ResultBase<Integer> isShow(ProductIsShowVO isShowVO) throws BizException {
         log.info("isShow start:{}", ToStringBuilder.reflectionToString(isShowVO, ToStringStyle.DEFAULT_STYLE));
         CheckParamsUtil.check(isShowVO, ProductIsShowVO.class, "ids", "showType");
-        ResultBase<Integer> result = new ResultBase<Integer>();
+        ResultBase<Integer> result = new ResultBase<>();
         int count = 0;
         try {
             Product product = new Product();
@@ -240,14 +242,59 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ResultBase<Integer> updateProductById(Product product) throws BizException {
-        ResultBase<Integer> result = new ResultBase<Integer>();
+        ResultBase<Integer> result = new ResultBase<>();
         result.setValue(0);
         log.info("updateproductById start. brand:{}",
                 ToStringBuilder.reflectionToString(product, ToStringStyle.DEFAULT_STYLE));
         CheckParamsUtil.check(product, Product.class, "id");
         try {
-            //保存品牌到redis
+            product.setSizes(StringUtils.join(product.getSize(), ","));
+            product.setColors(StringUtils.join(product.getColor(), ","));
+            product.setImgUrl(StringUtils.join(product.getImages(), ","));
+            product.setUpdateTime(new Date());
+            //没有必要每次都生成sku信息，当colors和sizes都与原来不一样时，才重新生成
+            ResultBase<Product> productResult = selectProductById(product.getId());
+            String orgSizes = null;
+            String orgColous = null;
+            if (productResult.isSuccess() && null != productResult.getValue()) {
+                orgSizes = productResult.getValue().getSizes();
+                orgColous = productResult.getValue().getColors();
+            }
             int count = productDao.updateByPrimaryKeySelective(product);
+            if (!product.getColors().equals(orgColous) || !product.getSizes().equals(orgSizes)) {
+                //删除原来的sku信息，重新插入
+                ResultBase<Integer> skuResult = skuService.deleteSkuByProductId(product.getId());
+                if (skuResult.isSuccess() && null != skuResult.getValue()) {
+                    count += skuResult.getValue();
+                }
+                String[] colors = product.getColor();
+                String[] sizes = product.getSize();
+                if (null != colors && colors.length > 0) {
+                    for (String color : colors) {
+                        if (null != sizes && sizes.length > 0) {
+                            for (String size : sizes) {
+                                //保存sku
+                                Sku sku = new Sku();
+                                sku.setIsDeleted(Constants.CONSTANTS_N);
+                                sku.setProductId(product.getId());
+                                sku.setColorId(Long.parseLong(color));
+                                sku.setSize(size);
+                                sku.setMarketPrice(Constants.DEAFAULT_PRICE);
+                                sku.setPrice(Constants.DEAFAULT_PRICE);
+                                sku.setDeliveFee(Constants.DEAFAULT_DELIVE_FEE);
+                                sku.setUpperLimit(Constants.DEAFAULT_UPPER_LIMIT);
+                                sku.setCreateTime(new Date());
+                                sku.setUpdateTime(new Date());
+                                sku.setCreator(Constants.SYSTEM);
+                                sku.setModifier(Constants.SYSTEM);
+                                sku.setStock(Constants.DEAFAULT_STOCK);
+                                count += skuDao.insert(sku);
+                            }
+                        }
+                    }
+
+                }
+            }
             result.setValue(count);
             if (count > 0) {
                 result.setSuccess(true);
@@ -267,7 +314,7 @@ public class ProductServiceImpl implements ProductService {
     public ResultBase<Integer> deleteProductByIds(Long[] ids) throws BizException {
         log.info("deleteProductByIds start. ids:{}",
                 ToStringBuilder.reflectionToString(ids, ToStringStyle.DEFAULT_STYLE));
-        ResultBase<Integer> result = new ResultBase<Integer>();
+        ResultBase<Integer> result = new ResultBase<>();
         if (ids == null) {
             result.setSuccess(false);
             result.setValue(0);
@@ -298,7 +345,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ResultBase<Integer> deleteProductById(Long id) throws BizException {
         log.info("deleteProductById start. id:{}", id);
-        ResultBase<Integer> result = new ResultBase<Integer>();
+        ResultBase<Integer> result = new ResultBase<>();
         if (id == null) {
             result.setSuccess(false);
             result.setValue(0);
@@ -321,6 +368,32 @@ public class ProductServiceImpl implements ProductService {
             throw new BizException(ErrorCodeEnum.UNKOWN_ERROR, e.getMessage(), e);
         }
         log.info("deleteProductById end result:{}",
+                ToStringBuilder.reflectionToString(result, ToStringStyle.DEFAULT_STYLE));
+        return result;
+    }
+
+    @Override
+    public ResultBase<Product> selectProductById(Long id) throws BizException {
+        log.info("selectProductById start. id:{}", id);
+        ResultBase<Product> result = new ResultBase<>();
+        if (id == null) {
+            result.setSuccess(false);
+            throw new BizException(ErrorCodeEnum.PARAMETER_CAN_NOT_BE_NULL);
+        }
+        try {
+            Product product = productDao.selectByPrimaryKey(id);
+            if (null != product) {
+                result.setSuccess(true);
+                result.setValue(product);
+            }
+            log.info("selectProductById success");
+        } catch (Exception e) {
+            log.error("selectProductById Exception:{}", e.getMessage(), e);
+            result.setErrorCode(ErrorCodeEnum.UNKOWN_ERROR.getCode());
+            result.setErrorMsg(ErrorCodeEnum.UNKOWN_ERROR.getMsg());
+            throw new BizException(ErrorCodeEnum.UNKOWN_ERROR, e.getMessage(), e);
+        }
+        log.info("selectProductById end result:{}",
                 ToStringBuilder.reflectionToString(result, ToStringStyle.DEFAULT_STYLE));
         return result;
     }

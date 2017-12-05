@@ -50,6 +50,7 @@ public class UploadController {
      * 上传图片
      * 
      * @param pic
+     * @return
      */
     @ResponseBody
     @RequestMapping(value = ("/uploadPic.do"))
@@ -92,7 +93,9 @@ public class UploadController {
     /**
      * 批量上传图片
      * 
-     * @param pic
+     * @param pics
+     * @param response
+     * @return
      */
     @RequestMapping(value = ("/uploadPics.do"))
     public @ResponseBody List<String> uploadPics(@RequestParam(required = false) MultipartFile[] pics,
@@ -130,7 +133,7 @@ public class UploadController {
      * 上传富文本编辑器图片
      * 
      * @param request
-     * @param response
+     * @return
      */
     @ResponseBody
     @RequestMapping(value = ("/uploadFck.do"))
@@ -184,7 +187,8 @@ public class UploadController {
     /**
      * dropzone.js批量上传图片
      * 
-     * @param pic
+     * @param request
+     * @return
      */
     @RequestMapping(value = ("/uploadDropZonePics.do"))
     @ResponseBody
@@ -216,17 +220,17 @@ public class UploadController {
             log.error("uploadDropZonePic io error:{}", e.getMessage(), e);
             resp.setErrorMsg("上传图片失败:" + e.getMessage());
             resp.setError(1);
-            log.error("uploadFck error:{}", e.getMessage(), e);
+            log.error("uploadDropZonePics error:{}", e.getMessage(), e);
         } catch (BizException e) {
             log.error("uploadDropZonePic biz error:{}", e.getMessage(), e);
             resp.setErrorMsg("上传图片失败:" + e.getMessage());
             resp.setError(1);
-            log.error("uploadFck error:{}", e.getMessage(), e);
+            log.error("uploadDropZonePics error:{}", e.getMessage(), e);
         } catch (Exception e) {
             log.error("uploadDropZonePic error:{}", e.getMessage(), e);
             resp.setErrorMsg("上传图片失败:" + e.getMessage());
             resp.setError(1);
-            log.error("uploadFck error:{}", e.getMessage(), e);
+            log.error("uploadDropZonePics error:{}", e.getMessage(), e);
         }
         log.info("uploadDropZonePic end.");
         return resp;

@@ -57,11 +57,12 @@
 					<div id="tab1" class="tab-pane in active">
 						<form class="form-horizontal" id="productForm" role="form">
 							<input type="hidden" id="description" name="description"/>
+							<input type="hidden" id="id" name="id" value="${product.id?c}"/>
 							<div class="form-group">
 								<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 商品名称  </label>
 	
 								<div class="col-sm-9">
-									<input type="text" id="name" name="name" placeholder="请输入商品名称" style="width:558px"/>
+									<input type="text" id="name" name="name" value="${product.name!}" style="width:558px"/>
 								</div>
 							</div>
 	
@@ -73,7 +74,7 @@
 		                           	<option value="">全部</option>
 		                               <#list brands as brand>
 		                                   <option value="${brand.id}"
-		                                   <#if brandId?? && brandId==brand.id>selected</#if>
+		                                   <#if product?? && product.brandId==brand.id>selected</#if>
 		                                   >${brand.name!}</option>
 		                               </#list>
 		                           </select>
@@ -84,7 +85,7 @@
 								<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 商品毛重  </label>
 	
 								<div class="col-sm-9">
-									<input type="text" id="weight" name="weight" placeholder="请输入商品毛重 " style="width:258px"/>KG
+									<input type="text" id="weight" name="weight" value="${product.weight!}" style="width:258px"/>KG
 								</div>
 							</div>
 							
@@ -93,7 +94,7 @@
 								<div class="col-sm-9">
 									<#list colors as color>
 										<label class="pos-rel">
-											<input name="color" type="checkbox" class="ace"  value="${color.id}"/>
+											<input name="color" type="checkbox" class="ace"  value="${color.id}" <#if product.colors?contains("${color.id}")>checked="true"</#if>/>
 											<span class="lbl">${color.name }</span>
 										</label>
 									</#list>
@@ -105,7 +106,7 @@
 								<div class="col-sm-9">
 									<#list productSizes as productSize>
 										<label class="pos-rel">
-											<input name="size" type="checkbox" class="ace"  value="${productSize.showName}"/>
+											<input name="size" type="checkbox" class="ace" value="${productSize.showName}" <#if product.sizes?contains("${productSize.showName}")>checked="true"</#if>/>
 											<span class="lbl">${productSize.showName}</span>
 										</label>
 									</#list>
@@ -116,15 +117,15 @@
 								<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 状态  </label>
 								<div class="col-sm-9">
 									<label class="pos-rel">
-										<input name="isNew" type="checkbox" class="ace"  value="1"/>
+										<input name="isNew" type="checkbox" class="ace" <#if product?? && product.isNew>checked="true"</#if>/>
 										<span class="lbl">新品</span>
 									</label>
 									<label class="pos-rel">
-										<input name="isCommend" type="checkbox" class="ace"  value="1"/>
+										<input name="isCommend" type="checkbox" class="ace" <#if product?? && product.isCommend>checked="true"</#if>/>
 										<span class="lbl">推荐</span>
 									</label>
 									<label class="pos-rel">
-										<input name="isHot" type="checkbox" class="ace"  value="1"/>
+										<input name="isHot" type="checkbox" class="ace" <#if product?? && product.isHot>checked="true"</#if>/>
 										<span class="lbl">热卖</span>
 									</label>
 								</div>
@@ -168,7 +169,7 @@
 						    
 						    <!-- 上传图片表格 开始  -->
 						    <div class="table table-striped files" id="previews">
-	
+						      
 						      <div id="template" class="file-row">
 						        <!-- This is used as the file preview template -->
 						        <div>
@@ -200,6 +201,31 @@
 						        </div>
 						      </div>
 						
+						
+							  <!-- 遍历出已有图片 开始 -->
+						      <#list product.images as image>
+						      	<div id="" class="file-row dz-image-preview dz-processing dz-success dz-complete">
+									<!-- This is used as the file preview template -->
+									<div>
+									    <span class="preview"><img data-dz-thumbnail="" style="height:80px;weight:80px" alt="商品图片_${image_index+1}" src="${image}"></span>
+									</div>
+									<div>
+									    <p class="name" data-dz-name="">商品图片_${image_index+1}</p>
+									    <strong class="error text-danger" data-dz-errormessage=""></strong>
+									</div>
+									<div>
+									    <p class="size" data-dz-size=""><strong>0.0</strong> MB</p>
+									</div>
+									<div>
+									  <button data-dz-remove="" class="btn btn-danger deleteImage">
+									    <i class="glyphicon glyphicon-trash"></i>
+									    <span>删除</span>
+									  </button>
+									</div>
+									<input type="hidden" name="images" value="${image}">
+								</div>
+							  </#list>		
+						      <!-- 遍历出已有图片 结束 -->
 						    </div>
 						    <!-- 上传图片表格 结束  -->
 						</div>
@@ -212,7 +238,7 @@
 										请上传商品描述的图片
 									</h4>
 	
-									<div class="wysiwyg-editor" id="editor1"></div>
+									<div class="wysiwyg-editor" id="editor1">${product.description!}</div>
 									
 									<div class="hr hr-double dotted"></div>
 									<!-- PAGE CONTENT ENDS -->
@@ -221,7 +247,7 @@
 						</div>
 						
 						<div id="tab4" class="tab-pane">
-							<textarea rows="20" cols="180" id="packageList" name="packageList"></textarea>
+							<textarea rows="20" cols="180" id="packageList" name="packageList">${product.packageList!}</textarea>
 						</div>
 					</div>
 				
@@ -270,6 +296,7 @@
 		previewNode.id = "";
 		var previewTemplate = previewNode.parentNode.innerHTML;
 		previewNode.parentNode.removeChild(previewNode);
+		var curImages = $(".deleteImage").length;
 		//index of urls
 		var index = 0;
 		var myDropzone = new Dropzone(document.body, { // Make the whole body a dropzone
@@ -278,7 +305,7 @@
 		  thumbnailHeight: 80,
 		  uploadMultiple: true,
 		  parallelUploads: 20,
-		  maxFiles: 5,
+		  maxFiles: 5 - curImages,
 		  //dictMaxFilesExceeded: "最多只能上传5张图片!",
 		  previewTemplate: previewTemplate,
 		  autoQueue: false, // Make sure the files aren't queued until manually added
@@ -425,7 +452,7 @@
    			//提交
    			var data = $("input[name],select[name],textarea[name]").serializeObject();
    			$.ajax({
-				url : '${request.contextPath}/product/saveProduct.json',
+				url : '${request.contextPath}/product/updateProduct.json',
 				type : 'POST',
 				data : data,
 				success : function(result){
@@ -436,6 +463,10 @@
 					}
 				}
 			});
+   		});
+   		//删除图片
+   		$('.deleteImage').click(function(){
+   			$(this).parent().parent().remove();
    		});
     });
 </script>

@@ -27,6 +27,15 @@ public interface ProductService {
     Page<Product> selectPageByQuery(ProductQueryDTO query) throws BizException;
 
     /**
+     * 通过id查询产品
+     * 
+     * @param id
+     * @return
+     * @throws BizException
+     */
+    ResultBase<Product> selectProductById(Long id) throws BizException;
+
+    /**
      * 查询颜色结果集
      * 
      * @return

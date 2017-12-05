@@ -1,6 +1,7 @@
 package com.caoyong.core.service.product;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -136,6 +137,7 @@ public class BrandServiceImpl implements BrandService {
         try {
             //保存品牌到redis
             jedis.hset("brand", String.valueOf(brand.getId()), brand.getName());
+            brand.setUpdateTime(new Date());
             brandDao.updateBrandById(brand);
             result.setValue(1);
         } catch (DataAccessException e) {

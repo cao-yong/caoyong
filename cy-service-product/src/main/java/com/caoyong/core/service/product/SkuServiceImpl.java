@@ -1,5 +1,6 @@
 package com.caoyong.core.service.product;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -217,6 +218,37 @@ public class SkuServiceImpl implements SkuService {
             log.error("selectBuyerCartFromRedis error:", e.getMessage(), e);
         }
         log.info("selectBuyerCartFromRedis end.");
+        return result;
+    }
+
+    @Override
+    public ResultBase<Integer> deleteSkuByProductId(Long productId) throws BizException {
+        log.info("deleteSkuByProductId start. productId:{}",
+                ToStringBuilder.reflectionToString(productId, ToStringStyle.DEFAULT_STYLE));
+        ResultBase<Integer> result = new ResultBase<>();
+        if (productId == null) {
+            result.setSuccess(false);
+            result.setValue(0);
+            throw new BizException(ErrorCodeEnum.PARAMETER_CAN_NOT_BE_NULL);
+        }
+        try {
+            SkuQuery example = new SkuQuery();
+            example.createCriteria().andProductIdEqualTo(productId);
+            Sku record = new Sku();
+            record.setUpdateTime(new Date());
+            record.setIsDeleted(Constants.CONSTANTS_Y);
+            int count = skuDao.updateByExampleSelective(record, example);
+            if (count > 0) {
+                result.setSuccess(true);
+            }
+        } catch (Exception e) {
+            log.error("deleteSkuByProductId Exception:{}", e.getMessage(), e);
+            result.setErrorCode(ErrorCodeEnum.UNKOWN_ERROR.getCode());
+            result.setErrorMsg(ErrorCodeEnum.UNKOWN_ERROR.getMsg());
+            throw new BizException(ErrorCodeEnum.UNKOWN_ERROR, e.getMessage(), e);
+        }
+        log.info("deleteSkuByProductId end result:{}",
+                ToStringBuilder.reflectionToString(result, ToStringStyle.DEFAULT_STYLE));
         return result;
     }
 }

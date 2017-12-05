@@ -34,6 +34,15 @@ public interface SkuService {
     ResultBase<Integer> addSku(Sku sku) throws BizException;
 
     /**
+     * 根据productId删除sku信息
+     * 
+     * @param productId
+     * @return
+     * @throws BizException
+     */
+    ResultBase<Integer> deleteSkuByProductId(Long productId) throws BizException;
+
+    /**
      * 根据id查询sku
      * 
      * @param skuId

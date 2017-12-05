@@ -101,7 +101,7 @@
                     </button>
                 </div>
                 <div class="tableTools-container pull-right">
-                    <button class="btn btn-xs btn-success" onclick="javascrtpt:window.location.href='${request.contextPath}/product/addProduct.do'"><i
+                    <button class="btn btn-xs btn-success" onclick="javascrtpt:window.location.href='${request.contextPath}/product/productViewForm.do'"><i
                             class="red ace-icon fa fa-plus align-top bigger-125"></i>新增
                     </button>
                 </div>
@@ -175,20 +175,20 @@
                                         </td>
                                         <td align="center">
                                             <div class="hidden-sm hidden-xs action-buttons">
-												<a class="blue show-tips queryProduct" productId="${product.id}" href="javascript:void(0)">
+												<a class="blue show-tips" href="${request.contextPath}/product/productViewQuery.do?id=${product.id?c}">
 													<i class="ace-icon fa fa-search-plus bigger-130"></i>
 													<span class='tips'><span>查看</span><s></s></span>
 												</a>
 	
-												<a class="green show-tips editProduct" productId="${product.id}" href="javascript:void(0)">
+												<a class="green show-tips" href="${request.contextPath}/product/productViewEdit.do?id=${product.id?c}">
 													<i class="ace-icon fa fa-pencil bigger-130"></i>
 													<span class='tips'><span>修改</span><s></s></span>
 												</a>
-												<a class="red show-tips deleteProduct" productId="${product.id}" href="javascript:void(0)">
+												<a class="red show-tips deleteProduct" productId="${product.id?c}" href="javascript:void(0)">
 													<i class="ace-icon fa fa-trash-o bigger-130"></i>
 													<span class='tips'><span>删除</span><s></s></span>
 												</a>
-												<a class="purple show-tips proudctSku" productId="${product.id}" href="javascript:void(0)">
+												<a class="purple show-tips proudctSku" productId="${product.id?c}" href="javascript:void(0)">
 													<i class="ace-icon fa fa-truck bigger-130"></i>
 													<span class='tips'><span>库存</span><s></s></span>
 												</a>
