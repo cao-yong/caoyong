@@ -142,38 +142,38 @@
 											</label>
 										</td>
                                         <td>${product.id?c }</td>
-                                        <td align="center" class="product-name">${product.shortName }</td>
-                                        <td align="center"><img width="50" height="50" src="${product.images[0] }"/>
+                                        <td class="product-name">${product.shortName }</td>
+                                        <td><img width="50" height="50" src="${product.images[0] }"/>
                                         </td>
-                                        <td align="center">
+                                        <td>
                                         	<#if product.isNew?? && product.isNew>
                                             	是
 											<#else>
 												否
 											</#if>
                                         </td>
-                                        <td align="center">
+                                        <td>
                                         	<#if product.isHot?? && product.isHot>
                                             	是
 											<#else>
 												否
 											</#if>
                                         </td>
-                                        <td align="center">
+                                        <td>
                                          	<#if product.isCommend ?? && product.isCommend>
                                             	是
 											<#else>
 												否
 											</#if>
                                         </td>
-                                        <td align="center">
+                                        <td>
                                             <#if product.isShow ?? && product.isShow>
                                             	上架
 											<#else>
 												下架
 											</#if>
                                         </td>
-                                        <td align="center">
+                                        <td>
                                             <div class="hidden-sm hidden-xs action-buttons">
 												<a class="blue show-tips" href="${request.contextPath}/product/productViewQuery.do?id=${product.id?c}">
 													<i class="ace-icon fa fa-search-plus bigger-130"></i>
@@ -188,7 +188,7 @@
 													<i class="ace-icon fa fa-trash-o bigger-130"></i>
 													<span class='tips'><span>删除</span><s></s></span>
 												</a>
-												<a class="purple show-tips proudctSku" productId="${product.id?c}" href="javascript:void(0)">
+												<a class="purple show-tips proudctSku" productId="${product.id?c}" href="${request.contextPath}/sku/skuList.do?productId=${product.id?c}">
 													<i class="ace-icon fa fa-truck bigger-130"></i>
 													<span class='tips'><span>库存</span><s></s></span>
 												</a>

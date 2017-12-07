@@ -1,7 +1,5 @@
 package com.caoyong.core.controller.product;
 
-import java.util.List;
-
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -10,12 +8,18 @@ import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.caoyong.common.web.Constants;
+import com.caoyong.core.bean.base.BaseResponse;
+import com.caoyong.core.bean.base.Page;
 import com.caoyong.core.bean.base.ResultBase;
 import com.caoyong.core.bean.product.Sku;
+import com.caoyong.core.bean.product.SkuDTO;
+import com.caoyong.core.bean.product.SkuQueryDTO;
 import com.caoyong.core.service.product.SkuService;
+import com.caoyong.enums.ErrorCodeEnum;
 import com.caoyong.exception.BizException;
 
 import lombok.extern.slf4j.Slf4j;
@@ -28,28 +32,28 @@ import lombok.extern.slf4j.Slf4j;
  * @author yong.cao
  * @time 2017年7月30日 下午9:38:51
  */
+@RequestMapping(value = ("/sku"))
 public class SkuController {
 
     @Reference(version = "1.0.0", timeout = 3000000)
     private SkuService skuService;
 
-    @RequestMapping(value = ("/sku/list.do"))
-    public String list(Long productId, Model model) {
-        log.info("query list start");
+    @RequestMapping(value = ("/skuList.do"))
+    public String skuList(SkuQueryDTO query, Model model) {
+        log.info("query skuList start");
         try {
-            ResultBase<List<Sku>> result = skuService.selectSkuByProductId(productId);
-            if (result.isSuccess()) {
-                List<Sku> skus = result.getValue();
-                log.info("skus:{}", ToStringBuilder.reflectionToString(skus, ToStringStyle.DEFAULT_STYLE));
-                model.addAttribute("skus", skus);
+            Page<Sku> page = skuService.selectPageByQuery(query);
+            if (page.getIsSuccess()) {
+                log.info("page:{}", ToStringBuilder.reflectionToString(page, ToStringStyle.DEFAULT_STYLE));
+                model.addAttribute("page", page);
             }
         } catch (BizException e) {
-            log.error("query list BizException:{}", e.getMessage(), e);
+            log.error("query skuList BizException:{}", e.getMessage(), e);
         } catch (Exception e) {
-            log.error("query list Exception:{}", e.getMessage(), e);
+            log.error("query skuList Exception:{}", e.getMessage(), e);
         }
-        log.info("query list end.");
-        return "sku/list";
+        log.info("query skuList end.");
+        return "/product/skuList";
     }
 
     /**
@@ -58,7 +62,7 @@ public class SkuController {
      * @param sku
      * @param response
      */
-    @RequestMapping(value = ("/sku/addSku.do"))
+    @RequestMapping(value = ("/addSku.do"))
     public void addSku(Sku sku, HttpServletResponse response) {
         log.info("addSku start sku:{}", ToStringBuilder.reflectionToString(sku, ToStringStyle.DEFAULT_STYLE));
         try {
@@ -79,5 +83,31 @@ public class SkuController {
         } catch (Exception e) {
             log.error("addSku Exception:{}", e.getMessage(), e);
         }
+    }
+
+    /**
+     * 操作sku
+     * 
+     * @param product
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = ("/operatingSku.json"))
+    public BaseResponse operatingSku(SkuDTO skuDTO) {
+        BaseResponse resp = new BaseResponse();
+        log.info("operatingSku start.product:{}",
+                ToStringBuilder.reflectionToString(skuDTO, ToStringStyle.DEFAULT_STYLE));
+        try {
+            ResultBase<Integer> result = skuService.operatingSkuBySkuDTO(skuDTO);
+            log.info("resut:{}", ToStringBuilder.reflectionToString(result, ToStringBuilder.getDefaultStyle()));
+            resp.setSuccess(result.isSuccess());
+            resp.setCode(result.getErrorCode());
+        } catch (Exception e) {
+            log.error("saveProduct error:{}", e.getMessage(), e);
+            resp.setCode(e.getMessage());
+            resp.setMsg(ErrorCodeEnum.UNKOWN_ERROR.getMsg());
+        }
+        log.info("operatingSku end.");
+        return resp;
     }
 }

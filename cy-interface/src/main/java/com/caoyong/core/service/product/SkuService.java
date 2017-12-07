@@ -2,9 +2,12 @@ package com.caoyong.core.service.product;
 
 import java.util.List;
 
+import com.caoyong.core.bean.base.Page;
 import com.caoyong.core.bean.base.ResultBase;
 import com.caoyong.core.bean.cart.BuyerCart;
 import com.caoyong.core.bean.product.Sku;
+import com.caoyong.core.bean.product.SkuDTO;
+import com.caoyong.core.bean.product.SkuQueryDTO;
 import com.caoyong.exception.BizException;
 
 /**
@@ -25,6 +28,15 @@ public interface SkuService {
     ResultBase<List<Sku>> selectSkuByProductId(Long productId) throws BizException;
 
     /**
+     * 根据查询查询sku分页
+     * 
+     * @param query
+     * @return
+     * @throws BizException
+     */
+    Page<Sku> selectPageByQuery(SkuQueryDTO query) throws BizException;
+
+    /**
      * 保存库存
      * 
      * @param sku
@@ -41,6 +53,24 @@ public interface SkuService {
      * @throws BizException
      */
     ResultBase<Integer> deleteSkuByProductId(Long productId) throws BizException;
+
+    /**
+     * 根据id删除sku信息
+     * 
+     * @param id
+     * @return
+     * @throws BizException
+     */
+    ResultBase<Integer> deleteSkuById(Long id) throws BizException;
+
+    /**
+     * 根据skuDTO更新sku信息
+     * 
+     * @param skuDTO
+     * @return
+     * @throws BizException
+     */
+    ResultBase<Integer> updateSkuBySkuDTO(SkuDTO skuDTO) throws BizException;
 
     /**
      * 根据id查询sku
@@ -68,4 +98,14 @@ public interface SkuService {
      * @throws BizException
      */
     ResultBase<BuyerCart> selectBuyerCartFromRedis(String username) throws BizException;
+
+    /**
+     * 根据skuDTO中的oper更新sku信息
+     * 
+     * @param skuDTO
+     * @return
+     * @throws BizException
+     */
+    ResultBase<Integer> operatingSkuBySkuDTO(SkuDTO skuDTO) throws BizException;
+
 }
