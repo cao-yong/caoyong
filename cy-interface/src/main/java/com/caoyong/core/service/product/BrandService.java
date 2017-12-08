@@ -16,6 +16,15 @@ import com.caoyong.exception.BizException;
  */
 public interface BrandService {
     /**
+     * 插入品牌
+     * 
+     * @param brand
+     * @return
+     * @throws BizException
+     */
+    ResultBase<Integer> insertBrand(Brand brand) throws BizException;
+
+    /**
      * 查询分页对象
      * 
      * @param query
@@ -41,6 +50,15 @@ public interface BrandService {
      * @throws BizException
      */
     ResultBase<Integer> updateBrandById(Brand brand) throws BizException;
+
+    /**
+     * 根据 brandId删除产品
+     * 
+     * @param id
+     * @return
+     * @throws BizException
+     */
+    ResultBase<Integer> deleteBrandById(Long id) throws BizException;
 
     /**
      * 批量删除

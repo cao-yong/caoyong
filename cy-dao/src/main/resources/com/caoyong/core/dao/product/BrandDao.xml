@@ -44,6 +44,66 @@
 			id = #{id}
 		</where>
 	</select>
+	<!-- 新增品牌 -->
+	<insert id="insertSelective" parameterType="brand" useGeneratedKeys="true" keyProperty="id">
+		insert into cy_brand
+	    <trim prefix="(" suffix=")" suffixOverrides="," >
+	      <if test="id != null" >
+	        id,
+	      </if>
+	      <if test="name != null" >
+	        name,
+	      </if>
+	      <if test="description != null" >
+	        description,
+	      </if>
+	      <if test="imgUrl != null" >
+	        img_url,
+	      </if>
+	      <if test="webSite != null" >
+	        web_site,
+	      </if>
+	      <if test="sort != null" >
+	        sort,
+	      </if>
+	      <if test="isDisplay != null" >
+	        is_display,
+	      </if>
+	        create_time,update_time,
+	      <if test="extraInfo != null" >
+	        extra_info,
+	      </if>
+	        is_deleted,
+	    </trim>
+	    <trim prefix="values (" suffix=")" suffixOverrides="," >
+	      <if test="id != null" >
+	        #{id,jdbcType=BIGINT},
+	      </if>
+	      <if test="name != null" >
+	        #{name,jdbcType=VARCHAR},
+	      </if>
+	      <if test="description != null" >
+	        #{description,jdbcType=VARCHAR},
+	      </if>
+	      <if test="imgUrl != null" >
+	        #{imgUrl,jdbcType=VARCHAR},
+	      </if>
+	      <if test="webSite != null" >
+	        #{webSite,jdbcType=VARCHAR},
+	      </if>
+	      <if test="sort != null" >
+	        #{sort,jdbcType=INTEGER},
+	      </if>
+	      <if test="isDisplay != null" >
+	        #{isDisplay,jdbcType=BIT},
+	      </if>
+		  now(),now(),
+	      <if test="extraInfo != null" >
+	        #{extraInfo,jdbcType=VARCHAR},
+	      </if>
+	      'N'
+	    </trim>
+	</insert>
 	<!-- 根据id修改品牌 -->
 	<update id="updateBrandById" parameterType="brand">
 		update cy_brand
@@ -74,12 +134,16 @@
 	</update>
 	<!-- 批量删除 -->
 	<update id="deletes" parameterType="Long">
-		update cy_brand set is_deleted = 'Y' 
+		update cy_brand set is_deleted = 'Y', update_time = now()
 		<where>
 			id in
 			<foreach collection="array" item="id" separator="," open="(" close=")">
 				#{id}
 			</foreach>
 		</where>		
+	</update>
+	<!-- 根据id删除 -->
+	<update id="deleteBrandById" parameterType="Long">
+		update cy_brand set is_deleted = 'Y', update_time = now() WHERE id = #{id}
 	</update>
 </mapper>

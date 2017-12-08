@@ -1,7 +1,6 @@
 package com.caoyong.core.service.product;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -21,6 +20,7 @@ import com.caoyong.core.bean.product.BrandQuery;
 import com.caoyong.core.dao.product.BrandDao;
 import com.caoyong.enums.ErrorCodeEnum;
 import com.caoyong.exception.BizException;
+import com.caoyong.utils.CheckParamsUtil;
 
 import lombok.extern.slf4j.Slf4j;
 import redis.clients.jedis.Jedis;
@@ -40,6 +40,35 @@ public class BrandServiceImpl implements BrandService {
     private BrandDao brandDao;
     @Autowired
     private Jedis    jedis;
+
+    /**
+     * 插入品牌
+     */
+    @Override
+    public ResultBase<Integer> insertBrand(Brand brand) throws BizException {
+        ResultBase<Integer> result = new ResultBase<Integer>();
+        result.setValue(0);
+        log.info("insertBrand start. brand:{}", ToStringBuilder.reflectionToString(brand, ToStringStyle.DEFAULT_STYLE));
+        CheckParamsUtil.check(brand, Brand.class, "id", "name");
+        try {
+            //redis生成口品牌id
+            Long brandId = jedis.incr("bno");
+            brand.setId(brandId);
+            brandDao.insertSelective(brand);
+        } catch (DataAccessException e) {
+            result.setErrorCode(ErrorCodeEnum.DATA_BASE_ACCESS_ERROR.getCode());
+            result.setErrorMsg(ErrorCodeEnum.DATA_BASE_ACCESS_ERROR.getMsg());
+            log.error("insertBrand DataAccessException:{}", e.getMessage(), e);
+            throw new BizException(ErrorCodeEnum.DATA_BASE_ACCESS_ERROR, e.getMessage(), e);
+        } catch (Exception e) {
+            result.setErrorCode(ErrorCodeEnum.UNKOWN_ERROR.getCode());
+            result.setErrorMsg(ErrorCodeEnum.UNKOWN_ERROR.getMsg());
+            log.error("insertBrand Exception:{}", e.getMessage(), e);
+            throw new BizException(ErrorCodeEnum.UNKOWN_ERROR, e.getMessage(), e);
+        }
+        log.info("insertBrand end, resut:{}", ToStringBuilder.reflectionToString(result, ToStringStyle.DEFAULT_STYLE));
+        return result;
+    }
 
     /**
      * 查询分页对象
@@ -95,7 +124,7 @@ public class BrandServiceImpl implements BrandService {
         }
         log.info("selectPageByQuery end.");
         //分页展示
-        String url = "/brand/list.do";
+        String url = "/brand/brandList.do";
         page.pageView(url, params.toString());
         return page;
     }
@@ -137,7 +166,6 @@ public class BrandServiceImpl implements BrandService {
         try {
             //保存品牌到redis
             jedis.hset("brand", String.valueOf(brand.getId()), brand.getName());
-            brand.setUpdateTime(new Date());
             brandDao.updateBrandById(brand);
             result.setValue(1);
         } catch (DataAccessException e) {
@@ -164,8 +192,8 @@ public class BrandServiceImpl implements BrandService {
         result.setValue(0);
         try {
             if (null != ids) {
-                brandDao.deletes(ids);
-                result.setValue(ids.length);
+                Integer count = brandDao.deletes(ids);
+                result.setValue(count);
             }
         } catch (DataAccessException e) {
             log.error("deletes DataAccessException:{}", e.getMessage(), e);
@@ -224,4 +252,28 @@ public class BrandServiceImpl implements BrandService {
         return brands;
     }
 
+    @Override
+    public ResultBase<Integer> deleteBrandById(Long id) throws BizException {
+        log.info("deleteBrandById start. id:{}", id);
+        ResultBase<Integer> result = new ResultBase<>();
+        if (id == null) {
+            result.setSuccess(false);
+            result.setValue(0);
+            throw new BizException(ErrorCodeEnum.PARAMETER_CAN_NOT_BE_NULL);
+        }
+        try {
+            int count = brandDao.deleteBrandById(id);
+            if (count > 0) {
+                result.setSuccess(true);
+            }
+        } catch (Exception e) {
+            log.error("deleteBrandById Exception:{}", e.getMessage(), e);
+            result.setErrorCode(ErrorCodeEnum.UNKOWN_ERROR.getCode());
+            result.setErrorMsg(ErrorCodeEnum.UNKOWN_ERROR.getMsg());
+            throw new BizException(ErrorCodeEnum.UNKOWN_ERROR, e.getMessage(), e);
+        }
+        log.info("deleteBrandById end result:{}",
+                ToStringBuilder.reflectionToString(result, ToStringStyle.DEFAULT_STYLE));
+        return result;
+    }
 }
