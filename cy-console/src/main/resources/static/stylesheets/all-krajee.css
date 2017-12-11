@@ -1,0 +1,81 @@
+button, input, optgroup, select, textarea {
+    margin: 0;
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+}
+[role=button], a, area, button, input, label, select, summary, textarea {
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+}
+button, hr, input {
+    overflow: visible;
+}
+*, ::after, ::before {
+    box-sizing: inherit;
+}
+.btn-primary {
+    color: #fff;
+    background-color: #007bff;
+    border-color: #007bff;
+}
+.btn {
+    text-align: center;
+    vertical-align: middle;
+    -ms-user-select: none;
+    user-select: none;
+    border: 1px solid transparent;
+    padding: .5rem .75rem;
+    font-size: 1rem;
+    line-height: 1.25;
+    border-radius: .25rem;
+    transition: all .15s ease-in-out;
+}
+.btn, .btn-link, .dropdown-item {
+    font-weight: 400;
+}
+.badge, .btn, .dropdown-header, .dropdown-item, .input-group-btn, .navbar-brand {
+    white-space: nowrap;
+}
+.btn, .custom-control-indicator {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+}
+body {
+    overflow-y: auto;
+    overflow-x: hidden;
+    margin: 0;
+    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #212529;
+    background-color: #fff;
+}
+html {
+    box-sizing: border-box;
+    font-family: sans-serif;
+    line-height: 1.15;
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+    -ms-overflow-style: scrollbar;
+    -webkit-tap-highlight-color: transparent;
+}
+*, ::after, ::before {
+    box-sizing: inherit;
+}
+::-webkit-scrollbar {
+    width: 10px;
+}
+::-webkit-scrollbar-thumb {
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    background: #aaa;
+    -webkit-box-shadow: inset 0 0 6px #333;
+}
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px #999;
+    -webkit-border-radius: 10px;
+    background: #eee;
+    border-radius: 10px;
+}
+

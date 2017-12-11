@@ -20,4 +20,6 @@ public @Data class Brand implements Serializable {
     private Integer           isDisplay;
     //扩展字段
     private String            extraInfo;
+    //品牌地址
+    private String            webSite;
 }

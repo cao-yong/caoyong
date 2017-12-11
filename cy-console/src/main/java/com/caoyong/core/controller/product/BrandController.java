@@ -68,10 +68,12 @@ public class BrandController {
     public String brandView(Long id, Model model, @PathVariable String operation) {
         log.info("brandView start. id={}", id);
         try {
-            ResultBase<Brand> result = brandService.selectBrandById(id);
-            if (result.isSuccess()) {
-                Brand brand = result.getValue();
-                model.addAttribute("brand", brand);
+            if (id != null) {
+                ResultBase<Brand> result = brandService.selectBrandById(id);
+                if (result.isSuccess()) {
+                    Brand brand = result.getValue();
+                    model.addAttribute("brand", brand);
+                }
             }
         } catch (BizException e) {
             log.error("brandView BizException:{}", e.getMessage(), e);
@@ -79,7 +81,33 @@ public class BrandController {
             log.error("brandView Exception:{}", e.getMessage(), e);
         }
         log.info("brandView end");
-        return "brand/brand" + operation;
+        return "/product/brand" + operation;
+    }
+
+    /**
+     * 保存商品
+     * 
+     * @param product
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = ("/saveBrand.json"))
+    public BaseResponse saveBrand(Brand brand) {
+        BaseResponse resp = new BaseResponse();
+        log.info("saveBrand start.brand:{}", ToStringBuilder.reflectionToString(brand, ToStringStyle.DEFAULT_STYLE));
+        try {
+            ResultBase<Integer> result = brandService.insertBrand(brand);
+            log.info("resut:{}", ToStringBuilder.reflectionToString(result, ToStringBuilder.getDefaultStyle()));
+            resp.setSuccess(result.isSuccess());
+            resp.setCode(result.getErrorCode());
+            resp.setMsg(result.getErrorMsg());
+        } catch (Exception e) {
+            log.error("saveBrand error:{}", e.getMessage(), e);
+            resp.setCode(e.getMessage());
+            resp.setMsg(ErrorCodeEnum.UNKOWN_ERROR.getMsg());
+        }
+        log.info("saveBrand end.");
+        return resp;
     }
 
     /**
@@ -89,21 +117,26 @@ public class BrandController {
      * @param model
      * @return
      */
-    @RequestMapping(value = ("/edit.do"))
-    public String edit(Brand brand, Model model) {
-        log.info("edit start. brand={}", ToStringBuilder.reflectionToString(brand, ToStringStyle.DEFAULT_STYLE));
+    @ResponseBody
+    @RequestMapping(value = ("/updateBrand.json"))
+    public BaseResponse updateBrand(Brand brand, Model model) {
+        log.info("updateBrand start. brand={}", ToStringBuilder.reflectionToString(brand, ToStringStyle.DEFAULT_STYLE));
+        BaseResponse resp = new BaseResponse();
         try {
             if (null != brand) {
                 ResultBase<Integer> result = brandService.updateBrandById(brand);
+                resp.setSuccess(result.isSuccess());
+                resp.setCode(result.getErrorCode());
+                resp.setMsg(result.getErrorMsg());
                 log.info("result:{}", result);
             }
         } catch (BizException e) {
-            log.error("toEdit BizException:{}", e.getMessage(), e);
+            log.error("updateBrand BizException:{}", e.getMessage(), e);
         } catch (Exception e) {
-            log.error("toEdit Exception:{}", e.getMessage(), e);
+            log.error("updateBrand Exception:{}", e.getMessage(), e);
         }
-        log.info("edit end");
-        return "redirect:/brand/list.do";
+        log.info("updateBrand end, resp:{}", ToStringBuilder.reflectionToString(resp, ToStringStyle.DEFAULT_STYLE));
+        return resp;
     }
 
     /**
@@ -114,7 +147,7 @@ public class BrandController {
      */
     @ResponseBody
     @RequestMapping(value = ("/deleteBrandById.json"))
-    public BaseResponse deleteProduct(Long id) {
+    public BaseResponse deleteBrandById(Long id) {
         BaseResponse resp = new BaseResponse();
         log.info("deleteBrandById start.id:{}", id);
         try {
@@ -122,6 +155,7 @@ public class BrandController {
             log.info("resut:{}", ToStringBuilder.reflectionToString(result, ToStringBuilder.getDefaultStyle()));
             resp.setSuccess(result.isSuccess());
             resp.setCode(result.getErrorCode());
+            resp.setMsg(result.getErrorMsg());
         } catch (Exception e) {
             log.error("deleteBrandById error:{}", e.getMessage(), e);
             resp.setCode(e.getMessage());
@@ -137,9 +171,11 @@ public class BrandController {
      * @param model
      * @return
      */
-    @RequestMapping(value = ("/deletes.do"))
-    public String deletes(Long[] ids) {
+    @ResponseBody
+    @RequestMapping(value = ("/deleteBrands.json"))
+    public BaseResponse deletes(Long[] ids) {
         log.info("deletes start. ids={}", ToStringBuilder.reflectionToString(ids, ToStringStyle.DEFAULT_STYLE));
+        BaseResponse resp = new BaseResponse();
         try {
             if (null == ids) {
                 //防止对数据库多次无效交互
@@ -147,6 +183,9 @@ public class BrandController {
                 return null;
             }
             ResultBase<Integer> result = brandService.deletes(ids);
+            resp.setSuccess(result.isSuccess());
+            resp.setCode(result.getErrorCode());
+            resp.setMsg(result.getErrorMsg());
             log.info("result:{}", result);
         } catch (BizException e) {
             log.error("deletes BizException:{}", e.getMessage(), e);
@@ -154,6 +193,6 @@ public class BrandController {
             log.error("deletes Exception:{}", e.getMessage(), e);
         }
         log.info("deletes end");
-        return "forward:/brand/list.do";
+        return resp;
     }
 }

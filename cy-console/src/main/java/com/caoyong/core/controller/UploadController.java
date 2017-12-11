@@ -76,15 +76,12 @@ public class UploadController {
         } catch (IOException e) {
             log.error("uploadPic io error:{}", e.getMessage(), e);
             resp.setErrorMsg("上传图片失败:" + e.getMessage());
-            resp.setError(1);
         } catch (BizException e) {
             log.error("uploadPic biz error:{}", e.getMessage(), e);
             resp.setErrorMsg("上传图片失败:" + e.getMessage());
-            resp.setError(1);
         } catch (Exception e) {
             log.error("uploadPic error:{}", e.getMessage(), e);
             resp.setErrorMsg("上传图片失败:" + e.getMessage());
-            resp.setError(1);
         }
         log.info("uploadPic end.");
         return resp;
@@ -160,25 +157,21 @@ public class UploadController {
                     resp.setIsSuccess(true);
                 } else {
                     resp.setErrorMsg("上传图片失败!");
-                    resp.setError(1);
+                    //resp.setError(1);
                 }
             }
             log.info("uploadFck end.");
         } catch (JSONException e) {
             resp.setErrorMsg("上传图片失败:" + e.getMessage());
-            resp.setError(1);
             log.error("uploadFck JSON error:{}", e.getMessage(), e);
         } catch (IOException e) {
             resp.setErrorMsg("上传图片失败:" + e.getMessage());
-            resp.setError(1);
             log.error("uploadFck io error:{}", e.getMessage(), e);
         } catch (BizException e) {
             resp.setErrorMsg("上传图片失败:" + e.getMessage());
-            resp.setError(1);
             log.error("uploadFck biz error:{}", e.getMessage(), e);
         } catch (Exception e) {
             resp.setErrorMsg("上传图片失败:" + e.getMessage());
-            resp.setError(1);
             log.error("uploadFck error:{}", e.getMessage(), e);
         }
         return resp;
@@ -219,17 +212,14 @@ public class UploadController {
         } catch (IOException e) {
             log.error("uploadDropZonePic io error:{}", e.getMessage(), e);
             resp.setErrorMsg("上传图片失败:" + e.getMessage());
-            resp.setError(1);
             log.error("uploadDropZonePics error:{}", e.getMessage(), e);
         } catch (BizException e) {
             log.error("uploadDropZonePic biz error:{}", e.getMessage(), e);
             resp.setErrorMsg("上传图片失败:" + e.getMessage());
-            resp.setError(1);
             log.error("uploadDropZonePics error:{}", e.getMessage(), e);
         } catch (Exception e) {
             log.error("uploadDropZonePic error:{}", e.getMessage(), e);
             resp.setErrorMsg("上传图片失败:" + e.getMessage());
-            resp.setError(1);
             log.error("uploadDropZonePics error:{}", e.getMessage(), e);
         }
         log.info("uploadDropZonePic end.");

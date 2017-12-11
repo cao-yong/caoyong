@@ -124,9 +124,6 @@
 			<if  test="isDisplay != null">
 				is_display = #{isDisplay}
 			</if>
-			<if  test="updateTime != null">
-				update_time = #{updateTime}
-			</if>
 		</set>
 		<where>
 			id = #{id}

@@ -36,7 +36,7 @@ public class UploadResponse implements Serializable {
     /**
      * 是否错误，1是，0否
      */
-    private Integer           error            = 0;
+    //private Integer           error            = 0;
     /**
      * 图片url，适用于多张时
      */

@@ -49,12 +49,14 @@ public class BrandServiceImpl implements BrandService {
         ResultBase<Integer> result = new ResultBase<Integer>();
         result.setValue(0);
         log.info("insertBrand start. brand:{}", ToStringBuilder.reflectionToString(brand, ToStringStyle.DEFAULT_STYLE));
-        CheckParamsUtil.check(brand, Brand.class, "id", "name");
         try {
             //redis生成口品牌id
             Long brandId = jedis.incr("bno");
             brand.setId(brandId);
-            brandDao.insertSelective(brand);
+            Integer count = brandDao.insertSelective(brand);
+            if (count > 0) {
+                result.setSuccess(true);
+            }
         } catch (DataAccessException e) {
             result.setErrorCode(ErrorCodeEnum.DATA_BASE_ACCESS_ERROR.getCode());
             result.setErrorMsg(ErrorCodeEnum.DATA_BASE_ACCESS_ERROR.getMsg());
@@ -161,13 +163,17 @@ public class BrandServiceImpl implements BrandService {
     public ResultBase<Integer> updateBrandById(Brand brand) throws BizException {
         ResultBase<Integer> result = new ResultBase<Integer>();
         result.setValue(0);
+        CheckParamsUtil.check(brand, Brand.class, "id");
         log.info("updateBrandById start. brand:{}",
                 ToStringBuilder.reflectionToString(brand, ToStringStyle.DEFAULT_STYLE));
         try {
             //保存品牌到redis
             jedis.hset("brand", String.valueOf(brand.getId()), brand.getName());
-            brandDao.updateBrandById(brand);
-            result.setValue(1);
+            Integer count = brandDao.updateBrandById(brand);
+            if (count > 0) {
+                result.setValue(count);
+                result.setSuccess(true);
+            }
         } catch (DataAccessException e) {
             result.setErrorCode(ErrorCodeEnum.DATA_BASE_ACCESS_ERROR.getCode());
             result.setErrorMsg(ErrorCodeEnum.DATA_BASE_ACCESS_ERROR.getMsg());
@@ -189,11 +195,14 @@ public class BrandServiceImpl implements BrandService {
         log.info("deletes start. ids:{}", ToStringBuilder.reflectionToString(ids, ToStringStyle.DEFAULT_STYLE));
         ResultBase<Integer> result = new ResultBase<Integer>();
         result.setSuccess(false);
-        result.setValue(0);
+        Integer count = 0;
         try {
             if (null != ids) {
-                Integer count = brandDao.deletes(ids);
+                count = brandDao.deletes(ids);
                 result.setValue(count);
+            }
+            if (count > 0) {
+                result.setSuccess(true);
             }
         } catch (DataAccessException e) {
             log.error("deletes DataAccessException:{}", e.getMessage(), e);

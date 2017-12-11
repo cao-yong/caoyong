@@ -80,7 +80,7 @@
                 </div>
           
                 <div class="tableTools-container pull-right">
-                    <button class="btn btn-xs btn-success" onclick="javascrtpt:window.location.href='${request.contextPath}/brand/brandForm.do'"><i
+                    <button class="btn btn-xs btn-success" onclick="javascrtpt:window.location.href='${request.contextPath}/brand/brandViewForm.do'"><i
                             class="red ace-icon fa fa-plus align-top bigger-125"></i>新增
                     </button>
                 </div>
@@ -206,7 +206,7 @@
 						"callback" :function(){
 							$.ajax({
 								type : 'post',
-								url : '${request.contextPath}/brand/deleteBrand.json',
+								url : '${request.contextPath}/brand/deleteBrandById.json',
 								dataType : 'json',
 								data : {
 									id : brandId
@@ -235,7 +235,7 @@
             var operation = $(this).attr('attr');
             //批量删除
             bootbox.dialog({
-				message: "您确定删除这<font color='red'>"+ size +"</font>件品牌吗？", 
+				message: "您确定删除这<font color='red'>"+ size +"</font>个品牌吗？", 
 				buttons: {
 					"success" : {
 						"label" : "确定",
@@ -246,7 +246,7 @@
 								url : '${request.contextPath}/brand/deleteBrands.json',
 								dataType : 'json',
 								data : $("input[name='ids']:checked").serializeObject(),
-								success : function(result){o
+								success : function(result){
 									if(result.success){
 										window.location.reload();
 									}else{

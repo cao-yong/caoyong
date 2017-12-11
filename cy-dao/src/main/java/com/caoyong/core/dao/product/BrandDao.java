@@ -53,8 +53,9 @@ public interface BrandDao {
      * 
      * @param brand
      * @return
+     * @throws DataAccessException
      */
-    void updateBrandById(Brand brand) throws DataAccessException;
+    Integer updateBrandById(Brand brand) throws DataAccessException;
 
     /**
      * 批量删除
