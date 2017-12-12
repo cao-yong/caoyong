@@ -37,7 +37,7 @@
 		<!-- 基本信息开始 -->
 		<div id="tab1" class="tab-pane in active">
 			<form class="form-horizontal" id="brandForm" role="form">
-				<input type="hidden" id="imgUrl" name="imgUrl" value=${brand.imgUrl!}/>
+				<input type="hidden" id="imgUrl" name="imgUrl" value="${brand.imgUrl!}"/>
 				<input type="hidden" id="id" name="id" value="${brand.id!}"/>
 				<div class="form-group">
 					<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 品牌名称  </label>
@@ -107,17 +107,34 @@
 <!-- page specific plugin scripts -->
 <script src="${request.contextPath}/static/assets/js/fileinput/fileinput.js"></script>
 <script src="${request.contextPath}/static/assets/js/fileinput/fileinput_locale_zh.js"></script>
+<script src="${request.contextPath}/static/assets/js/jquery.validate.min.js"></script>
 <!-- ace scripts -->
 <script src="${request.contextPath}/static/assets/js/ace-elements.min.js"></script>
 <script src="${request.contextPath}/static/assets/js/ace.min.js"></script>
 
 <script type="text/javascript">
+	//图片是否已上传
+	var isUploaded = false;
+	//图片是否需要自动提交(提交前没有上传图片，则可实现自动提交)
+	var autoCommit = false;
+	//更新品牌ajax
+	var updateBrand = function(){
+		//自动上传图片
+			var data = $("#brandForm").serializeObject();
+			$.ajax({
+			url : '${request.contextPath}/brand/updateBrand.json',
+			type : 'POST',
+			data : data,
+			success : function(result){
+				if(result.success){
+					window.location.href = '${request.contextPath}/brand/brandList.do?pageNo=${brand.pageNo}';
+				}else{
+					reminder(result.msg);
+				}
+			}
+		});
+	};
 	$(document).on('ready', function() {
-		var imgUrl = "${brand.imgUrl!}"
-		var initialImg = [];
-		if(imgUrl){
-			initialImg = ["<img style='width:160px;height:160px' src='" + imgUrl + "' class='file-preview-image'>"];
-		}
 	    $("#uploadImg").fileinput({
 	    	showCaption: false,
 	    	language : 'zh',
@@ -126,16 +143,31 @@
 	        maxFileSize : 2000,
 	        dropZoneEnabled : false,
 	        uploadUrl : "${request.contextPath}/upload/uploadFck.do",
-	        initialPreview : initialImg,
-	        previewClass : ""
+	        initialPreview : ["${brand.imgUrl!}"],
+	        initialPreviewAsData: true,
+	        initialPreviewFileType: 'image'
 	    }).on("fileuploaded", function(e, data) {
             var res = data.response;
             if(res.isSuccess){
+            	//图片上传成功标识
+            	isUploaded = true;
+            	$('#imgUrl').val(res.url);
+            	//图片上传成功后提交ajax
+				if(autoCommit){
+					updateBrand();
+					return;
+				}
 				reminder("上传成功!")
-				$('#imgUrl').val(res.url);
             }else{
             	reminder(res.errorMsg)
             }
+        }).on('filecleared', function(event) {
+        	$('#imgUrl').val("");
+        	//如果清除图片，可视为图片已上传，提示ajax即可 
+        	isUploaded = true;
+        }).on('fileremoved', function(event) {
+        	isUploaded = true;
+        	$('#imgUrl').val("");
         });
 	});
 	$(function() {
@@ -145,22 +177,77 @@
 			isDisplay.removeAttr("checked");
           	$(this).prop("checked", true);
         });
+		//表单参数校验
+		$('#brandForm').validate({
+			errorElement: 'div',
+			errorClass: 'help-block',
+			focusInvalid: false,
+			ignore: "",
+			rules: {
+				name: {
+					required: true
+				},
+				sort: {
+					required: true,
+					number: true
+				}
+			},
+			messages: {
+				name: {
+					required: "请输入品牌名称"
+				},
+				sort: {
+					required: "请输入品牌序号",
+					number: "序号只能为数字"
+				}
+			},
+	
+	
+			highlight: function (e) {
+				$(e).closest('.form-group').removeClass('has-info').addClass('has-error');
+			},
+	
+			success: function (e) {
+				$(e).closest('.form-group').removeClass('has-error');//.addClass('has-info');
+				$(e).remove();
+			},
+	
+			errorPlacement: function (error, element) {
+				if(element.is('input[type=checkbox]') || element.is('input[type=radio]')) {
+					var controls = element.closest('div[class*="col-"]');
+					if(controls.find(':checkbox,:radio').length > 1) controls.append(error);
+					else error.insertAfter(element.nextAll('.lbl:eq(0)').eq(0));
+				}
+				else if(element.is('.select2')) {
+					error.insertAfter(element.siblings('[class*="select2-container"]:eq(0)'));
+				}
+				else if(element.is('.chosen-select')) {
+					error.insertAfter(element.siblings('[class*="chosen-container"]:eq(0)'));
+				}
+				else error.insertAfter(element.parent());
+			},
+	
+			submitHandler: function (form) {
+			},
+			invalidHandler: function (form) {
+			}
+		});
    		//提交表单
    		$('#submitBtn').click(function(){
-   			//提交
-   			var data = $("#brandForm").serializeObject();
-   			$.ajax({
-				url : '${request.contextPath}/brand/updateBrand.json',
-				type : 'POST',
-				data : data,
-				success : function(result){
-					if(result.success){
-						window.location.href = '${request.contextPath}/brand/brandList.do';
-					}else{
-						reminder(result.msg);
-					}
-				}
-			});
+   			//提交前对比图片url，如果url相同，则没有动过图片，表明图片已上传
+   			if("${brand.imgUrl}" === $('#imgUrl').val()){
+   				isUploaded = true;
+   			}
+   			if($('#brandForm').valid()){
+   				//图片已上传，直接提交ajax
+	   			if(isUploaded){
+	   				updateBrand();
+	   			}else{
+	   				//否则触发自动提交
+	   				autoCommit = true;
+	   				$('#uploadImg').fileinput('upload');
+	   			}
+   			}
    		});
     });
 </script>

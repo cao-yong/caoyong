@@ -22,4 +22,6 @@ public @Data class Brand implements Serializable {
     private String            extraInfo;
     //品牌地址
     private String            webSite;
+    //页码
+    private Integer           pageNo           = 1;
 }

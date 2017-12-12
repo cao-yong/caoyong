@@ -43,6 +43,7 @@ public class BrandController {
             query.setPage(true);
             Page<Brand> page = brandService.selectPageByQuery(query);
             if (null != page) {
+                page.setPage(query.getPage());
                 model.addAttribute("page", page);
                 model.addAttribute("name", query.getName());
                 model.addAttribute("isDisplay", query.getIsDisplay());
@@ -65,13 +66,16 @@ public class BrandController {
      * @return
      */
     @RequestMapping(value = ("/brandView{operation}.do"))
-    public String brandView(Long id, Model model, @PathVariable String operation) {
-        log.info("brandView start. id={}", id);
+    public String brandView(BrandQuery query, Model model, @PathVariable String operation) {
+        log.info("brandView start. query={}", ToStringBuilder.reflectionToString(query, ToStringStyle.DEFAULT_STYLE));
         try {
-            if (id != null) {
-                ResultBase<Brand> result = brandService.selectBrandById(id);
+            if (query.getId() != null) {
+                ResultBase<Brand> result = brandService.selectBrandById(query.getId());
                 if (result.isSuccess()) {
                     Brand brand = result.getValue();
+                    if (null != brand) {
+                        brand.setPageNo(query.getPageNo());
+                    }
                     model.addAttribute("brand", brand);
                 }
             }

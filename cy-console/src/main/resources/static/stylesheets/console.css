@@ -170,3 +170,5 @@ div.table .file-row:nth-child(odd) {
   display: block;
 }
 #editor1 {overflow:scroll; min-height:400px}
+/*错误提示样式*/
+.help-block{margin-left:450px}
