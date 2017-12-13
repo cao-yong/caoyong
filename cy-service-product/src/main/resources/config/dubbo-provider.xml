@@ -35,8 +35,6 @@
     <dubbo:protocol port="20880" name="dubbo"/>
     
     <!-- 4:暴露实现类 -->
-    <!-- test -->
-    <dubbo:service interface="com.caoyong.core.service.TestTbService" ref="testTbService" version="1.0.0"/>
     <!-- 品牌服务 -->
     <dubbo:service interface="com.caoyong.core.service.product.BrandService" ref="brandService" version="1.0.0"/>
     <!-- 上传文件 -->
