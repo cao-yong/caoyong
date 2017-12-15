@@ -88,7 +88,8 @@ public class BuyerCart implements Serializable {
     @JsonIgnore
     public String getFee() {
         String result = (new BigDecimal(getProductPrice()).compareTo(new BigDecimal("79.00"))) == -1
-                ? Constants.DEAFAULT_DELIVE_FEE : Constants.DEAFAULT_PRICE;
+                ? Constants.DEAFAULT_DELIVE_FEE
+                : Constants.DEAFAULT_PRICE;
         return result;
     }
 

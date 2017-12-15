@@ -9,11 +9,7 @@
   
     <!-- 依赖管理之后台 -->
 	<dependencies>
-		<!-- with junit4.12 -->
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-		</dependency>
+		<!-- sigar 系统信息 -->
 		<dependency>
 		    <groupId>org.fusesource</groupId>
 		    <artifactId>sigar</artifactId>
@@ -57,20 +53,6 @@
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
-		</dependency>
-		<!--freemarker -->
-		<dependency>
-			<groupId>org.freemarker</groupId>
-			<artifactId>freemarker</artifactId>
-		</dependency>
-		<!-- with mybatis-spring -->
-		<dependency>
-			<groupId>org.mybatis</groupId>
-			<artifactId>mybatis</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.mybatis</groupId>
-			<artifactId>mybatis-spring</artifactId>
 		</dependency>
 		<!-- jdbc driver -->
 		<dependency>
@@ -159,24 +141,6 @@
 			<artifactId>json</artifactId>
 		</dependency>
 
-		<!-- solrJ -->
-		<dependency>
-			<groupId>org.apache.solr</groupId>
-			<artifactId>solr-solrj</artifactId>
-			<exclusions>
-				<exclusion>
-					<groupId>org.slf4j</groupId>
-					<artifactId>slf4j-api</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-
-		<!-- jedis Java接口 -->
-		<dependency>
-			<groupId>redis.clients</groupId>
-			<artifactId>jedis</artifactId>
-		</dependency>
-
 		<!-- FastDFS client -->
 		<dependency>
 			<groupId>org.csource</groupId>
@@ -186,17 +150,6 @@
 		<dependency>
 			<groupId>org.jboss.netty</groupId>
 			<artifactId>netty</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>com.alibaba</groupId>
-			<artifactId>dubbo</artifactId>
-			<exclusions>
-				<exclusion>
-					<artifactId>spring</artifactId>
-					<groupId>org.springframework</groupId>
-				</exclusion>
-			</exclusions>
 		</dependency>
 
 		<dependency>
@@ -216,36 +169,10 @@
 		</dependency>
 		<!-- Zookeeper 用于分布式服务管理 end -->
 		
-		<!-- Active MQ start -->
 		<dependency>
-			<groupId>org.apache.activemq</groupId>
-			<artifactId>activemq-broker</artifactId>
+			<groupId>redis.clients</groupId>
+			<artifactId>jedis</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.apache.activemq</groupId>
-			<artifactId>activemq-client</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.activemq</groupId>
-			<artifactId>activemq-core</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.geronimo.specs</groupId>
-			<artifactId>geronimo-j2ee-management_1.1_spec</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.geronimo.specs</groupId>
-			<artifactId>geronimo-jms_1.1_spec</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.activemq</groupId>
-			<artifactId>activemq-pool</artifactId>
-		</dependency>
-        <dependency> 
-            <groupId>org.apache.activemq</groupId> 
-            <artifactId>activemq-camel</artifactId> 
-        </dependency> 
-		<!-- Active MQ end -->
 		
 		<!-- servlet-api -->
 		<dependency>

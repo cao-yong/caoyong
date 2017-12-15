@@ -8,17 +8,17 @@ import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrQuery.ORDER;
-import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
 import org.apache.solr.common.SolrInputDocument;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
+import com.alibaba.dubbo.config.annotation.Service;
 import com.caoyong.common.utlis.MoneyFormatUtil;
 import com.caoyong.common.web.Constants;
 import com.caoyong.core.bean.base.Page;
@@ -40,11 +40,11 @@ import lombok.extern.slf4j.Slf4j;
  * @time 2017年7月5日下午9:33:35
  */
 @Slf4j
-@Service("searchService")
+@Service(version = "1.0.0")
 public class SearchServiceImpl implements SearchService {
 
     @Autowired
-    private SolrServer solrServer;
+    private SolrClient solrClient;
     @Autowired
     private ProductDao productDao;
     @Autowired
@@ -91,7 +91,7 @@ public class SearchServiceImpl implements SearchService {
                     solrQuery.addFilterQuery("price:[" + query.getPrice() + " TO *]");
                 }
             }
-            QueryResponse response = solrServer.query(solrQuery);
+            QueryResponse response = solrClient.query(solrQuery);
             //取高亮
             Map<String, Map<String, List<String>>> highlighting = response.getHighlighting();
             //结果集
@@ -192,8 +192,8 @@ public class SearchServiceImpl implements SearchService {
             doc.setField("price", price);
             //品牌id
             doc.setField("brandId", p.getBrandId());
-            solrServer.add(doc);
-            solrServer.commit();
+            solrClient.add(doc);
+            solrClient.commit();
             log.info("insertProductToSolr end.");
         } catch (NumberFormatException e) {
             log.error("insertProductToSolr number format error:{}", e.getMessage(), e);
@@ -214,8 +214,8 @@ public class SearchServiceImpl implements SearchService {
     public void deleteProductToSolr(Long id) throws BizException {
         log.info("deleteProductToSolr start, id:{}", id);
         try {
-            solrServer.deleteById(String.valueOf(id));
-            solrServer.commit();
+            solrClient.deleteById(String.valueOf(id));
+            solrClient.commit();
         } catch (SolrServerException e) {
             log.error("deleteProductToSolr solr error:{}", e.getMessage(), e);
             throw new BizException(ErrorCodeEnum.SOLR_SERVER_ERROR, e.getMessage(), e);

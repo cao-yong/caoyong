@@ -1,6 +1,7 @@
 package com.caoyong.core.service.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.caoyong.common.web.Constants;
 
@@ -16,6 +17,7 @@ import redis.clients.jedis.Jedis;
  */
 
 @Slf4j
+@Component
 public class SessionProviderImpl implements SessionProvider {
     @Autowired
     private Jedis   jedis;

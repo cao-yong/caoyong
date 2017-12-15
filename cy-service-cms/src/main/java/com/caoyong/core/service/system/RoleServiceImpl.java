@@ -10,9 +10,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
+import com.alibaba.dubbo.config.annotation.Service;
 import com.caoyong.common.web.Constants;
 import com.caoyong.core.bean.base.BaseQuery;
 import com.caoyong.core.bean.base.Page;
@@ -40,8 +39,8 @@ import lombok.extern.slf4j.Slf4j;
  * @author caoyong
  * @time 2017年11月3日 下午5:05:29
  */
-@Service("roleService")
-@Transactional(rollbackFor = Exception.class)
+@Service(version = "1.0.0")
+//@Transactional(rollbackFor = Exception.class)
 @Slf4j
 public class RoleServiceImpl implements RoleService {
     @Autowired

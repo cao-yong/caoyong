@@ -10,9 +10,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
+import com.alibaba.dubbo.config.annotation.Service;
 import com.caoyong.common.enums.JqGridOperEnum;
 import com.caoyong.common.utlis.MoneyFormatUtil;
 import com.caoyong.common.web.Constants;
@@ -43,8 +42,8 @@ import redis.clients.jedis.Jedis;
  * @time 2017年7月30日 下午9:22:02
  */
 @Slf4j
-@Service("skuService")
-@Transactional(rollbackFor = Exception.class)
+@Service(version = "1.0.0")
+//@Transactional(rollbackFor = Exception.class)
 public class SkuServiceImpl implements SkuService {
     @Autowired
     private SkuDao     skuDao;

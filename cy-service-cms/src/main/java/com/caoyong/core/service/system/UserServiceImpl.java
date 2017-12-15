@@ -9,8 +9,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
+import com.alibaba.dubbo.config.annotation.Service;
 import com.caoyong.common.utlis.EncodeUtil;
 import com.caoyong.common.web.Constants;
 import com.caoyong.core.bean.base.Page;
@@ -39,7 +39,7 @@ import lombok.extern.slf4j.Slf4j;
  * @time 2017年11月16日 上午11:29:06
  */
 @Slf4j
-@Service("userService")
+@Service(version = "1.0.0")
 public class UserServiceImpl implements UserService {
     @Autowired
     private UserDao     userDao;

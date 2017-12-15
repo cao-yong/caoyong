@@ -2,8 +2,8 @@ package com.caoyong.core.service.product;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import org.springframework.stereotype.Service;
 
+import com.alibaba.dubbo.config.annotation.Service;
 import com.caoyong.common.fastdfs.FastDFSUtils;
 import com.caoyong.common.fastdfs.UploadFileVo;
 import com.caoyong.exception.BizException;
@@ -18,7 +18,7 @@ import lombok.extern.slf4j.Slf4j;
  */
 
 @Slf4j
-@Service("uploadService")
+@Service(version = "1.0.0")
 public class UploadServiceImpl implements UploadService {
     /**
      * 上传图片

@@ -10,9 +10,8 @@ import java.util.Set;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
+import com.alibaba.dubbo.config.annotation.Service;
 import com.caoyong.common.enums.OrderStateEnum;
 import com.caoyong.common.enums.PaymentStateEnum;
 import com.caoyong.common.web.Constants;
@@ -40,8 +39,8 @@ import redis.clients.jedis.Jedis;
  * @time 2017年7月23日下午5:02:16
  */
 @Slf4j
-@Service("orderService")
-@Transactional
+@Service(version = "1.0.0")
+//@Transactional
 public class OrderServiceImpl implements OrderService {
     @Autowired
     private SkuDao     skuDao;

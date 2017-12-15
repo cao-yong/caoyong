@@ -17,7 +17,7 @@ spring:
         request-context-attribute: request
     dubbo:
         application:
-            name: cy-console
+            name: console
         registry:
             address: zookeeper://192.168.128.128:2181
         scan: com.caoyong

@@ -12,6 +12,8 @@ import javax.servlet.ServletContext;
 import org.springframework.web.context.ServletContextAware;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 
+import com.alibaba.dubbo.config.annotation.Service;
+
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +24,7 @@ import lombok.extern.slf4j.Slf4j;
  * @author yong.cao
  * @time 2017年7月13日下午10:23:10
  */
-
+@Service(version = "1.0.0")
 @Slf4j
 public class StaticPageServiceImpl implements StaticPageService, ServletContextAware {
 
@@ -41,7 +43,7 @@ public class StaticPageServiceImpl implements StaticPageService, ServletContextA
     public void productStaticPage(Map<String, Object> root, String id) {
         log.info("productStaticPage start. id:{}", id);
         //输出全路径
-        String path = getPath("/html/product/" + id + ".html");
+        String path = "/static/product/" + id + ".html";
 
         File f = new File(path);
 

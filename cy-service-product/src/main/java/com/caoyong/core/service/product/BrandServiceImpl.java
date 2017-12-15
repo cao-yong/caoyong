@@ -10,9 +10,8 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
+import com.alibaba.dubbo.config.annotation.Service;
 import com.caoyong.core.bean.base.Page;
 import com.caoyong.core.bean.base.ResultBase;
 import com.caoyong.core.bean.product.Brand;
@@ -32,9 +31,9 @@ import redis.clients.jedis.Jedis;
  * @time 2017年6月10日下午1:41:42
  */
 
-@Service("brandService")
-@Transactional(rollbackFor = Exception.class)
+//@Transactional(rollbackFor = Exception.class)
 @Slf4j
+@Service(version = "1.0.0")
 public class BrandServiceImpl implements BrandService {
     @Autowired
     private BrandDao brandDao;

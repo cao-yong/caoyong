@@ -9,9 +9,8 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.core.JmsTemplate;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
+import com.alibaba.dubbo.config.annotation.Service;
 import com.caoyong.common.enums.ProductIsShowEnum;
 import com.caoyong.common.web.Constants;
 import com.caoyong.core.bean.base.Page;
@@ -42,8 +41,8 @@ import redis.clients.jedis.Jedis;
  */
 
 @Slf4j
-@Service("productService")
-@Transactional(rollbackFor = Exception.class)
+@Service(version = "1.0.0")
+//@Transactional(rollbackFor = Exception.class)
 public class ProductServiceImpl implements ProductService {
     @Autowired
     private ProductDao  productDao;

@@ -5,8 +5,8 @@ import java.util.List;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
+import com.alibaba.dubbo.config.annotation.Service;
 import com.caoyong.common.web.Constants;
 import com.caoyong.core.bean.base.ResultBase;
 import com.caoyong.core.bean.product.Product;
@@ -28,7 +28,7 @@ import lombok.extern.slf4j.Slf4j;
  */
 
 @Slf4j
-@Service("cmsService")
+@Service(version = "1.0.0")
 public class CmsServiceImpl implements CmsService {
     @Autowired
     private ProductDao productDao;

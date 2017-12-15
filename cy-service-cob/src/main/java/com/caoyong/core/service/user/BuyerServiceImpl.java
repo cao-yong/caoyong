@@ -3,8 +3,8 @@ package com.caoyong.core.service.user;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
+import com.alibaba.dubbo.config.annotation.Service;
 import com.caoyong.common.web.Constants;
 import com.caoyong.core.bean.base.ResultBase;
 import com.caoyong.core.bean.user.Buyer;
@@ -22,7 +22,7 @@ import lombok.extern.slf4j.Slf4j;
  */
 
 @Slf4j
-@Service("buyerService")
+@Service(version = "1.0.0")
 public class BuyerServiceImpl implements BuyerService {
     @Autowired
     private BuyerDao buyerDao;

@@ -8,8 +8,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
+import com.alibaba.dubbo.config.annotation.Service;
 import com.caoyong.common.utlis.RandomUUIDUtil;
 import com.caoyong.common.web.Constants;
 import com.caoyong.core.bean.base.Page;
@@ -35,7 +35,7 @@ import lombok.extern.slf4j.Slf4j;
  * @time 2017年10月26日 下午4:45:49
  */
 @Slf4j
-@Service("menuService")
+@Service(version = "1.0.0")
 public class MenuServiceImpl implements MenuService {
     @Autowired
     private MenuDao     menuDao;

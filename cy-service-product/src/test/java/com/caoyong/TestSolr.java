@@ -1,11 +1,11 @@
 package com.caoyong;
 
-import org.apache.solr.client.solrj.SolrServer;
+import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.common.SolrInputDocument;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
@@ -15,18 +15,18 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  * @time 2017年7月30日 下午9:24:32
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath:application-context.xml" })
+@SpringBootTest(classes = Application.class)
 public class TestSolr {
     @Autowired
-    private SolrServer solrServer;
+    private SolrClient solrClient;
 
     @Test
     public void testSolrJSpring() throws Exception {
         SolrInputDocument doc = new SolrInputDocument();
-        doc.setField("id", 3);
-        //doc.setField("name", "刘一手");
-        solrServer.add(doc);
-        solrServer.commit();
+        doc.setField("id", 4);
+        doc.setField("name", "刘一手");
+        solrClient.add(doc);
+        solrClient.commit();
     }
     /*
      * @Test public void testSolrJ() throws Exception { String baseUrl =

@@ -8,13 +8,13 @@ package com.caoyong;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import redis.clients.jedis.Jedis;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath:application-context.xml" })
+@SpringBootTest(classes = Application.class)
 public class TestRedis {
     @Autowired
     private Jedis jedis;
