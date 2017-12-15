@@ -2,11 +2,12 @@ package com.caoyong.core.message;
 
 import javax.jms.JMSException;
 import javax.jms.Message;
-import javax.jms.MessageListener;
 
 import org.apache.activemq.command.ActiveMQTextMessage;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jms.annotation.JmsListener;
+import org.springframework.stereotype.Component;
 
 import com.caoyong.common.enums.ProductIsShowEnum;
 import com.caoyong.core.service.SearchService;
@@ -19,13 +20,14 @@ import lombok.extern.slf4j.Slf4j;
  * @author yong.cao
  * @time 2017年7月11日上午12:08:57
  */
-
+@Component
 @Slf4j
-public class CustomMessageListener implements MessageListener {
+public class CustomMessageListener {
     @Autowired
     private SearchService searchService;
 
-    @Override
+    @JmsListener(destination = "productId")
+
     public void onMessage(Message message) {
         ActiveMQTextMessage am = (ActiveMQTextMessage) message;
         try {

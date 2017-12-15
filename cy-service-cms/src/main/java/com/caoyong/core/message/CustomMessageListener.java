@@ -7,11 +7,12 @@ import java.util.stream.Collectors;
 
 import javax.jms.JMSException;
 import javax.jms.Message;
-import javax.jms.MessageListener;
 
 import org.apache.activemq.command.ActiveMQTextMessage;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jms.annotation.JmsListener;
+import org.springframework.stereotype.Component;
 
 import com.caoyong.common.enums.ProductIsShowEnum;
 import com.caoyong.core.bean.base.ResultBase;
@@ -31,13 +32,14 @@ import lombok.extern.slf4j.Slf4j;
  */
 
 @Slf4j
-public class CustomMessageListener implements MessageListener {
+@Component
+public class CustomMessageListener {
     @Autowired
     private StaticPageService staticPageService;
     @Autowired
     private CmsService        cmsService;
 
-    @Override
+    @JmsListener(destination = "productId")
     public void onMessage(Message message) {
         ActiveMQTextMessage am = (ActiveMQTextMessage) message;
         try {
