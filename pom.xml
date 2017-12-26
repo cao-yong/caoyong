@@ -24,7 +24,6 @@
   	<module>cy-service-solr</module>
   	<module>cy-service-product</module>
   	<module>cy-service-cms</module>
-  	<module>cy-system</module>
   </modules>
   
   
