@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import javax.jms.Topic;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -56,6 +58,8 @@ public class ProductServiceImpl implements ProductService {
     private JmsTemplate jmsTemplate;
     @Autowired
     private SkuService  skuService;
+    @Autowired
+    private Topic       topic;
 
     @Override
     public Page<Product> selectPageByQuery(ProductQueryDTO query) throws BizException {
@@ -223,10 +227,9 @@ public class ProductServiceImpl implements ProductService {
                 product.setId(id);
                 count += productDao.updateByPrimaryKeySelective(product);
                 //发送消息到ActiveMQ java8 lambda 表达式实现函数式接口，两个订阅者：1，solr上传，2静态化
-                jmsTemplate.setDefaultDestinationName("productId");
-                jmsTemplate.setPubSubDomain(true);
-                jmsTemplate
-                        .send(session -> session.createTextMessage(String.valueOf(id) + ":" + isShowVO.getShowType()));
+                //                jmsTemplate
+                //                        .send(session -> session.createTextMessage(String.valueOf(id) + ":" + isShowVO.getShowType()));
+                jmsTemplate.convertAndSend(topic, String.valueOf(id) + ":" + isShowVO.getShowType());
             }
             result.setValue(count);
             result.setSuccess(true);

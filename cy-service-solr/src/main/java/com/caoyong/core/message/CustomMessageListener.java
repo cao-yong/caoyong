@@ -27,7 +27,6 @@ public class CustomMessageListener {
     private SearchService searchService;
 
     @JmsListener(destination = "productId")
-
     public void onMessage(Message message) {
         ActiveMQTextMessage am = (ActiveMQTextMessage) message;
         try {

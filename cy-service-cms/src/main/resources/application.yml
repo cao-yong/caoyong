@@ -39,6 +39,10 @@ spring:
         pool:
             enabled: false
             max-connections: 5
+    jms:
+        template:
+            default-destination: productId
+        pub-sub-domain: true
     data:
         solr:
             host: http://192.168.128.128:8080/solr/collection1

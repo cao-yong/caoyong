@@ -10,7 +10,6 @@ import java.util.Map;
 import javax.servlet.ServletContext;
 
 import org.springframework.web.context.ServletContextAware;
-import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 
 import com.alibaba.dubbo.config.annotation.Service;
 
@@ -27,14 +26,7 @@ import lombok.extern.slf4j.Slf4j;
 @Service(version = "1.0.0")
 @Slf4j
 public class StaticPageServiceImpl implements StaticPageService, ServletContextAware {
-
-    private Configuration  conf;
-
     private ServletContext servletContext;
-
-    public void setFreeMarkerConfigurer(FreeMarkerConfigurer freeMarkerConfigurer) {
-        this.conf = freeMarkerConfigurer.getConfiguration();
-    }
 
     /**
      * 静态化商品
@@ -42,19 +34,20 @@ public class StaticPageServiceImpl implements StaticPageService, ServletContextA
     @Override
     public void productStaticPage(Map<String, Object> root, String id) {
         log.info("productStaticPage start. id:{}", id);
-        //输出全路径
-        String path = "/static/product/" + id + ".html";
-
-        File f = new File(path);
-
-        File parentFile = f.getParentFile();
-
-        //判断父文件是否存在
-        if (!parentFile.exists()) {
-            parentFile.mkdirs();
-        }
         Writer out = null;
         try {
+            //输出全路径
+            String path = StaticPageServiceImpl.class.getClassLoader().getResource("static").getPath() + "/product/"
+                    + id + ".html";
+            File f = new File(path);
+            File parentFile = f.getParentFile();
+            //判断父文件是否存在
+            if (!parentFile.exists()) {
+                parentFile.mkdirs();
+            }
+            Configuration conf = new Configuration(Configuration.DEFAULT_INCOMPATIBLE_IMPROVEMENTS);
+            //设置模板路径
+            conf.setClassForTemplateLoading(StaticPageServiceImpl.class, "/templates/ftl");
             Template template = conf.getTemplate("product.html");
             out = new OutputStreamWriter(new FileOutputStream(f), "UTF-8");
             template.process(root, out);
@@ -79,7 +72,7 @@ public class StaticPageServiceImpl implements StaticPageService, ServletContextA
      */
     @Override
     public String getPath(String name) {
-        log.info("getPaht start.name:{}", name);
+        log.info("getPath start.name:{}", name);
         String path = null;
         try {
             path = servletContext.getRealPath(name);
@@ -94,4 +87,5 @@ public class StaticPageServiceImpl implements StaticPageService, ServletContextA
     public void setServletContext(ServletContext servletContext) {
         this.servletContext = servletContext;
     }
+
 }

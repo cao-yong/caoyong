@@ -24,5 +24,4 @@ public interface StaticPageService {
      * @return
      */
     String getPath(String name);
-
 }
