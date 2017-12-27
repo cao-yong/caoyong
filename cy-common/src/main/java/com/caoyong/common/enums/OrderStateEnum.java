@@ -1,6 +1,5 @@
 package com.caoyong.common.enums;
 
-import java.util.Optional;
 import java.util.stream.Stream;
 
 /**
@@ -41,7 +40,6 @@ public enum OrderStateEnum {
      * @return 枚举
      */
     public static OrderStateEnum getEnum(Integer code) {
-        return Stream.of(OrderStateEnum.values()).filter(e -> e.code.equals(code))
-                .findFirst().orElse(null);
+        return Stream.of(OrderStateEnum.values()).filter(e -> e.code.equals(code)).findFirst().orElse(null);
     }
 }

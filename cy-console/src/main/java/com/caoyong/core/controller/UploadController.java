@@ -9,9 +9,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
-import com.caoyong.enums.ErrorCodeEnum;
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONException;
 import org.springframework.stereotype.Controller;
@@ -28,6 +26,7 @@ import com.caoyong.common.fastdfs.UploadFileVo;
 import com.caoyong.common.fastdfs.UploadResponse;
 import com.caoyong.common.web.Constants;
 import com.caoyong.core.service.product.UploadService;
+import com.caoyong.enums.ErrorCodeEnum;
 import com.caoyong.exception.BizException;
 
 import lombok.extern.slf4j.Slf4j;
@@ -59,7 +58,7 @@ public class UploadController {
         log.info("uploadPic start. fliename={}", null != pic ? pic.getOriginalFilename() : "");
         UploadResponse resp = new UploadResponse();
         try {
-            if (pic==null){
+            if (pic == null) {
                 throw new BizException(ErrorCodeEnum.PARAMETER_CAN_NOT_BE_NULL);
             }
             //上传图片
@@ -93,6 +92,7 @@ public class UploadController {
 
     /**
      * 批量上传图片
+     * 
      * @param pics 文件实体数组
      * @return 图片url集合
      */

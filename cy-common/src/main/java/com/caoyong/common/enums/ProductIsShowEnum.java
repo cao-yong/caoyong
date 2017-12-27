@@ -1,6 +1,5 @@
 package com.caoyong.common.enums;
 
-import java.util.Optional;
 import java.util.stream.Stream;
 
 /**
@@ -36,7 +35,6 @@ public enum ProductIsShowEnum {
      * @return 枚举
      */
     public static ProductIsShowEnum getEnum(Integer value) {
-        return Stream.of(ProductIsShowEnum.values()).filter(e -> e.value.equals(value))
-                .findFirst().orElse(null);
+        return Stream.of(ProductIsShowEnum.values()).filter(e -> e.value.equals(value)).findFirst().orElse(null);
     }
 }
