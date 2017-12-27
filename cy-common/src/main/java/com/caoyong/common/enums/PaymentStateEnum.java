@@ -7,7 +7,7 @@ import java.util.stream.Stream;
  * 支付状态枚举
  * 
  * @author yong.cao
- * @time 2017年7月23日下午6:34:13
+ * @ 2017年7月23日下午6:34:13
  */
 public enum PaymentStateEnum {
     CASH_ON_DELIVERY(0, "到付"),
@@ -19,7 +19,7 @@ public enum PaymentStateEnum {
     private Integer code;
     private String  name;
 
-    private PaymentStateEnum(Integer code, String name) {
+    PaymentStateEnum(Integer code, String name) {
         this.code = code;
         this.name = name;
     }
@@ -35,15 +35,11 @@ public enum PaymentStateEnum {
     /**
      * 获取枚举
      * 
-     * @param code
-     * @return
+     * @param code 编码
+     * @return 枚举
      */
     public static PaymentStateEnum getEnum(Integer code) {
-        Optional<PaymentStateEnum> en = Stream.of(PaymentStateEnum.values()).filter(e -> e.code.equals(code))
-                .findFirst();
-        if (en.isPresent()) {
-            return en.get();
-        }
-        return null;
+        return Stream.of(PaymentStateEnum.values()).filter(e -> e.code.equals(code))
+                .findFirst().orElse(null);
     }
 }

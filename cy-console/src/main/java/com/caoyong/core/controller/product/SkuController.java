@@ -24,14 +24,14 @@ import com.caoyong.exception.BizException;
 
 import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
-@Controller
 /**
  * 库存管理
- * 
+ *
  * @author yong.cao
- * @time 2017年7月30日 下午9:38:51
+ * @since  2017年7月30日 下午9:38:51
  */
+@Slf4j
+@Controller
 @RequestMapping(value = ("/sku"))
 public class SkuController {
 
@@ -59,8 +59,8 @@ public class SkuController {
     /**
      * 保存sku
      * 
-     * @param sku
-     * @param response
+     * @param sku sku实体
+     * @param response 结果
      */
     @RequestMapping(value = ("/addSku.do"))
     public void addSku(Sku sku, HttpServletResponse response) {
@@ -87,9 +87,8 @@ public class SkuController {
 
     /**
      * 操作sku
-     * 
-     * @param product
-     * @return
+     * @param skuDTO sku数据传输对象
+     * @return 结果
      */
     @ResponseBody
     @RequestMapping(value = ("/operatingSku.json"))

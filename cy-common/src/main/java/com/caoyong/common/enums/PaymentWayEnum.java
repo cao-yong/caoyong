@@ -7,7 +7,7 @@ import java.util.stream.Stream;
  * 支付方式枚举
  * 
  * @author yong.cao
- * @time 2017年7月23日下午6:32:36
+ * @since 2017年7月23日下午6:32:36
  */
 public enum PaymentWayEnum {
     CASH_ON_DELIVERY(0, "到付"),
@@ -18,7 +18,7 @@ public enum PaymentWayEnum {
     private Integer code;
     private String  name;
 
-    private PaymentWayEnum(Integer code, String name) {
+    PaymentWayEnum(Integer code, String name) {
         this.code = code;
         this.name = name;
     }
@@ -34,14 +34,11 @@ public enum PaymentWayEnum {
     /**
      * 获取枚举
      * 
-     * @param code
-     * @return
+     * @param code 编码
+     * @return 枚举
      */
     public static PaymentWayEnum getEnum(Integer code) {
-        Optional<PaymentWayEnum> en = Stream.of(PaymentWayEnum.values()).filter(e -> e.code.equals(code)).findFirst();
-        if (en.isPresent()) {
-            return en.get();
-        }
-        return null;
+        return Stream.of(PaymentWayEnum.values()).filter(e -> e.code.equals(code))
+                .findFirst().orElse(null);
     }
 }

@@ -7,7 +7,7 @@ import java.util.stream.Stream;
  * 订单状态枚举
  * 
  * @author yong.cao
- * @time 2017年7月29日 下午2:54:12
+ * @ 2017年7月29日 下午2:54:12
  */
 public enum OrderStateEnum {
     SUBMIT_ORDER(0, "提交订单"),
@@ -21,7 +21,7 @@ public enum OrderStateEnum {
     private Integer code;
     private String  name;
 
-    private OrderStateEnum(Integer code, String name) {
+    OrderStateEnum(Integer code, String name) {
         this.code = code;
         this.name = name;
     }
@@ -37,14 +37,11 @@ public enum OrderStateEnum {
     /**
      * 获取枚举
      * 
-     * @param code
-     * @return
+     * @param code 编码
+     * @return 枚举
      */
     public static OrderStateEnum getEnum(Integer code) {
-        Optional<OrderStateEnum> en = Stream.of(OrderStateEnum.values()).filter(e -> e.code.equals(code)).findFirst();
-        if (en.isPresent()) {
-            return en.get();
-        }
-        return null;
+        return Stream.of(OrderStateEnum.values()).filter(e -> e.code.equals(code))
+                .findFirst().orElse(null);
     }
 }

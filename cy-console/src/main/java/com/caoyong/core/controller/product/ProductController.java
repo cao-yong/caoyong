@@ -33,7 +33,7 @@ import lombok.extern.slf4j.Slf4j;
  * 商品管理
  * 
  * @author yong.cao
- * @time 2017年6月27日上午12:05:57
+ * @since 2017年6月27日上午12:05:57
  */
 
 @Slf4j
@@ -49,9 +49,9 @@ public class ProductController {
     /**
      * 商品分页
      * 
-     * @param query
-     * @param model
-     * @return
+     * @param query 查询条件
+     * @param model 数据模型
+     * @return 视图名称
      */
     @RequestMapping(value = ("/productList.do"))
     public String list(ProductQueryDTO query, Model model) {
@@ -84,9 +84,9 @@ public class ProductController {
     /**
      * 去商品视图页面
      * 
-     * @param model
-     * @param id
-     * @return
+     * @param model 数据模型
+     * @param id id
+     * @return 视图名称
      */
     @RequestMapping(value = ("/productView{operation}.do"))
     public String productView(Model model, Long id, @PathVariable String operation) {
@@ -123,8 +123,8 @@ public class ProductController {
     /**
      * 保存商品
      * 
-     * @param product
-     * @return
+     * @param product 产品
+     * @return 结果
      */
     @ResponseBody
     @RequestMapping(value = ("/saveProduct.json"))
@@ -149,8 +149,8 @@ public class ProductController {
     /**
      * 修改商品
      * 
-     * @param product
-     * @return
+     * @param product 产品
+     * @return 结果
      */
     @ResponseBody
     @RequestMapping(value = ("/updateProduct.json"))
@@ -175,8 +175,8 @@ public class ProductController {
     /**
      * 删除商品
      * 
-     * @param id
-     * @return
+     * @param id id
+     * @return 结果
      */
     @ResponseBody
     @RequestMapping(value = ("/deleteProduct.json"))
@@ -198,9 +198,8 @@ public class ProductController {
 
     /**
      * 修改商品
-     * 
-     * @param id
-     * @return
+     * @param product 产品
+     * @return 结果
      */
     @ResponseBody
     @RequestMapping(value = ("/editProduct.json"))
@@ -224,8 +223,8 @@ public class ProductController {
     /**
      * 批量删除商品
      * 
-     * @param ids
-     * @return
+     * @param ids ids
+     * @return 结果
      */
     @ResponseBody
     @RequestMapping(value = ("/deleteProducts.json"))
@@ -248,9 +247,8 @@ public class ProductController {
 
     /**
      * 上架
-     * 
-     * @param ids
-     * @return
+     * @param isShowVO 产品是否上架VO
+     * @return 结果
      */
     @RequestMapping(value = ("/isShow.json"))
     @ResponseBody

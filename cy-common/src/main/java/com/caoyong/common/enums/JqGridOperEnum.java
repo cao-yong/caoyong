@@ -5,9 +5,9 @@ import java.util.stream.Stream;
 
 /**
  * 商品尺码规则枚举
- * 
+ *
  * @author caoyong
- * @time 2017年12月5日 下午2:00:11
+ * @ 2017年12月5日 下午2:00:11
  */
 public enum JqGridOperEnum {
     DEL("del", "删除"),
@@ -23,23 +23,19 @@ public enum JqGridOperEnum {
         return name;
     }
 
-    private JqGridOperEnum(String code, String name) {
+    JqGridOperEnum(String code, String name) {
         this.code = code;
         this.name = name;
     }
 
     /**
      * 获取枚举
-     * 
-     * @param code
-     * @return
+     *
+     * @param code 编码
+     * @return 枚举
      */
-    public static JqGridOperEnum getEnum(String code) {
-        Optional<JqGridOperEnum> en = Stream.of(JqGridOperEnum.values()).filter(e -> e.getCode().equals(code))
-                .findFirst();
-        if (en.isPresent()) {
-            return en.get();
-        }
-        return null;
+        public static JqGridOperEnum getEnum(String code) {
+        return Stream.of(JqGridOperEnum.values()).filter(e -> e.getCode().equals(code))
+                .findFirst().orElse(null);
     }
 }

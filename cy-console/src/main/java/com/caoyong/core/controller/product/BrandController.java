@@ -24,7 +24,7 @@ import lombok.extern.slf4j.Slf4j;
  * 品牌管理控制层
  * 
  * @author yong.cao
- * @time 2017年6月11日下午7:40:06
+ * @ 2017年6月11日下午7:40:06
  */
 @RequestMapping(value = ("/brand"))
 @Slf4j
@@ -34,7 +34,12 @@ public class BrandController {
     @Reference(version = "1.0.0", timeout = 3000000)
     private BrandService brandService;
 
-    //查询
+    /**
+     * 查询品牌列表
+     * @param query 查询条件
+     * @param model 数据模型
+     * @return 视图名称
+     */
     @RequestMapping(value = ("/brandList.do"))
     public String brandList(BrandQuery query, Model model) {
         log.info("query brandList start. query={}",
@@ -60,10 +65,10 @@ public class BrandController {
 
     /**
      * 去品牌视图页面
-     * 
-     * @param id
-     * @param model
-     * @return
+     * @param query 查询条件
+     * @param model 数据模型
+     * @param operation 操作
+     * @return 视图名称
      */
     @RequestMapping(value = ("/brandView{operation}.do"))
     public String brandView(BrandQuery query, Model model, @PathVariable String operation) {
@@ -89,10 +94,9 @@ public class BrandController {
     }
 
     /**
-     * 保存商品
-     * 
-     * @param product
-     * @return
+     * 保存品牌
+     * @param brand 品牌
+     * @return 返回结果
      */
     @ResponseBody
     @RequestMapping(value = ("/saveBrand.json"))
@@ -117,9 +121,9 @@ public class BrandController {
     /**
      * 修改
      * 
-     * @param brand
-     * @param model
-     * @return
+     * @param brand 品牌
+     * @param model 数据模型
+     * @return 结果
      */
     @ResponseBody
     @RequestMapping(value = ("/updateBrand.json"))
@@ -146,8 +150,8 @@ public class BrandController {
     /**
      * 删除品牌
      * 
-     * @param id
-     * @return
+     * @param id id
+     * @return 结果
      */
     @ResponseBody
     @RequestMapping(value = ("/deleteBrandById.json"))
@@ -170,10 +174,8 @@ public class BrandController {
 
     /**
      * 批量删除
-     * 
-     * @param brand
-     * @param model
-     * @return
+     * @param ids ids
+     * @return 结果
      */
     @ResponseBody
     @RequestMapping(value = ("/deleteBrands.json"))

@@ -7,7 +7,7 @@ import java.util.stream.Stream;
  * 商品尺码规则枚举
  * 
  * @author caoyong
- * @time 2017年12月5日 下午2:00:11
+ * @since 2017年12月5日 下午2:00:11
  */
 public enum ProductSizesEnum {
     S(1, "S"),
@@ -18,7 +18,7 @@ public enum ProductSizesEnum {
     private Integer value;
     private String  showName;
 
-    private ProductSizesEnum(Integer value, String showName) {
+    ProductSizesEnum(Integer value, String showName) {
         this.value = value;
         this.showName = showName;
     }
@@ -34,15 +34,11 @@ public enum ProductSizesEnum {
     /**
      * 获取枚举
      * 
-     * @param value
-     * @return
+     * @param value 枚举值
+     * @return 枚举
      */
     public static ProductSizesEnum getEnum(Integer value) {
-        Optional<ProductSizesEnum> en = Stream.of(ProductSizesEnum.values()).filter(e -> e.value.equals(value))
-                .findFirst();
-        if (en.isPresent()) {
-            return en.get();
-        }
-        return null;
+        return Stream.of(ProductSizesEnum.values()).filter(e -> e.value.equals(value))
+                .findFirst().orElse(null);
     }
 }

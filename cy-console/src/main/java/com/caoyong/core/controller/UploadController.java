@@ -11,6 +11,7 @@ import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.caoyong.enums.ErrorCodeEnum;
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONException;
 import org.springframework.stereotype.Controller;
@@ -35,7 +36,7 @@ import lombok.extern.slf4j.Slf4j;
  * 上传图片
  * 
  * @author yong.cao
- * @time 2017年6月12日下午9:49:06
+ * @ 2017年6月12日下午9:49:06
  */
 @CrossOrigin
 @Controller
@@ -49,8 +50,8 @@ public class UploadController {
     /**
      * 上传图片
      * 
-     * @param pic
-     * @return
+     * @param pic 文件实体
+     * @return 返回结果
      */
     @ResponseBody
     @RequestMapping(value = ("/uploadPic.do"))
@@ -58,6 +59,9 @@ public class UploadController {
         log.info("uploadPic start. fliename={}", null != pic ? pic.getOriginalFilename() : "");
         UploadResponse resp = new UploadResponse();
         try {
+            if (pic==null){
+                throw new BizException(ErrorCodeEnum.PARAMETER_CAN_NOT_BE_NULL);
+            }
             //上传图片
             UploadFileVo vo = new UploadFileVo();
             vo.setPic(pic.getBytes());
@@ -89,14 +93,11 @@ public class UploadController {
 
     /**
      * 批量上传图片
-     * 
-     * @param pics
-     * @param response
-     * @return
+     * @param pics 文件实体数组
+     * @return 图片url集合
      */
     @RequestMapping(value = ("/uploadPics.do"))
-    public @ResponseBody List<String> uploadPics(@RequestParam(required = false) MultipartFile[] pics,
-                                                 HttpServletResponse response) {
+    public @ResponseBody List<String> uploadPics(@RequestParam(required = false) MultipartFile[] pics) {
         log.info("uploadPics start.");
         try {
             if (null != pics) {
@@ -129,8 +130,8 @@ public class UploadController {
     /**
      * 上传富文本编辑器图片
      * 
-     * @param request
-     * @return
+     * @param request 请求
+     * @return 结果
      */
     @ResponseBody
     @RequestMapping(value = ("/uploadFck.do"))
@@ -180,8 +181,8 @@ public class UploadController {
     /**
      * dropzone.js批量上传图片
      * 
-     * @param request
-     * @return
+     * @param request 请求
+     * @return 结果
      */
     @RequestMapping(value = ("/uploadDropZonePics.do"))
     @ResponseBody

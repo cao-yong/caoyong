@@ -7,7 +7,7 @@ import java.util.stream.Stream;
  * 商品展示状态枚举
  * 
  * @author yong.cao
- * @time 2017年7月23日下午6:34:13
+ * @ 2017年7月23日下午6:34:13
  */
 public enum ProductIsShowEnum {
     ALL(null, "全部"),
@@ -16,7 +16,7 @@ public enum ProductIsShowEnum {
     private Integer value;
     private String  showName;
 
-    private ProductIsShowEnum(Integer value, String showName) {
+    ProductIsShowEnum(Integer value, String showName) {
         this.value = value;
         this.showName = showName;
     }
@@ -32,15 +32,11 @@ public enum ProductIsShowEnum {
     /**
      * 获取枚举
      * 
-     * @param value
-     * @return
+     * @param value 枚举值
+     * @return 枚举
      */
     public static ProductIsShowEnum getEnum(Integer value) {
-        Optional<ProductIsShowEnum> en = Stream.of(ProductIsShowEnum.values()).filter(e -> e.value.equals(value))
-                .findFirst();
-        if (en.isPresent()) {
-            return en.get();
-        }
-        return null;
+        return Stream.of(ProductIsShowEnum.values()).filter(e -> e.value.equals(value))
+                .findFirst().orElse(null);
     }
 }

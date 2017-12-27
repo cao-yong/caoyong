@@ -31,7 +31,7 @@ import lombok.extern.slf4j.Slf4j;
  * 菜单
  * 
  * @author caoyong
- * @time 2017年10月27日 下午6:33:16
+ * @ 2017年10月27日 下午6:33:16
  */
 @Controller
 @RequestMapping("/menu")
@@ -43,8 +43,8 @@ public class MenuController {
     /**
      * 跳转菜单视图
      * 
-     * @param model
-     * @return
+     * @param model 数据模型
+     * @return 视图名称
      */
     @RequestMapping("/menuList.do")
     public String menuList(Model model, MenuQueryDTO query) {
@@ -66,8 +66,8 @@ public class MenuController {
     /**
      * 跳转编辑菜单视图
      * 
-     * @param model
-     * @return
+     * @param model 数据模型
+     * @return 视图名称
      */
     @RequestMapping("/editMenu.do")
     public String editMenu(Model model, String id) {
@@ -89,9 +89,8 @@ public class MenuController {
 
     /**
      * 获取父节点信息
-     * 
-     * @param model
-     * @return
+     * @param name 名称
+     * @return 节点实体
      */
     @ResponseBody
     @RequestMapping("/getParent.json")
@@ -123,8 +122,8 @@ public class MenuController {
     /**
      * 跳转新建菜单视图
      * 
-     * @param model
-     * @return
+     * @param model 数据模型
+     * @return 数据实体
      */
     @RequestMapping("/newMenu.do")
     public String newMenu(Model model) {
@@ -161,8 +160,8 @@ public class MenuController {
     /**
      * 修改菜单
      * 
-     * @param menuDTO
-     * @return
+     * @param menuDTO 菜单传输对象
+     * @return 结果
      */
     @RequestMapping("/modifyMenu.json")
     @ResponseBody
@@ -192,9 +191,8 @@ public class MenuController {
 
     /**
      * 删除菜单
-     * 
-     * @param menuDTO
-     * @return
+     * @param id id
+     * @return 结果
      */
     @RequestMapping("/deleteMenu.json")
     @ResponseBody
@@ -219,9 +217,7 @@ public class MenuController {
 
     /**
      * 查询选择过的菜单图标
-     * 
-     * @param menuDTO
-     * @return
+     * @return 已选择过的图标
      */
     @RequestMapping("/queryChosenMenuIcons.json")
     @ResponseBody
