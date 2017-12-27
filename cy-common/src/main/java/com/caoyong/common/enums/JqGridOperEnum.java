@@ -1,6 +1,5 @@
 package com.caoyong.common.enums;
 
-import java.util.Optional;
 import java.util.stream.Stream;
 
 /**
@@ -34,8 +33,7 @@ public enum JqGridOperEnum {
      * @param code 编码
      * @return 枚举
      */
-        public static JqGridOperEnum getEnum(String code) {
-        return Stream.of(JqGridOperEnum.values()).filter(e -> e.getCode().equals(code))
-                .findFirst().orElse(null);
+    public static JqGridOperEnum getEnum(String code) {
+        return Stream.of(JqGridOperEnum.values()).filter(e -> e.getCode().equals(code)).findFirst().orElse(null);
     }
 }

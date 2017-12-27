@@ -1,6 +1,5 @@
 package com.caoyong.common.enums;
 
-import java.util.Optional;
 import java.util.stream.Stream;
 
 /**
@@ -36,7 +35,6 @@ public enum PaymentCashEnum {
      * @return 枚举
      */
     public static PaymentCashEnum getEnum(Integer code) {
-        return Stream.of(PaymentCashEnum.values()).filter(e -> e.code.equals(code))
-                .findFirst().orElse(null);
+        return Stream.of(PaymentCashEnum.values()).filter(e -> e.code.equals(code)).findFirst().orElse(null);
     }
 }
