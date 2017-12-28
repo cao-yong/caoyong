@@ -162,7 +162,7 @@ public class UserController {
                 resp.setMsg(ErrorCodeEnum.USER_EXIST.getMsg());
                 resp.setCode(ErrorCodeEnum.USER_EXIST.getCode());
             }
-            if (users.isSuccess() && users.getValue() == null) {
+            if (users.isSuccess() && users.getValue().isEmpty()) {
                 resp.setSuccess(true);
             }
         } catch (BizException e) {

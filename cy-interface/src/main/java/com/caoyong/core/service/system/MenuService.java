@@ -7,6 +7,7 @@ import com.caoyong.core.bean.base.ResultBase;
 import com.caoyong.core.bean.system.Menu;
 import com.caoyong.core.bean.system.MenuDTO;
 import com.caoyong.core.bean.system.MenuQueryDTO;
+import com.caoyong.core.bean.system.User;
 import com.caoyong.exception.BizException;
 
 /**
@@ -21,6 +22,7 @@ public interface MenuService {
      * 
      * @param query 查询条件
      * @return 结果集
+     * @throws BizException 业务异常
      */
     ResultBase<List<Menu>> queryMenuList(MenuQueryDTO query) throws BizException;
 
@@ -29,6 +31,7 @@ public interface MenuService {
      * 
      * @param query 查询条件
      * @return 分页
+     * @throws BizException 业务异常
      */
     public Page<Menu> queryMenuPage(MenuQueryDTO query) throws BizException;
 
@@ -37,7 +40,7 @@ public interface MenuService {
      * 
      * @param id id
      * @return 菜单对象
-     * @throws BizException
+     * @throws BizException 业务异常
      */
     ResultBase<Menu> queryMenuById(String id) throws BizException;
 
@@ -46,6 +49,7 @@ public interface MenuService {
      * 
      * @param menuDTO 数据传输对象
      * @return 影响的行数
+     * @throws BizException 业务异常
      */
     ResultBase<Integer> updateMenuByMenuDTO(MenuDTO menuDTO) throws BizException;
 
@@ -54,7 +58,7 @@ public interface MenuService {
      * 
      * @param menuDTO 数据传输对象
      * @return 影响的行数
-     * @throws BizException
+     * @throws BizException 业务异常
      */
     ResultBase<Integer> saveMenuAndRoleMenuByMenuDTO(MenuDTO menuDTO) throws BizException;
 
@@ -63,7 +67,7 @@ public interface MenuService {
      * 
      * @param id
      * @return
-     * @throws BizException
+     * @throws BizException 业务异常
      */
     ResultBase<Integer> deleteMenuById(String id) throws BizException;
 
@@ -73,4 +77,12 @@ public interface MenuService {
      * @return 图标String集合
      */
     ResultBase<List<String>> queryChosenMenuIcons() throws BizException;
+
+    /**
+     * 根据用户查询菜单
+     * @param user 用户
+     * @return 菜单结果
+     * @throws BizException 业务异常
+     */
+    ResultBase< List<Menu>> queryMenuListByUser(User user) throws BizException;
 }

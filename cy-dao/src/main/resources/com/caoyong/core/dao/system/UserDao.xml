@@ -18,6 +18,24 @@
     <result column="extra_info" property="extraInfo" jdbcType="VARCHAR" />
     <result column="is_deleted" property="isDeleted" jdbcType="CHAR" />
   </resultMap>
+
+  <resultMap id="userMap" type="com.caoyong.core.bean.system.User">
+    <id property="id" column="id"/>
+    <result property="username" column="username"/>
+    <result property="password" column="password"/>
+    <result property="name" column="name"/>
+    <result property="email" column="email"/>
+    <result property="phone" column="phone"/>
+    <result property="isEnable" column="is_enable"/>
+    <result property="loginIp" column="login_ip"/>
+    <result property="operateDate" column="operate_date"/>
+    <result property="isDeleted" column="is_deleted"/>
+    <collection property="roles" ofType="com.caoyong.core.bean.system.Role">
+      <result property="id" column="role_id" />
+      <result property="name" column="role_name" />
+    </collection>
+  </resultMap>
+
   <sql id="Example_Where_Clause" >
     <where >
       <foreach collection="oredCriteria" item="criteria" separator="or" >
@@ -393,5 +411,22 @@
 	WHERE a.is_deleted = 'N' AND ur.is_deleted = 'N' AND u.is_deleted = 'N'
 	    AND u.id = #{id}
 	ORDER BY a.name
+  </select>
+
+  <!--根据用户名查询用户及所有角色-->
+  <select id="queryUserAndRolesByUsername" parameterType="java.lang.String" resultMap="userMap">
+    SELECT
+    u.*,
+    ru.role_id,
+    r.name role_name
+    FROM cy_user u,
+    cy_role_user ru,
+    cy_role r
+    WHERE ru.user_id = u.id
+    AND r.id = ru.role_id
+    AND u.is_enable = 1
+    <if test="username != null and username != ''">
+      AND u.username = #{username}
+    </if>
   </select>
 </mapper>

@@ -46,7 +46,7 @@
 								<!-- <img class="nav-user-photo" src="../assets/avatars/user.jpg" alt="Jason's Photo" /> -->
 								<span class="user-info">
 									<small>Welcome,</small>
-									
+									${currentUser.name!}
 								</span>
 
 								<i class="ace-icon fa fa-caret-down"></i>
@@ -66,7 +66,7 @@
 
 			</div>
 		</div>
-		<form id="logoutForm" action="${request.contextPath}/logout" method="post">
+		<form id="logoutForm" action="${request.contextPath}/control/logout.do" method="post">
         </form>
 		<div class="main-container ace-save-state" id="main-container">
 			<script type="text/javascript">
@@ -261,6 +261,10 @@
 		<script src="${request.contextPath}/static/assets/js/jquery-2.1.4.min.js"></script>
 		<script type="text/javascript">
 			if('ontouchstart' in document.documentElement) document.write("<script src='${request.contextPath}/assets/js/jquery.mobile.custom.min.js'>"+"<"+"/script>");
+			//退出登录
+			$('#a_logout').on('click', function(e) {
+				$('#logoutForm').submit();
+			});
 		</script>
 		<script src="${request.contextPath}/static/assets/js/bootstrap.min.js"></script>
 		<!-- basic scripts -->

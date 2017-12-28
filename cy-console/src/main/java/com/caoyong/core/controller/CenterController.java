@@ -2,8 +2,10 @@ package com.caoyong.core.controller;
 
 import java.util.List;
 
+import com.caoyong.core.bean.system.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.alibaba.dubbo.config.annotation.Reference;
@@ -16,12 +18,16 @@ import com.caoyong.core.service.system.MenuService;
 import com.caoyong.exception.BizException;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.RequestMethod;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 /**
  * 后台管理
  * 
  * @author yong.cao
- * @time 2017年6月1日下午10:59:02
+ * @since 2017年6月1日下午10:59:02
  */
 
 @RequestMapping(value = "/control")
@@ -32,14 +38,16 @@ public class CenterController {
     private MenuService menuService;
 
     @RequestMapping(value = "/index.do")
-    public String index(Model model) {
+    public String index(Model model, HttpServletRequest request) {
         log.info("index start");
-        //查询出页面的菜单
         try {
-            MenuQueryDTO query = new MenuQueryDTO();
-            ResultBase<List<Menu>> result = menuService.queryMenuList(query);
+            HttpSession session = request.getSession();
+            User currentUser = (User)session.getAttribute("currentUser");
+            //查询出页面的菜单
+            ResultBase<List<Menu>> result = menuService.queryMenuListByUser(currentUser);
             List<Menu> menus = result.getValue();
             model.addAttribute("menus", menus);
+            model.addAttribute("currentUser", currentUser);
             //查询系统基本信息
             SystemInfo systemInfo = SystemInfoUtil.getSystemInfo();
             model.addAttribute("systemInfo", systemInfo);
@@ -50,5 +58,17 @@ public class CenterController {
         }
         log.info("index end.");
         return "index";
+    }
+    @RequestMapping(value = { "/login.do" })
+    public String login() {
+        return "/system/login";
+    }
+    @RequestMapping(value="/logout.do")
+    public String logout(){
+        return "logout";
+    }
+    @RequestMapping(value="/deny.do")
+    public String handleDeny(){
+        return "deny";
     }
 }

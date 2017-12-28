@@ -23,6 +23,8 @@ public interface MenuDao {
 
     List<Menu> selectMenuList(MenuQueryDTO query);
 
+    List<Menu> selectMenuListByUserId(Integer userId);
+
     Menu queryMenuById(String id);
 
     Integer countMenuList();

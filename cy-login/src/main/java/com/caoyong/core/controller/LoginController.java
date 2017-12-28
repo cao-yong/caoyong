@@ -30,7 +30,7 @@ import lombok.extern.slf4j.Slf4j;
  * 单点登录系统
  * 
  * @author yong.cao
- * @time 2017年7月15日下午10:35:02
+ * @since 2017年7月15日下午10:35:02
  */
 
 @Slf4j

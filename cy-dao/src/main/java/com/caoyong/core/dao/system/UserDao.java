@@ -21,6 +21,8 @@ public interface UserDao {
 
     List<User> selectByExample(UserQuery example);
 
+    User queryUserAndRolesByUsername(@Param("username")String username);
+
     List<Role> selectUserRoleById(Integer id);
 
     User selectByPrimaryKey(Integer id);

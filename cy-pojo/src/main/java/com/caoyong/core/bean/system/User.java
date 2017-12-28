@@ -112,4 +112,7 @@ public class User implements Serializable {
             roles.add(role);
         }
     }
+    public boolean isAdmin(){
+        return this.id.equals(1);
+    }
 }
