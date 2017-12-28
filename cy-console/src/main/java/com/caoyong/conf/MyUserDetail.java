@@ -14,31 +14,37 @@ import java.util.List;
  * @since 2017年7月15日下午10:35:02
  */
 public class MyUserDetail extends User {
+    /**
+     * 用户id
+     */
     private Integer userId;
-    private String charactorName;
+    /**
+     * 用户名字
+     */
+    private String name;
+    /**
+     * 角色列表
+     */
     private List<Role> roleList;
 
-    public MyUserDetail(String username, String password, boolean enabled, boolean accountNonExpired,
-                        boolean credentialsNonExpired, boolean accountNonLocked,
-                        Collection<? extends GrantedAuthority> authorities) {
+    public MyUserDetail(String username, String password, Collection<? extends GrantedAuthority> authorities) {
+        super(username, password, authorities);
+    }
+
+    public MyUserDetail(String username, String password, boolean enabled, boolean accountNonExpired, boolean credentialsNonExpired, boolean accountNonLocked, Collection<? extends GrantedAuthority> authorities) {
         super(username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
     }
 
-    public MyUserDetail(Integer userId, String username, String password,
-                        Collection<? extends GrantedAuthority> authorities) {
-        super(username, password, authorities);
-        this.userId = userId;
-    }
-
-    public MyUserDetail(String username, String password, Collection<? extends GrantedAuthority> authorities,
-                        Integer userId, List<Role> roleList, String charactorName) {
+    MyUserDetail(String username, String password, Collection<? extends GrantedAuthority> authorities,
+                        Integer userId, List<Role> roleList, String name) {
         super(username, password, authorities);
         this.userId = userId;
         this.roleList = roleList;
-        this.charactorName = charactorName;
+        this.name = name;
     }
 
-    public Integer getUserId() {
+
+    Integer getUserId() {
         return userId;
     }
 
@@ -46,21 +52,19 @@ public class MyUserDetail extends User {
         this.userId = userId;
     }
 
-    public List<Role> getRoleList() {
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    List<Role> getRoleList() {
         return roleList;
     }
 
     public void setRoleList(List<Role> roleList) {
         this.roleList = roleList;
     }
-
-    public String getCharactorName() {
-        return charactorName;
-    }
-
-    public void setCharactorName(String charactorName) {
-        this.charactorName = charactorName;
-    }
-
-
 }

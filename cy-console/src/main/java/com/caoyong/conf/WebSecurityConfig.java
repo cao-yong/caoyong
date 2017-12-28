@@ -31,7 +31,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     /**
      * 注册UserDetailsService 的bean
      *
-     * @return
+     * @return 自定义userService
      */
     @Bean
     UserDetailsService customUserService() {
@@ -44,10 +44,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         System.out.println("使用自定义customizeUserSecurityConfig" + customizeUserSecurityConfig);
         //user Details Service验证
         auth.userDetailsService(customizeUserSecurityConfig).passwordEncoder(new PasswordEncoder() {
+            @Override
             public String encode(CharSequence rawPassword) {
                 return EncodeUtil.encodePassword((String) rawPassword);
             }
-
+            @Override
             public boolean matches(CharSequence rawPassword, String encodedPassword) {
                 return encodedPassword.equals(EncodeUtil.encodePassword((String) rawPassword));
             }

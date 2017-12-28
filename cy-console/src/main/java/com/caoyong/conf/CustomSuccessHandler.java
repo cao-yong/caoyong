@@ -15,7 +15,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.Date;
-
+/**
+ * 登录成功后处理器
+ *
+ * @author yong.cao
+ * @since 2017年12月28日上午10:35:02
+ */
 @Slf4j
 @Component
 public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
@@ -32,13 +37,14 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
             currentUser.setUsername(userDetail.getUsername());
             currentUser.setOperateDate(new Date());
             currentUser.setRoles(userDetail.getRoleList());
-            currentUser.setName(userDetail.getCharactorName());
+            currentUser.setName(userDetail.getName());
             HttpSession session = request.getSession();
             session.setAttribute("currentUser", currentUser);
             if (response.isCommitted()) {
                 log.info("Can't redirect");
                 return;
             }
+            //更新用户最后登录时间
             userService.updateUserOperateDateByUserId(currentUser.getId());
             redirectStrategy.sendRedirect(request, response, "/control/index.do");
         } catch (BizException e) {

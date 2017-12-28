@@ -19,7 +19,7 @@ import java.util.List;
  * 登录验证逻辑
  *
  * @author yong.cao
- * @since 2017年7月15日下午10:35:02
+ * @since 2017年12月28日上午10:35:02
  */
 @Slf4j
 @Component
@@ -44,11 +44,11 @@ public class CustomizeUserSecurityConfig implements UserDetailsService {
                 log.info("user:{} login success", user.getUsername());
             } else {
                 log.info("user:{} not exist", username);
-                return new org.springframework.security.core.userdetails.User("", "", authorities);
+                return null;
             }
         } catch (Exception e) {
             log.error("loadUserByUsername error:{}", e.getMessage(), e);
-            return new org.springframework.security.core.userdetails.User("", "", authorities);
+            return null;
         }
         return new MyUserDetail(user.getUsername(), user.getPassword(), authorities, user.getId(), user.getRoles(), user.getName());
     }

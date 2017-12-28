@@ -63,12 +63,4 @@ public class CenterController {
     public String login() {
         return "/system/login";
     }
-    @RequestMapping(value="/logout.do")
-    public String logout(){
-        return "logout";
-    }
-    @RequestMapping(value="/deny.do")
-    public String handleDeny(){
-        return "deny";
-    }
 }
