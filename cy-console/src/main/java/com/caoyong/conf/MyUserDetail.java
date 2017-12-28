@@ -1,11 +1,12 @@
 package com.caoyong.conf;
 
-import com.caoyong.core.bean.system.Role;
+import java.util.Collection;
+import java.util.List;
+
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 
-import java.util.Collection;
-import java.util.List;
+import com.caoyong.core.bean.system.Role;
 
 /**
  * 用户详情
@@ -14,35 +15,37 @@ import java.util.List;
  * @since 2017年7月15日下午10:35:02
  */
 public class MyUserDetail extends User {
+    private static final long serialVersionUID = -5601031290898392331L;
     /**
      * 用户id
      */
-    private Integer userId;
+    private Integer           userId;
     /**
      * 用户名字
      */
-    private String name;
+    private String            name;
     /**
      * 角色列表
      */
-    private List<Role> roleList;
+    private List<Role>        roleList;
 
     public MyUserDetail(String username, String password, Collection<? extends GrantedAuthority> authorities) {
         super(username, password, authorities);
     }
 
-    public MyUserDetail(String username, String password, boolean enabled, boolean accountNonExpired, boolean credentialsNonExpired, boolean accountNonLocked, Collection<? extends GrantedAuthority> authorities) {
+    public MyUserDetail(String username, String password, boolean enabled, boolean accountNonExpired,
+                        boolean credentialsNonExpired, boolean accountNonLocked,
+                        Collection<? extends GrantedAuthority> authorities) {
         super(username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
     }
 
-    MyUserDetail(String username, String password, Collection<? extends GrantedAuthority> authorities,
-                        Integer userId, List<Role> roleList, String name) {
+    MyUserDetail(String username, String password, Collection<? extends GrantedAuthority> authorities, Integer userId,
+                 List<Role> roleList, String name) {
         super(username, password, authorities);
         this.userId = userId;
         this.roleList = roleList;
         this.name = name;
     }
-
 
     Integer getUserId() {
         return userId;
