@@ -5,6 +5,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import com.caoyong.common.utlis.DateUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -47,6 +48,10 @@ public class CenterController {
             model.addAttribute("currentUser", currentUser);
             //查询系统基本信息
             SystemInfo systemInfo = SystemInfoUtil.getSystemInfo();
+            if(null != systemInfo){
+                String operateDate = DateUtil.formatDate(currentUser.getOperateDate(), DateUtil.ZH_CN_DATETIME_PATTERN);
+                systemInfo.setOperateDate(operateDate);
+            }
             model.addAttribute("systemInfo", systemInfo);
         } catch (BizException e) {
             log.error("index BizException:{}", e.getMessage(), e);

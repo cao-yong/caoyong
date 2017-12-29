@@ -50,7 +50,7 @@ public class CustomizeUserSecurityConfig implements UserDetailsService {
             log.error("loadUserByUsername error:{}", e.getMessage(), e);
             return null;
         }
-        return new MyUserDetail(user.getUsername(), user.getPassword(), authorities, user.getId(), user.getRoles(), user.getName());
+        return new MyUserDetail(user.getUsername(), user.getPassword(), authorities, user.getId(), user.getRoles(), user.getName(), user.getOperateDate());
     }
 
 }

@@ -1,6 +1,7 @@
 package com.caoyong.conf;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.security.core.GrantedAuthority;
@@ -29,6 +30,11 @@ public class MyUserDetail extends User {
      */
     private List<Role>        roleList;
 
+    /**
+     * 最后登陆时间
+     */
+    private Date operateDate;
+
     public MyUserDetail(String username, String password, Collection<? extends GrantedAuthority> authorities) {
         super(username, password, authorities);
     }
@@ -40,11 +46,12 @@ public class MyUserDetail extends User {
     }
 
     MyUserDetail(String username, String password, Collection<? extends GrantedAuthority> authorities, Integer userId,
-                 List<Role> roleList, String name) {
+                 List<Role> roleList, String name, Date operateDate) {
         super(username, password, authorities);
         this.userId = userId;
         this.roleList = roleList;
         this.name = name;
+        this.operateDate = operateDate;
     }
 
     Integer getUserId() {
@@ -69,5 +76,13 @@ public class MyUserDetail extends User {
 
     public void setRoleList(List<Role> roleList) {
         this.roleList = roleList;
+    }
+
+    public Date getOperateDate() {
+        return operateDate;
+    }
+
+    public void setOperateDate(Date operateDate) {
+        this.operateDate = operateDate;
     }
 }

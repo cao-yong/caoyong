@@ -38,6 +38,7 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
             currentUser.setOperateDate(new Date());
             currentUser.setRoles(userDetail.getRoleList());
             currentUser.setName(userDetail.getName());
+            currentUser.setOperateDate(userDetail.getOperateDate());
             HttpSession session = request.getSession();
             session.setAttribute("currentUser", currentUser);
             if (response.isCommitted()) {
