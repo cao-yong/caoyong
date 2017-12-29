@@ -76,8 +76,8 @@ public class ProductController {
             Map<String, String> selectedTermsMap = new HashMap<>();
             //设置品牌
             if (null != query.getBrandId()) {
-                String brandName = brands.stream().filter(brand -> query.getBrandId().equals(brand.getId())).findFirst()
-                        .get().getName();
+                String brandName = brands.stream().filter(brand -> query.getBrandId().equals(brand.getId())).findFirst().orElseGet(Brand::new)
+                        .getName();
                 selectedTermsMap.put("品牌", brandName);
             }
             //设置价格

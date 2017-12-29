@@ -1,26 +1,24 @@
 package com.caoyong.core.service.user;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
+import com.alibaba.dubbo.config.annotation.Service;
 import com.caoyong.common.web.Constants;
-
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import redis.clients.jedis.Jedis;
 
 /**
  * 保存用户信息到redis<br/>
  * 实现session共享<br/>
- * 
+ *
  * @author yong.cao
  * @time 2017年7月16日下午1:31:55
  */
 
 @Slf4j
-@Component
+@Service(version = "1.0.0")
 public class SessionProviderImpl implements SessionProvider {
     @Autowired
-    private Jedis   jedis;
+    private Jedis jedis;
     //失效时间，单位分钟
     private Integer expire = 30;
 

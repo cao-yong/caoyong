@@ -22,7 +22,6 @@ import org.springframework.web.servlet.DispatcherServlet;
  * @author caoyong 2017年10月24日 下午3:29:57
  */
 @EnableScheduling
-@EnableTransactionManagement
 @SpringBootApplication
 public class Application extends SpringBootServletInitializer {
 

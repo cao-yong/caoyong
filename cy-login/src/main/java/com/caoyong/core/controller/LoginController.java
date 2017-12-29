@@ -1,19 +1,6 @@
 package com.caoyong.core.controller;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.converter.json.MappingJacksonValue;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-
+import com.alibaba.dubbo.config.annotation.Reference;
 import com.caoyong.common.utlis.EncodeUtil;
 import com.caoyong.common.utlis.RequestUtil;
 import com.caoyong.core.bean.base.ResultBase;
@@ -23,12 +10,23 @@ import com.caoyong.core.service.user.BuyerService;
 import com.caoyong.core.service.user.SessionProvider;
 import com.caoyong.enums.ErrorCodeEnum;
 import com.caoyong.exception.BizException;
-
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+import org.springframework.http.converter.json.MappingJacksonValue;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * 单点登录系统
- * 
+ *
  * @author yong.cao
  * @since 2017年7月15日下午10:35:02
  */
@@ -36,31 +34,35 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Controller
 public class LoginController {
-    @Autowired
-    private BuyerService    buyerService;
-    @Autowired
+    @Reference(version = "1.0.0")
+    private BuyerService buyerService;
+    @Reference(version = "1.0.0")
     private SessionProvider sessionProvider;
 
     /**
      * 登录
-     * 
+     *
      * @return
      */
     @RequestMapping(value = ("/login.aspx"), method = RequestMethod.GET)
-    public String login() {
-        return "login";
+    public String login(String returnUrl, Model model) {
+        if(StringUtils.isNotBlank(returnUrl)){
+            model.addAttribute("returnUrl", returnUrl);
+        }
+        return "/login/login";
     }
 
     /**
      * 判断用户是否登录
-     * 
+     *
      * @param request
      * @param response
      * @return
      */
     @RequestMapping(value = ("/isLogin.aspx"))
-    public @ResponseBody MappingJacksonValue isLogin(HttpServletRequest request, HttpServletResponse response,
-                                                     String callback) {
+    public @ResponseBody
+    MappingJacksonValue isLogin(HttpServletRequest request, HttpServletResponse response,
+                                String callback) {
         log.info("isLogin start.");
         MappingJacksonValue mjv = null;
         try {
@@ -81,7 +83,7 @@ public class LoginController {
 
     /**
      * 提交登录
-     * 
+     *
      * @param loginDTO
      * @param model
      * @return
@@ -90,7 +92,7 @@ public class LoginController {
     public String login(LoginDTO loginDTO, Model model, HttpServletRequest request, HttpServletResponse response) {
         log.info("post login start, loginDTO:{}",
                 ToStringBuilder.reflectionToString(loginDTO, ToStringStyle.DEFAULT_STYLE));
-        String view = "login";
+        String view = "/login/login";
         try {
             if (StringUtils.isEmpty(loginDTO.getUsername()) && StringUtils.isEmpty(loginDTO.getUsername())) {
                 model.addAttribute("error", ErrorCodeEnum.LOGIN_INFO_NULL.getMsg());
