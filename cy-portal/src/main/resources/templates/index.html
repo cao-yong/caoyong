@@ -26,7 +26,7 @@
 </head>
 <body>
 <!-- header start -->
-<jsp:include page="commons/header.jsp" />
+<#include "/commons/header.html">
 <!-- header end -->
 <div class="w">
 <div id="o-slide">
@@ -98,7 +98,6 @@
     				"heightB":399
     			}
     		];
-	//var data = ${ad1};
 
     cfg.DATA_MSlide = data;
     // 初始化一个广告信息
@@ -340,7 +339,7 @@ pageConfig.DATA_Tabs = {"1615":{"1":{"d":"g15\/M00\/13\/1E\/rBEhWFJ4sNUIAAAAAAHJ
 </script>
 
 <!-- footer start -->
-<#include "/templates/commons/footer.html">
+<#include "/commons/footer.html">
 <!-- footer end -->
  
 <script type="text/javascript" src="/static/js/home.js" charset="utf-8"></script>

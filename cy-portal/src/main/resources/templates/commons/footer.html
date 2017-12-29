@@ -68,7 +68,7 @@
 	</div>
 </div>
 <div class="w" clstag="homepage|keycount|home2013|38a">
-	<#include "/templates/commons/footer-links.html">
+	<#include "/commons/footer-links.html">
 </div>
 <script type="text/javascript" src="/static/js/jquery-2.1.4.min.js"></script>
 <script type="text/javascript" src="/static/js/jquery-extend.js"></script>
@@ -79,7 +79,7 @@ var A="<strong>热门搜索：</strong><a href='http://sale.jd.com/act/OfHQzJ2GL
 var B=["java","apple","LG G3","天梭","保温杯","三个爸爸"];
 B=pageConfig.FN_GetRandomData(B);
 $("#hotwords").html(A);
-var _searchValue = "${query}";
+var _searchValue = "${query!}";
 if(_searchValue.length == 0){
 	_searchValue = B;
 }

@@ -7,7 +7,7 @@ function serachKeyword(){
 }
 </script>
 <!--shortcut start-->
-<#include "/templates/commons/shortcut.html">
+<#include "/commons/shortcut.html">
 <!--shortcut end-->
 <div id="o-header-2013">
 	<div class="w" id="header-2013">
@@ -21,7 +21,7 @@ function serachKeyword(){
 				<ul id="shelper" class="hide">
 				</ul>
 				<div class="form">
-					<input type="text" class="text" id="keyword" value="${param.keyword }">
+					<input type="text" class="text" id="keyword" value="${keyword! }">
 					<input type="button" value="搜索" class="button" onclick="serachKeyword()" >
 				</div>
 			</div>
