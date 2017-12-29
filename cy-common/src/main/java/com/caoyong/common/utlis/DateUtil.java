@@ -1,14 +1,18 @@
 package com.caoyong.common.utlis;
 
-import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 日期工具类
@@ -18,26 +22,26 @@ import java.util.*;
  * @since 2017-12-28 18:44
  **/
 public class DateUtil {
-    private static Logger log = LoggerFactory
+    private static Logger                                           log                     = LoggerFactory
             .getLogger(DateUtil.class);
 
-    private static final ThreadLocal<Map<String, SimpleDateFormat>> sdfMap = new ThreadLocal<>();
+    private static final ThreadLocal<Map<String, SimpleDateFormat>> sdfMap                  = new ThreadLocal<>();
 
-    public static String DATE_FORMAT_YYYYMMDD = "yyyyMMdd";
+    public static String                                            DATE_FORMAT_YYYYMMDD    = "yyyyMMdd";
     /**
      * yyyy-MM-dd
      */
-    public static String ZH_CN_DATE_PATTERN = "yyyy-MM-dd";
+    public static String                                            ZH_CN_DATE_PATTERN      = "yyyy-MM-dd";
 
     /**
      * yyyy-MM-dd HH:mm:ss
      */
-    public static String ZH_CN_DATETIME_PATTERN = "yyyy-MM-dd HH:mm:ss";
+    public static String                                            ZH_CN_DATETIME_PATTERN  = "yyyy-MM-dd HH:mm:ss";
 
     /**
      * yyyyMMddHHmmss
      */
-    public static String NOMARK_DATETIME_PATTERN = "yyyyMMddHHmmss";
+    public static String                                            NOMARK_DATETIME_PATTERN = "yyyyMMddHHmmss";
 
     public DateUtil() {
     }
@@ -51,8 +55,8 @@ public class DateUtil {
     /**
      * 功能: 将字符串转换为指定格式的日期返回
      *
-     * @param dateStr   要转换的字符串
-     * @param inFormat  与dateStr字符串相同格式的原日期格式
+     * @param dateStr 要转换的字符串
+     * @param inFormat 与dateStr字符串相同格式的原日期格式
      * @param outFormat 目标日期格式
      * @return
      */
@@ -76,11 +80,12 @@ public class DateUtil {
      * 将datefield取出的String型,直接转换为Timestamp型
      *
      * @param datefield (String)Tue Sep 7 12:00:00 UTC+0800 2010
-     * @param pattern   (String)yyyy-MM-dd 23:59:59
+     * @param pattern (String)yyyy-MM-dd 23:59:59
      * @return (Timestamp)2010-09-07 23:59:59.0
      */
     public static Timestamp formatDatefield(String datefield, String pattern) throws Exception {
         datefield = datefield.replaceAll("UTC ", "UTC+");//url传参时+号会被过滤
+        @SuppressWarnings("deprecation")
         Date date = new Date(datefield);
         SimpleDateFormat sdf = new SimpleDateFormat(pattern);
         String time = sdf.format(date);
@@ -367,7 +372,7 @@ public class DateUtil {
 
     /**
      * @param as_startDate 格式：yyyymm或yyyy-mm-dd
-     * @param as_endDate   格式：yyyymm或yyyy-mm-dd
+     * @param as_endDate 格式：yyyymm或yyyy-mm-dd
      * @return
      * @throws Exception
      */
@@ -399,7 +404,7 @@ public class DateUtil {
      * 功能：根据所给的起始,终止时间来计算间隔月数；
      *
      * @param startDate date
-     * @param endDate   date
+     * @param endDate date
      * @return
      */
     public static int getIntervalMonth(java.util.Date startDate, java.util.Date endDate) {
@@ -548,22 +553,26 @@ public class DateUtil {
         return myFormat.format(date);
     }
 
-    public static Timestamp addTimes(Timestamp time, int year, int month, int days, int hours, int minutes, int seconds) {
+    @SuppressWarnings("deprecation")
+    public static Timestamp addTimes(Timestamp time, int year, int month, int days, int hours, int minutes,
+                                     int seconds) {
         if (time == null) {
             return null;
         }
-        return new Timestamp(time.getYear() + year, time.getMonth() + month, time.getDate() + days, time.getHours()
-                + hours, time.getMinutes() + minutes, time.getSeconds() + seconds, 0);
+        return new Timestamp(time.getYear() + year, time.getMonth() + month, time.getDate() + days,
+                time.getHours() + hours, time.getMinutes() + minutes, time.getSeconds() + seconds, 0);
     }
 
+    @SuppressWarnings("deprecation")
     public static Timestamp addDays(Timestamp time, int days) {
         if (time == null) {
             return null;
         }
-        return new Timestamp(time.getYear(), time.getMonth(), time.getDate() + days, time.getHours(),
-                time.getMinutes(), time.getSeconds(), 0);
+        return new Timestamp(time.getYear(), time.getMonth(), time.getDate() + days, time.getHours(), time.getMinutes(),
+                time.getSeconds(), 0);
     }
 
+    @SuppressWarnings("deprecation")
     public static Timestamp addHours(Timestamp time, int hours) {
         if (time == null) {
             return null;
@@ -572,6 +581,7 @@ public class DateUtil {
                 time.getMinutes(), time.getSeconds(), 0);
     }
 
+    @SuppressWarnings("deprecation")
     public static Date addDays(Date date, int days) {
         if (date == null) {
             return null;
@@ -579,6 +589,7 @@ public class DateUtil {
         return new Date(date.getYear(), date.getMonth(), date.getDate() + days);
     }
 
+    @SuppressWarnings("deprecation")
     public static Date addYears(Date date, int years) {
         if (date == null) {
             return null;
@@ -606,6 +617,7 @@ public class DateUtil {
      * @param date
      * @return
      */
+    @SuppressWarnings("deprecation")
     public static Date getNextDate(Date date) {
         if (date == null) {
             return null;
@@ -794,6 +806,7 @@ public class DateUtil {
     /**
      * 获得昨天时间
      */
+    @SuppressWarnings("deprecation")
     public static String yesterdayDate(String df) {
         java.util.Date d = Calendar.getInstance().getTime();
         d.setDate(d.getDate() - 1);
@@ -825,11 +838,7 @@ public class DateUtil {
     }
 
     /**
-     * 判断生日是否在年龄范围内
-     *
-     * @param
-     * @throws ParseException
-     * @throws
+     * 判断生日是否在年龄范围内 @param @throws ParseException @throws
      */
     public static boolean checkAgeInTheRage(String birthDayStr, int startAge, int endAge) throws ParseException {
         birthDayStr = birthDayStr.replace("-", "").replace("/", "");
@@ -849,11 +858,7 @@ public class DateUtil {
     }
 
     /**
-     * 判断生日是否在年龄范围内
-     *
-     * @param
-     * @throws ParseException
-     * @throws
+     * 判断生日是否在年龄范围内 @param @throws ParseException @throws
      */
     public static boolean checkAgeInTheRage(Date birthDay, int startAge, int endAge) throws ParseException {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
@@ -871,11 +876,7 @@ public class DateUtil {
     }
 
     /**
-     * 判断生日是否在年龄范围内,设定当前时间
-     *
-     * @param
-     * @throws ParseException
-     * @throws
+     * 判断生日是否在年龄范围内,设定当前时间 @param @throws ParseException @throws
      */
     public static boolean checkAgeInTheRageInSomeDay(Date birthDay, Date now, int startAge, int endAge)
             throws ParseException {
@@ -899,7 +900,7 @@ public class DateUtil {
      * @param birthDayStr
      * @param startAge
      * @param endAge
-     * @param effDate     生效日
+     * @param effDate 生效日
      * @return
      * @throws ParseException
      */

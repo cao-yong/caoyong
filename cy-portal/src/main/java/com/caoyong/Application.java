@@ -1,6 +1,8 @@
 package com.caoyong;
 
-import com.caoyong.common.conversion.CustomConverter;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -9,12 +11,10 @@ import org.springframework.boot.web.servlet.ErrorPage;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.support.ConversionServiceFactoryBean;
-import org.springframework.core.convert.converter.Converter;
 import org.springframework.http.HttpStatus;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
-import java.util.HashSet;
-import java.util.Set;
+import com.caoyong.common.conversion.CustomConverter;
 
 /**
  * 入口
@@ -48,7 +48,7 @@ public class Application extends SpringBootServletInitializer {
     @Bean(name = "conversionService")
     public ConversionServiceFactoryBean getConversionService() {
         ConversionServiceFactoryBean bean = new ConversionServiceFactoryBean();
-        Set<Converter> converters = new HashSet<>();
+        Set<CustomConverter> converters = new HashSet<>();
         converters.add(new CustomConverter());
         bean.setConverters(converters);
         return bean;
