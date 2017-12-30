@@ -40,7 +40,7 @@ $(function(){
 							<div class="msg-warn" <#if error??>style="display: none;"</#if>>
 								<b></b>公共场所不建议自动登录，以防账号丢失
 							</div>
-							<div <#if errror?if_exists>style="display: none;"</#if> class="msg-error">
+							<div <#if error??><#else>style="display: none;"</#if> class="msg-error">
 								<b></b>${error! }
 							</div>
 						</div>
