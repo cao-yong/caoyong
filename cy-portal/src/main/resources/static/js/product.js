@@ -1,7 +1,6 @@
  /*
- item.jd.com Compressed by uglify 
- Author:keelii 
- Date: 2014-10-21 5:57:53 [PM] 
+ Author:caoyong
+ Date: 2018-01-03 5:57:53 [PM]
  */
 function insertScript(t, e) {
     var i = document.getElementsByTagName("head")[0], s = document.createElement("script");

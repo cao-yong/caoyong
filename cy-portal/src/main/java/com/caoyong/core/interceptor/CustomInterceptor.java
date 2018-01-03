@@ -33,7 +33,7 @@ public class CustomInterceptor implements HandlerInterceptor {
         String uername = sessionProvider.getAttributeForUser(RequestUtil.getCSESSIONID(request, response));
         //未登录
         if (StringUtils.isBlank(uername)) {
-            response.sendRedirect("//localhost:8081/login.aspx?returnUrl=//localhost:8082/");
+            response.sendRedirect("http://localhost:8081/login.aspx?returnUrl=http://localhost:8082/");
             return false;
         }
         log.info("CustomInterceptor preHandle end.");

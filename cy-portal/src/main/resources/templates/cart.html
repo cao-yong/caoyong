@@ -26,7 +26,7 @@ function trueBuy(){
 </script>
 <body>
 	<!--shortcut start-->
-	<#include "/templates/commons/shortcut.html">
+	<#include "/commons/shortcut.html">
 	<!--shortcut end-->
 	<div class="w w1 header clearfix">
 		<div id="logo">
@@ -44,7 +44,7 @@ function trueBuy(){
 			</ul>
 		</div>
 	</div>
-<#if buyerCart?? && buyerCart.items?? && buyerCart.items.size&gt;0>
+<#if buyerCart?? && buyerCart.items?? && buyerCart.items?size&gt;0>
 	<div class="w cart">
 		<div class="cart-hd group">
 			<h2>我的购物车</h2>
@@ -152,7 +152,7 @@ function trueBuy(){
 		</form>
 	</div>
 </#if>
-<#if buyerCart?? && buyerCart.items?? && buyerCart.items.size==0>
+<#if buyerCart?? && buyerCart.items?? && buyerCart.items?size==0>
 <div class="cart" id="container">
 <div class="w" >	
 	<div class="cart-empty">
@@ -174,7 +174,7 @@ function trueBuy(){
 <!--推荐位html修改处-->
 <script type="text/javascript" src="/static/js/base-v1.js"></script>
 <!-- footer start -->
-<#include "/templates/commons/footer.html">
+<#include "/commons/footer.html">
 <!-- footer end -->
 
 </body>
