@@ -16,6 +16,6 @@ public class SampleJob implements Job {
 
     @Override
     public void execute(JobExecutionContext jobExecutionContext) {
-        log.info("1111111---------------------------------------test job-----------------------------------------");
+        log.info("execute sampleJob");
     }
 }

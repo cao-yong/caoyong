@@ -125,7 +125,8 @@ public class SchedulerFactoryBeanConfig {
      */
     @Bean(name = "jobTrigger")
     public CronTriggerFactoryBean dialogStatusJobTrigger(@Qualifier("updateDialogStatusJobDetail") JobDetail jobDetail) {
-        return dialogStatusTrigger(jobDetail, "0 */1 * * * ?");
+        //项目中暂时不要用到定时任务，设置一个过去的时候，让定时任务不被执行
+        return dialogStatusTrigger(jobDetail, "0 15 10 ? * 6L 2002-2005");
     }
 
     /**
