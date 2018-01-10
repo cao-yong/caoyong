@@ -5,17 +5,19 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import com.caoyong.common.utlis.DateUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.alibaba.dubbo.config.annotation.Reference;
+import com.caoyong.common.utlis.DateUtil;
 import com.caoyong.common.utlis.SystemInfoUtil;
 import com.caoyong.common.vo.SystemInfo;
 import com.caoyong.core.bean.base.ResultBase;
+import com.caoyong.core.bean.statistics.VisitsStatistics;
 import com.caoyong.core.bean.system.Menu;
 import com.caoyong.core.bean.system.User;
+import com.caoyong.core.service.statistics.VisitsService;
 import com.caoyong.core.service.system.MenuService;
 import com.caoyong.exception.BizException;
 
@@ -33,7 +35,10 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class CenterController {
     @Reference(version = "1.0.0")
-    private MenuService menuService;
+    private MenuService   menuService;
+
+    @Reference(version = "1.0.0")
+    private VisitsService visitsService;
 
     @RequestMapping(value = "/index.do")
     public String index(Model model, HttpServletRequest request) {
@@ -48,11 +53,15 @@ public class CenterController {
             model.addAttribute("currentUser", currentUser);
             //查询系统基本信息
             SystemInfo systemInfo = SystemInfoUtil.getSystemInfo();
-            if(null != systemInfo){
+            if (null != systemInfo) {
                 String operateDate = DateUtil.formatDate(currentUser.getOperateDate(), DateUtil.ZH_CN_DATETIME_PATTERN);
                 systemInfo.setOperateDate(operateDate);
             }
             model.addAttribute("systemInfo", systemInfo);
+            ResultBase<List<VisitsStatistics>> visitsResultBase = visitsService.selectVisitsStatistics();
+            if (visitsResultBase.isSuccess() && !visitsResultBase.getValue().isEmpty()) {
+                model.addAttribute("visitsStatistics", visitsResultBase.getValue());
+            }
         } catch (BizException e) {
             log.error("index BizException:{}", e.getMessage(), e);
         } catch (Exception e) {

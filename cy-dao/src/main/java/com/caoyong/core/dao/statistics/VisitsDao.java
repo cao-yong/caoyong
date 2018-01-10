@@ -1,9 +1,12 @@
 package com.caoyong.core.dao.statistics;
 
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
+
 import com.caoyong.core.bean.statistics.Visits;
 import com.caoyong.core.bean.statistics.VisitsQuery;
-import java.util.List;
-import org.apache.ibatis.annotations.Param;
+import com.caoyong.core.bean.statistics.VisitsStatistics;
 
 public interface VisitsDao {
     int countByExample(VisitsQuery example);
@@ -27,4 +30,6 @@ public interface VisitsDao {
     int updateByPrimaryKeySelective(Visits record);
 
     int updateByPrimaryKey(Visits record);
+
+    List<VisitsStatistics> selectVisitsStatistics();
 }

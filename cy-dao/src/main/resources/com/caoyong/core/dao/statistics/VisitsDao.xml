@@ -311,4 +311,39 @@
       is_deleted = #{isDeleted,jdbcType=CHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
+  
+  <!-- 自定义SQL -->
+  <!-- 查询访问量统计 -->
+  <select id="selectVisitsStatistics" resultType="VisitsStatistics">
+  	(SELECT
+	  COUNT(1) pv,
+	  COUNT(DISTINCT session_id) uv,
+	  COUNT(DISTINCT ip) ip,
+	  'today' `time`
+	FROM cy_visits WHERE TIMESTAMPDIFF(DAY,create_time,(SELECT DATE_ADD(DATE_ADD(STR_TO_DATE(DATE_FORMAT(NOW(),'%Y-%m-%d'),'%Y-%m-%d %H:%i:%s'),INTERVAL 1 DAY),INTERVAL -1 SECOND))) = 0) UNION ALL
+	(SELECT
+	  COUNT(1) pv,
+	  COUNT(DISTINCT session_id) uv,
+	  COUNT(DISTINCT ip) ip,
+	  'tomorrow' `time`
+	FROM cy_visits WHERE TIMESTAMPDIFF(DAY,create_time,(SELECT DATE_ADD(DATE_ADD(STR_TO_DATE(DATE_FORMAT(NOW(),'%Y-%m-%d'),'%Y-%m-%d %H:%i:%s'),INTERVAL 1 DAY),INTERVAL -1 SECOND))) = 1) UNION ALL
+	(SELECT
+	  COUNT(1) pv,
+	  COUNT(DISTINCT session_id) uv,
+	  COUNT(DISTINCT ip) ip,
+	  'week' `time`
+	FROM cy_visits WHERE TIMESTAMPDIFF(DAY,create_time,(SELECT DATE_ADD(DATE_ADD(STR_TO_DATE(DATE_FORMAT(NOW(),'%Y-%m-%d'),'%Y-%m-%d %H:%i:%s'),INTERVAL 1 DAY),INTERVAL -1 SECOND))) &gt;= 0 AND TIMESTAMPDIFF(DAY,create_time,(SELECT DATE_ADD(DATE_ADD(STR_TO_DATE(DATE_FORMAT(NOW(),'%Y-%m-%d'),'%Y-%m-%d %H:%i:%s'),INTERVAL 1 DAY),INTERVAL -1 SECOND))) &lt;= 7) UNION ALL
+	(SELECT
+	  COUNT(1) pv,
+	  COUNT(DISTINCT session_id) uv,
+	  COUNT(DISTINCT ip) ip,
+	  'month' `time`
+	FROM cy_visits WHERE TIMESTAMPDIFF(DAY,create_time,(SELECT DATE_ADD(DATE_ADD(STR_TO_DATE(DATE_FORMAT(NOW(),'%Y-%m-%d'),'%Y-%m-%d %H:%i:%s'),INTERVAL 1 DAY),INTERVAL -1 SECOND))) &gt;= 0 AND TIMESTAMPDIFF(DAY,create_time,(SELECT DATE_ADD(DATE_ADD(STR_TO_DATE(DATE_FORMAT(NOW(),'%Y-%m-%d'),'%Y-%m-%d %H:%i:%s'),INTERVAL 1 DAY),INTERVAL -1 SECOND))) &lt;= 31) UNION ALL
+	(SELECT
+	  COUNT(1) pv,
+	  COUNT(DISTINCT session_id) uv,
+	  COUNT(DISTINCT ip) ip,
+	  'all' `time`
+	FROM cy_visits)
+  </select>
 </mapper>

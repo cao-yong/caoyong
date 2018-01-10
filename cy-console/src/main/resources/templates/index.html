@@ -175,36 +175,47 @@
 										                        <td width="25%"><b>IP</b></td>
 										                        <td width="30%"><b>独立访客</b></td>
 										                    </tr>
-										                    <tr>
-										                        <td height="30" align="right">今日：</td>
-										                        <td>0</td>
-										                        <td>0</td>
-										                        <td>0</td>
-										                    </tr>
-										                    <tr>
-										                        <td height="30" align="right">昨日：</td>
-										                        <td>0</td>
-										                        <td>0</td>
-										                        <td>0</td>
-										                    </tr>
-										                    <tr>
-										                        <td height="30" align="right">本周：</td>
-										                        <td>0</td>
-										                        <td>0</td>
-										                        <td>0</td>
-										                    </tr>
-										                    <tr>
-										                        <td height="30" align="right">本月：</td>
-										                        <td>0</td>
-										                        <td>0</td>
-										                        <td>0</td>
-										                    </tr>
-										                    <tr>
-										                        <td height="30" align="right">累计：</td>
-										                        <td>0</td>
-										                        <td>0</td>
-										                        <td>0</td>
-										                    </tr>
+										                    <#if visitsStatistics?? && visitsStatistics?size&gt;0>
+										                    	<#list visitsStatistics as statistics>
+										                    		<tr>
+												                        <td height="30" align="right">${statistics.timeName}：</td>
+												                        <td>${statistics.pv}</td>
+												                        <td>${statistics.ip}</td>
+												                        <td>${statistics.uv}</td>
+												                    </tr>
+										                    	</#list>
+										                    	<#else>
+										                    		<tr>
+												                        <td height="30" align="right">今日：</td>
+												                        <td>0</td>
+												                        <td>0</td>
+												                        <td>0</td>
+												                    </tr>
+												                    <tr>
+												                        <td height="30" align="right">昨日：</td>
+												                        <td>0</td>
+												                        <td>0</td>
+												                        <td>0</td>
+												                    </tr>
+												                    <tr>
+												                        <td height="30" align="right">本周：</td>
+												                        <td>0</td>
+												                        <td>0</td>
+												                        <td>0</td>
+												                    </tr>
+												                    <tr>
+												                        <td height="30" align="right">本月：</td>
+												                        <td>0</td>
+												                        <td>0</td>
+												                        <td>0</td>
+												                    </tr>
+												                    <tr>
+												                        <td height="30" align="right">累计：</td>
+												                        <td>0</td>
+												                        <td>0</td>
+												                        <td>0</td>
+												                    </tr>
+										                    </#if>
 										                </table>
 										            </div>
 										            <div class="attribute-xx" style="float:left">
