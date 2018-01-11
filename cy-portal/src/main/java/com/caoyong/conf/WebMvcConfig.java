@@ -51,7 +51,7 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
     @Bean
     public FilterRegistrationBean indexFilterRegistration() {
         FilterRegistrationBean registration = new FilterRegistrationBean(visitsStatisticsFilter());
-        registration.addUrlPatterns("/");
+        registration.addUrlPatterns("/*");
         return registration;
     }
 

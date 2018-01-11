@@ -92,7 +92,10 @@ public class VisitsStatisticsFilter implements Filter {
 
         //保存当前访问记录
         try {
-            visitsService.saveVisits(visits);
+            //对静态资源不做处理
+            if (!page.contains("static")) {
+                visitsService.saveVisits(visits);
+            }
         } catch (Exception e) {
             log.error("saveVisits in filter error:{}", e.getMessage(), e);
         }
