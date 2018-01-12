@@ -4,10 +4,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.alibaba.dubbo.config.annotation.Reference;
 import com.caoyong.common.utlis.RequestUtil;
 import com.caoyong.core.service.user.SessionProvider;
 
@@ -22,7 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class CustomInterceptor implements HandlerInterceptor {
-    @Autowired
+    @Reference(version = "1.0.0")
     private SessionProvider sessionProvider;
 
     @Override
@@ -33,7 +33,7 @@ public class CustomInterceptor implements HandlerInterceptor {
         String uername = sessionProvider.getAttributeForUser(RequestUtil.getCSESSIONID(request, response));
         //未登录
         if (StringUtils.isBlank(uername)) {
-            response.sendRedirect("//localhost:8081/login.aspx?returnUrl=//localhost:8082/");
+            response.sendRedirect("http://localhost:8081/login.aspx?returnUrl=http://localhost:8082/");
             return false;
         }
         log.info("CustomInterceptor preHandle end.");

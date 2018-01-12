@@ -46,7 +46,7 @@
 								<!-- <img class="nav-user-photo" src="../assets/avatars/user.jpg" alt="Jason's Photo" /> -->
 								<span class="user-info">
 									<small>Welcome,</small>
-									
+									${currentUser.name!}
 								</span>
 
 								<i class="ace-icon fa fa-caret-down"></i>
@@ -66,7 +66,7 @@
 
 			</div>
 		</div>
-		<form id="logoutForm" action="${request.contextPath}/logout" method="post">
+		<form id="logoutForm" action="${request.contextPath}/control/logout.do" method="post">
         </form>
 		<div class="main-container ace-save-state" id="main-container">
 			<script type="text/javascript">
@@ -157,7 +157,7 @@
 										            <p>
 										                欢迎使用康福特博商城的管理系统！<br/>
 										                康福特博商城的程序版本： comfortabo-mall V2.0 <!--【<a href="http://localhost:8080" target="_blank">查看最新版本</a>】--><br/>
-										                您上次登录的时间是：2014-10-15 <br/>
+										                您上次登录的时间是：${systemInfo.operateDate!""} <br/>
 										                已用内存：<span style="color:#0078ff;">${systemInfo.usedMemory!0}MB</span>&nbsp;&nbsp;&nbsp;&nbsp;剩余内存：<span style="color:#ff8400;">${systemInfo.freeMemory!0}MB </span>&nbsp;&nbsp;&nbsp;&nbsp;最大内存：<span
 										                    style="color:#00ac41;">${systemInfo.totalMemory!0}MB</span>
 										            </p>
@@ -175,36 +175,47 @@
 										                        <td width="25%"><b>IP</b></td>
 										                        <td width="30%"><b>独立访客</b></td>
 										                    </tr>
-										                    <tr>
-										                        <td height="30" align="right">今日：</td>
-										                        <td>0</td>
-										                        <td>0</td>
-										                        <td>0</td>
-										                    </tr>
-										                    <tr>
-										                        <td height="30" align="right">昨日：</td>
-										                        <td>0</td>
-										                        <td>0</td>
-										                        <td>0</td>
-										                    </tr>
-										                    <tr>
-										                        <td height="30" align="right">本周：</td>
-										                        <td>0</td>
-										                        <td>0</td>
-										                        <td>0</td>
-										                    </tr>
-										                    <tr>
-										                        <td height="30" align="right">本月：</td>
-										                        <td>0</td>
-										                        <td>0</td>
-										                        <td>0</td>
-										                    </tr>
-										                    <tr>
-										                        <td height="30" align="right">累计：</td>
-										                        <td>0</td>
-										                        <td>0</td>
-										                        <td>0</td>
-										                    </tr>
+										                    <#if visitsStatistics?? && visitsStatistics?size&gt;0>
+										                    	<#list visitsStatistics as statistics>
+										                    		<tr>
+												                        <td height="30" align="right">${statistics.timeName}：</td>
+												                        <td>${statistics.pv}</td>
+												                        <td>${statistics.ip}</td>
+												                        <td>${statistics.uv}</td>
+												                    </tr>
+										                    	</#list>
+										                    	<#else>
+										                    		<tr>
+												                        <td height="30" align="right">今日：</td>
+												                        <td>0</td>
+												                        <td>0</td>
+												                        <td>0</td>
+												                    </tr>
+												                    <tr>
+												                        <td height="30" align="right">昨日：</td>
+												                        <td>0</td>
+												                        <td>0</td>
+												                        <td>0</td>
+												                    </tr>
+												                    <tr>
+												                        <td height="30" align="right">本周：</td>
+												                        <td>0</td>
+												                        <td>0</td>
+												                        <td>0</td>
+												                    </tr>
+												                    <tr>
+												                        <td height="30" align="right">本月：</td>
+												                        <td>0</td>
+												                        <td>0</td>
+												                        <td>0</td>
+												                    </tr>
+												                    <tr>
+												                        <td height="30" align="right">累计：</td>
+												                        <td>0</td>
+												                        <td>0</td>
+												                        <td>0</td>
+												                    </tr>
+										                    </#if>
 										                </table>
 										            </div>
 										            <div class="attribute-xx" style="float:left">
@@ -261,6 +272,10 @@
 		<script src="${request.contextPath}/static/assets/js/jquery-2.1.4.min.js"></script>
 		<script type="text/javascript">
 			if('ontouchstart' in document.documentElement) document.write("<script src='${request.contextPath}/assets/js/jquery.mobile.custom.min.js'>"+"<"+"/script>");
+			//退出登录
+			$('#a_logout').on('click', function(e) {
+				$('#logoutForm').submit();
+			});
 		</script>
 		<script src="${request.contextPath}/static/assets/js/bootstrap.min.js"></script>
 		<!-- basic scripts -->

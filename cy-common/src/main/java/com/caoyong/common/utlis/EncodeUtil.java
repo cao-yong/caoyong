@@ -41,4 +41,8 @@ public class EncodeUtil {
         log.info("encodePassword end.");
         return null;
     }
+
+    public static void main(String[] args) {
+        System.out.println(encodePassword("admin"));
+    }
 }

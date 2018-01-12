@@ -5,11 +5,11 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.alibaba.dubbo.config.annotation.Reference;
 import com.caoyong.common.utlis.RequestUtil;
 import com.caoyong.core.bean.base.ResultBase;
 import com.caoyong.core.bean.order.Order;
@@ -29,9 +29,9 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Controller
 public class OrderController {
-    @Autowired
+    @Reference(version = "1.0.0")
     private OrderService    orderService;
-    @Autowired
+    @Reference(version = "1.0.0")
     private SessionProvider sessionProvider;
 
     /**

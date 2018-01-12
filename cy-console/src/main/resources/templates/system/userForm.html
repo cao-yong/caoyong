@@ -61,21 +61,21 @@
 						<input type="hidden" id="oldPassword" name="oldPassword" value="${user.password!}">
 						</#if>
 						<div class="form-group">
-							<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 姓名 </label>
+							<label class="col-sm-3 control-label no-padding-right"> 姓名 </label>
 							<div class="col-sm-9">
 								<input type="text" id="name" name="name" placeholder="姓名" value="${user.name!}" class="col-xs-10 col-sm-5">
 							</div>
 						</div>
 						<div class="space-4"></div>
 						<div class="form-group">
-							<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 登录名 </label>
+							<label class="col-sm-3 control-label no-padding-right"> 登录名 </label>
 							<div class="col-sm-9">
 								<input type="text" id="username" name="username" placeholder="登录名" value="${user.username!}" class="col-xs-10 col-sm-5" <#if user?? && user.id??>readonly='readonly'</#if>>
 							</div>
 						</div>
 						<div class="space-4"></div>
 						<div class="form-group">
-							<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 密码 </label>
+							<label class="col-sm-3 control-label no-padding-right"> 密码 </label>
 							<div class="col-sm-9">
 								<input type="password" id="password" name="password"  placeholder="密码" value="${user.password!}" class="col-xs-10 col-sm-5">
 								&nbsp;<button class="btn btn-xs btn-info" type="button" onclick="createPwd();"><i class="ace-icon fa fa-pencil-square-o align-top bigger-125"></i>随机生成</button>
@@ -84,28 +84,28 @@
 						</div>
 						<div class="space-4"></div>
 						<div class="form-group">
-							<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 确认密码 </label>
+							<label class="col-sm-3 control-label no-padding-right"> 确认密码 </label>
 							<div class="col-sm-9">
 								<input type="password" id="rePassword" name="rePassword"  placeholder="再次输入密码" value="${user.password!}" class="col-xs-10 col-sm-5">
 							</div>
 						</div>
 						<div class="space-4"></div>
 						<div class="form-group">
-							<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 电话 </label>
+							<label class="col-sm-3 control-label no-padding-right"> 电话 </label>
 							<div class="col-sm-9">
 								<input type="text" id="phone" name="phone" placeholder="电话号码" value="${user.phone!}" class="col-xs-10 col-sm-5">
 							</div>
 						</div>
 						<div class="space-4"></div>
 						<div class="form-group">
-							<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 邮箱 </label>
+							<label class="col-sm-3 control-label no-padding-right"> 邮箱 </label>
 							<div class="col-sm-9">
 								<input type="text" id="email" name="email" placeholder="邮箱地址" value="${user.email!}" class="col-xs-10 col-sm-5">
 							</div>
 						</div>
 						<div class="space-4"></div>
 						<div class="form-group">
-							<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 角色 </label>
+							<label class="col-sm-3 control-label no-padding-right"> 角色 </label>
 							<div class="col-sm-9">
 								<#list roles as role>
 								<label class="inline" style="margin-top:7px;">
@@ -117,14 +117,14 @@
 						</div>
 						<div class="space-4"></div>
 						<div class="form-group">
-							<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 备注 </label>
+							<label class="col-sm-3 control-label no-padding-right"> 备注 </label>
 							<div class="col-sm-9">
 								<input type="text" id="extraInfo" name="extraInfo" value="${user.extraInfo!}" class="col-xs-10 col-sm-5">
 							</div>
 						</div>
 						<div class="space-4"></div>
 						<div class="form-group">
-							<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 是否启用 </label>
+							<label class="col-sm-3 control-label no-padding-right"> 是否启用 </label>
 							<div class="col-sm-9">
 								<label style="margin-top:7px;">
 									<input id="isEnable" name="useable" class="ace ace-switch ace-switch-2" type="checkbox" <#if user?? && user.isEnable=1>checked="checked"</#if> >
@@ -174,7 +174,6 @@
 							data:{username:loginName},
 							success : function(res) {
 								if(!res.success){
-									reminder(res.msg);
 									result = "1";
 								}
 							}
@@ -182,7 +181,8 @@
 					}
 					
 					//数据合法性校验
-					if(result == "1"){
+					if(result === "1"){
+                        reminder("用户已存在");
 						return;
 					}
 					else if(isEmpty(name)){
@@ -219,7 +219,6 @@
 						url : '${request.contextPath}/user/saveUser.json',
 						type : 'POST',
 						dataType : 'json',
-						contentType: "application/json; charset=utf-8",
 						data : $('#userForm').serializeObject(),
 						success : function(result){
 							if(result.success){

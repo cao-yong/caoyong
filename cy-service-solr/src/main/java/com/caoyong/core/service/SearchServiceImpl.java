@@ -61,7 +61,7 @@ public class SearchServiceImpl implements SearchService {
         Page<Product> page = new Page<Product>();
         log.info("selectProductByQuery start. query=",
                 ToStringBuilder.reflectionToString(query, ToStringStyle.DEFAULT_STYLE));
-        query.setLimit(15);
+        query.setLimit(12);
         List<Product> products = new ArrayList<>();
         try {
             SolrQuery solrQuery = new SolrQuery();

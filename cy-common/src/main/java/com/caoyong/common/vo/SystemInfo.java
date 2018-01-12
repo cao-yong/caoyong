@@ -22,4 +22,5 @@ public class SystemInfo {
     private String userHome;
     private String javaEnv;
     private String javaVm;
+    private String operateDate;
 }

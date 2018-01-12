@@ -314,6 +314,43 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public ResultBase<User> queryUserAndRolesByUsername(String username) throws BizException {
+        log.info("queryUserAndRolesByUsername start. username:{}", username);
+        ResultBase<User> result = new ResultBase<>();
+        try {
+            User user = userDao.queryUserAndRolesByUsername(username);
+            if(null != user){
+                result.setSuccess(true);
+                result.setValue(user);
+            }
+        } catch (Exception e) {
+            result.setErrorCode(ErrorCodeEnum.UNKOWN_ERROR.getCode());
+            result.setErrorMsg(ErrorCodeEnum.UNKOWN_ERROR.getMsg());
+            log.error("queryUserAndRolesByUsername error:{}", e.getMessage(), e);
+        }
+        log.info("queryUserAndRolesByUsername end.");
+        return result;
+    }
+
+    @Override
+    public ResultBase<Integer> updateUserOperateDateByUserId(Integer userId) throws BizException {
+        log.info("updateUserOperateDateByUserId start, userId:{}", userId);
+        ResultBase<Integer> result = new ResultBase<>();
+        try {
+            User user = new User();
+            user.setId(userId);
+            user.setOperateDate(new Date());
+            userDao.updateByPrimaryKeySelective(user);
+        } catch (Exception e) {
+            result.setErrorCode(ErrorCodeEnum.UNKOWN_ERROR.getCode());
+            result.setErrorMsg(ErrorCodeEnum.UNKOWN_ERROR.getMsg());
+            log.error("updateUserOperateDateByUserId error:{}", e.getMessage(), e);
+        }
+        log.info("updateUserOperateDateByUserId end.");
+        return null;
+    }
+
+    @Override
     public ResultBase<Integer> enableUserById(Integer id) throws BizException {
         log.info("enableUserById start.id:{}", id);
         ResultBase<Integer> result = new ResultBase<>();

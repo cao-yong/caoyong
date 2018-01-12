@@ -8,11 +8,11 @@ import java.util.stream.Collectors;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.alibaba.dubbo.config.annotation.Reference;
 import com.caoyong.core.bean.base.Page;
 import com.caoyong.core.bean.base.ResultBase;
 import com.caoyong.core.bean.product.Brand;
@@ -37,11 +37,11 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Controller
 public class ProductController {
-    @Autowired
+    @Reference(version = "1.0.0")
     private SearchService searchService;
-    @Autowired
+    @Reference(version = "1.0.0")
     private BrandService  brandService;
-    @Autowired
+    @Reference(version = "1.0.0")
     private CmsService    cmsService;
 
     /**
@@ -66,6 +66,7 @@ public class ProductController {
             //从redis中查询品牌
             List<Brand> brands = brandService.selectBrandListFromRedis();
             model.addAttribute("brands", brands);
+            model.addAttribute("keyword", query.getKeyword());
             model.addAttribute("brandId", query.getBrandId());
             model.addAttribute("price", query.getPrice());
             Page<Product> page = searchService.selectPageByQuery(query);
@@ -77,7 +78,7 @@ public class ProductController {
             //设置品牌
             if (null != query.getBrandId()) {
                 String brandName = brands.stream().filter(brand -> query.getBrandId().equals(brand.getId())).findFirst()
-                        .get().getName();
+                        .orElseGet(Brand::new).getName();
                 selectedTermsMap.put("品牌", brandName);
             }
             //设置价格

@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.caoyong.core.bean.system.*;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -14,11 +15,6 @@ import com.caoyong.common.utlis.RandomUUIDUtil;
 import com.caoyong.common.web.Constants;
 import com.caoyong.core.bean.base.Page;
 import com.caoyong.core.bean.base.ResultBase;
-import com.caoyong.core.bean.system.Menu;
-import com.caoyong.core.bean.system.MenuDTO;
-import com.caoyong.core.bean.system.MenuQuery;
-import com.caoyong.core.bean.system.MenuQueryDTO;
-import com.caoyong.core.bean.system.RoleMenu;
 import com.caoyong.core.dao.system.MenuDao;
 import com.caoyong.core.dao.system.RoleMenuDao;
 import com.caoyong.enums.ErrorCodeEnum;
@@ -272,6 +268,32 @@ public class MenuServiceImpl implements MenuService {
             log.error("queryChosenMenuIcon error:{}", e.getMessage(), e);
         }
         log.info("queryChosenMenuIcons end.");
+        return result;
+    }
+
+    @Override
+    public ResultBase<List<Menu>> queryMenuListByUser(User user) throws BizException {
+        log.info("queryMenuListByUser start. user:{}", ToStringBuilder.reflectionToString(user, ToStringStyle.DEFAULT_STYLE));
+        ResultBase<List<Menu>> result = new ResultBase<>();
+        List<Menu> menus;
+        try {
+            if(user.isAdmin()){
+                MenuQueryDTO query = new MenuQueryDTO();
+                menus = menuDao.selectMenuList(query);
+            }else {
+                menus = menuDao.selectMenuListByUserId(user.getId());
+            }
+            if (menus != null && !menus.isEmpty()) {
+                result.setValue(menus);
+                result.setSuccess(true);
+                log.info("result:{}", ToStringBuilder.reflectionToString(menus, ToStringStyle.DEFAULT_STYLE));
+            }
+        } catch (Exception e) {
+            result.setErrorCode(e.getMessage());
+            result.setErrorCode(e.getMessage());
+            log.error("queryMenuListByUser error:{}", e.getMessage(), e);
+        }
+        log.info("queryMenuListByUser end.");
         return result;
     }
 
