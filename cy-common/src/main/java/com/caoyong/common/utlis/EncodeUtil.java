@@ -42,7 +42,4 @@ public class EncodeUtil {
         return null;
     }
 
-    public static void main(String[] args) {
-        System.out.println(encodePassword("admin"));
-    }
 }
