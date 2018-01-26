@@ -14,6 +14,7 @@
     <result column="extra_info" property="extraInfo" jdbcType="VARCHAR" />
     <result column="is_deleted" property="isDeleted" jdbcType="CHAR" />
   </resultMap>
+  
   <resultMap id="roleMap" type="Role">
 	<id property="id" column="id" />
 	<result property="name" column="name" />
@@ -22,7 +23,8 @@
 	<collection property="menuList" ofType="Menu">
 		<id property="id" column="menuList.id" />
 	</collection>
-</resultMap>
+  </resultMap>
+  
   <sql id="Example_Where_Clause" >
     <where >
       <foreach collection="oredCriteria" item="criteria" separator="or" >
