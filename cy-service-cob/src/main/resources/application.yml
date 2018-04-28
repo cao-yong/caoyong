@@ -13,7 +13,7 @@ spring:
         driver-class-name: com.mysql.jdbc.Driver
     dubbo:
         application:
-            name: service-product
+            name: service-cob
         registry:
             address: zookeeper://192.168.128.128:2181
         protocol:
