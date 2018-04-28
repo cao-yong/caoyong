@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- 只需配置好 log.dir 和 projectname 属性-->
 <configuration debug="true">
-	<property name="log.dir" value="E:/app/log/login" />
+	<property name="log.dir" value="./logs/login" />
 	<property name="projectname" value="login" />
 	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
 		<target>System.out</target>
