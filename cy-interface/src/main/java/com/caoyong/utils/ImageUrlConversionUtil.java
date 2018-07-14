@@ -69,6 +69,11 @@ public class ImageUrlConversionUtil {
                         if (invoke instanceof ArrayList) {
                             List<?> list = (ArrayList<?>) invoke;
                             for (Object obj : list) {
+                                //当类中包含自己的list时会出现死循环
+                                if (obj.getClass() == fromObj.getClass()) {
+                                    //出现些情况时直接抛异常，提示调用人修改类或不要使用些工具类
+                                    throw new BizException(ErrorCodeEnum.CAN_NOT_CONTAINS_SELF_LIST);
+                                }
                                 convertingImageUrl(obj, size, field);
                             }
                         }

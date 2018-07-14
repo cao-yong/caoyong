@@ -19,7 +19,8 @@ public enum ErrorCodeEnum {
     PASSWORD_CAN_NOT_BE_NULL("1009", "请输入密码"),
     PASSWORD_ERROR("1010", "账户名与密码不匹配，请重新输入"),
     USER_NOT_EXIST("1011", "账户名不存在，请重新输入"),
-    USER_EXIST("1012", "登录名已存在，请重新输入");
+    USER_EXIST("1012", "登录名已存在，请重新输入"),
+    CAN_NOT_CONTAINS_SELF_LIST("1013", "类中包含自身集合,不能使用图片处理工具类");
 
     private String code;
     private String msg;
