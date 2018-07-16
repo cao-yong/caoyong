@@ -6,6 +6,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,17 +26,27 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 public class ImageUrlConversionUtil {
-
     /**
      * 对返回结果统一处理图片url
-     * 
+     *
      * @param fromObj 要转换的对象
      * @param size 图片大小
      * @param convertField 要处理的字段
-     * @return 处理后的对象
      * @throws BizException 业务异常
      */
     public static void convertingImageUrl(Object fromObj, ImageSizeEnum size, String... convertField)
+            throws BizException {
+        if (fromObj instanceof ArrayList) {
+            List list = (ArrayList<?>) fromObj;
+            for (Object obj : list) {
+                convertingObjImageUrl(obj, size, convertField);
+            }
+        } else {
+            convertingObjImageUrl(fromObj, size, convertField);
+        }
+    }
+
+    private static void convertingObjImageUrl(Object fromObj, ImageSizeEnum size, String... convertField)
             throws BizException {
         log.info("convertingImageUrl start.");
         if (fromObj == null || convertField == null || convertField.length < 1) {
@@ -51,38 +62,47 @@ public class ImageUrlConversionUtil {
             for (Field declaredField : fromObj.getClass().getDeclaredFields()) {
                 //开启修改访问权限  
                 declaredField.setAccessible(true);
+                Object invoke = null;
                 //当字段是string并且是我们要检查的字段时对该字段修改
                 if ("java.lang.String".equals(declaredField.getType().getName())
                         && declaredField.getName().equals(field)) {
                     converting(fromObj, declaredField.getName(), size);
                 }
-                if ("java.util.List".equals(declaredField.getType().getName())) {
-
+                //当为些这类型时需求为invoke获取值
+                List<String> declaredTypes = Arrays.asList("java.lang.String", "java.lang.Object", "java.util.List");
+                if (declaredTypes.stream()
+                        .anyMatch(declaredType -> declaredType.equals(declaredField.getType().getName()))) {
                     try {
                         //获取getter与setter方法
                         PropertyDescriptor propertyDesc = new PropertyDescriptor(declaredField.getName(),
                                 fromObj.getClass());
                         Method readMethod = propertyDesc.getReadMethod();
                         //调用getter方法
-                        Object invoke = readMethod.invoke(fromObj);
-                        //只处理array list中的对象
-                        if (invoke instanceof ArrayList) {
-                            List<?> list = (ArrayList<?>) invoke;
-                            for (Object obj : list) {
-                                //当类中包含自己的list时会出现死循环
-                                if (obj.getClass() == fromObj.getClass()) {
-                                    //出现些情况时直接抛异常，提示调用人修改类或不要使用此工具类
-                                    throw new BizException(ErrorCodeEnum.CAN_NOT_CONTAINS_SELF_LIST);
-                                }
-                                convertingImageUrl(obj, size, field);
-                            }
-                        }
+                        invoke = readMethod.invoke(fromObj);
                     } catch (IntrospectionException e) {
                         log.warn("list property convertingImageUrl IntrospectionException error");
                     } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
                         log.warn("list property readMethod.invoke error");
                     }
                 }
+                if ("java.lang.Object".equals(declaredField.getType().getName())) {
+                    if (null != invoke) {
+                        convertingObjImageUrl(invoke, size, field);
+                    }
+                }
+                //只处理array list中的对象
+                if (invoke instanceof ArrayList) {
+                    List<?> list = (ArrayList<?>) invoke;
+                    for (Object obj : list) {
+                        //当类中包含自己的list时会出现死循环
+                        if (obj.getClass() == fromObj.getClass()) {
+                            //出现些情况时直接抛异常，提示调用人修改类或不要使用此工具类
+                            throw new BizException(ErrorCodeEnum.CAN_NOT_CONTAINS_SELF_LIST);
+                        }
+                        convertingObjImageUrl(obj, size, field);
+                    }
+                }
+
             }
         }
         log.info("convertingImageUrl end.");
@@ -102,13 +122,13 @@ public class ImageUrlConversionUtil {
                 String imgUrl = (String) invoke;
                 String imageUrl = "";
                 if (StringUtils.isNotBlank(imgUrl)) {
-                    Optional<String> findFirst = ImageSizeEnum.getAllNames().stream()
-                            .filter(imgSize -> imgUrl.contains(imgSize)).findFirst();
-                    if (findFirst.isPresent() && !size.getName().equals(findFirst.get())) {
+                    Optional<String> findFirst = ImageSizeEnum.getAllNames().stream().filter(imgUrl::contains)
+                            .findFirst();
+                    if (findFirst.isPresent()) {
                         imageUrl = imgUrl.replace(findFirst.get(), size.getName());
                     } else {
                         String[] split = imgUrl.split("\\.");
-                        imageUrl = split[0] + size.getName() + "." + split[1];
+                        imageUrl = split[0] + size.getName() + split[1];
                     }
                 }
                 //调用setter方法
