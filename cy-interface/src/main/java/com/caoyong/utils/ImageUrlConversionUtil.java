@@ -50,7 +50,7 @@ public class ImageUrlConversionUtil {
             throws BizException {
         log.info("convertingImageUrl start.");
         if (fromObj == null || convertField == null || convertField.length < 1) {
-            throw new BizException(ErrorCodeEnum.PARAMETER_CAN_NOT_BE_NULL.getMsg(), "Object为空");
+            throw new BizException(ErrorCodeEnum.PARAMETER_CAN_NOT_BE_NULL);
         }
         //设置图片默认大小为480_320
         if (size == null) {
@@ -59,7 +59,26 @@ public class ImageUrlConversionUtil {
         for (String field : convertField) {
             //传出的所有字段进行检查
             //getFields()只能获取public的字段，这里用getDeclaredFields()获取对象所有字段
-            for (Field declaredField : fromObj.getClass().getDeclaredFields()) {
+            Field[] superFields = null;
+            Class<?> superclass = fromObj.getClass().getSuperclass();
+            //基于获取父类属性一览
+            if (superclass != null) {
+                superFields = superclass.getDeclaredFields();
+            }
+            // 基于目标Bean生成属性一览
+            Field[] fields = fromObj.getClass().getDeclaredFields();
+            //最终处理Field列表
+            Field[] finalFields;
+            if (superFields != null && superFields.length > 0) {
+                finalFields = new Field[superFields.length + fields.length];
+                //复制父类属性一览
+                System.arraycopy(superFields, 0, finalFields, 0, superFields.length);
+                //复制自身属性一览
+                System.arraycopy(fields, 0, finalFields, superFields.length, fields.length);
+            } else {
+                finalFields = fields;
+            }
+            for (Field declaredField : finalFields) {
                 //开启修改访问权限  
                 declaredField.setAccessible(true);
                 Object invoke = null;
@@ -68,10 +87,9 @@ public class ImageUrlConversionUtil {
                         && declaredField.getName().equals(field)) {
                     converting(fromObj, declaredField.getName(), size);
                 }
-                //当为些这类型时需求为invoke获取值
+                //当为些这类型时需要为invoke获取值
                 List<String> declaredTypes = Arrays.asList("java.lang.String", "java.lang.Object", "java.util.List");
-                if (declaredTypes.stream()
-                        .anyMatch(declaredType -> declaredType.equals(declaredField.getType().getName()))) {
+                if (declaredTypes.stream().anyMatch(declaredField.getType().getName()::equals)) {
                     try {
                         //获取getter与setter方法
                         PropertyDescriptor propertyDesc = new PropertyDescriptor(declaredField.getName(),
