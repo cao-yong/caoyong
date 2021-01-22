@@ -1,20 +1,16 @@
 package com.caoyong;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.embedded.EmbeddedServletContainerCustomizer;
 import org.springframework.boot.web.servlet.ErrorPage;
+import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.support.ConversionServiceFactoryBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.scheduling.annotation.EnableScheduling;
-
-import com.caoyong.common.conversion.CustomConverter;
+import org.springframework.web.servlet.DispatcherServlet;
 
 /**
  * 入口
@@ -23,16 +19,16 @@ import com.caoyong.common.conversion.CustomConverter;
  */
 @EnableScheduling
 @SpringBootApplication
-public class Application extends SpringBootServletInitializer {
+public class LoginApplication extends SpringBootServletInitializer {
 
     public static void main(String[] args) {
-        SpringApplication.run(Application.class, args);
+        SpringApplication.run(LoginApplication.class, args);
 
     }
 
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-        return application.sources(Application.class);
+        return application.sources(LoginApplication.class);
     }
 
     @Bean
@@ -45,13 +41,19 @@ public class Application extends SpringBootServletInitializer {
         };
     }
 
-    @Bean(name = "conversionService")
-    public ConversionServiceFactoryBean getConversionService() {
-        ConversionServiceFactoryBean bean = new ConversionServiceFactoryBean();
-        Set<CustomConverter> converters = new HashSet<>();
-        converters.add(new CustomConverter());
-        bean.setConverters(converters);
-        return bean;
+    /**
+     * 相当于servlet-mapping,url-pattern
+     *
+     * @param dispatcherServlet 转发器
+     * @return servletBean
+     */
+    @Bean
+    public ServletRegistrationBean dispatcherRegistration(DispatcherServlet dispatcherServlet) {
+        ServletRegistrationBean registration = new ServletRegistrationBean(dispatcherServlet);
+        registration.addUrlMappings("*.aspx");
+        registration.addUrlMappings("*.json");
+        registration.addUrlMappings("/static/*");
+        return registration;
     }
 
 }
