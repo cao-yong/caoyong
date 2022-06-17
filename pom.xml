@@ -247,7 +247,7 @@
 		<dependency>
 			<groupId>com.alibaba</groupId>
 			<artifactId>fastjson</artifactId>
-			<version>1.2.25.sec10</version>
+			<version>1.2.83</version>
 		</dependency>
 	
 		<!-- Zookeeper 用于分布式服务管理 start -->
